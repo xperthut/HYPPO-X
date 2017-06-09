@@ -41,7 +41,7 @@ We treated each cluster as a node and if two clusters have overlapping points th
 
 
 ## Persistent homology
-The shape of a topological object changes by changing the bucket overlapping value. We used persistent homology to stabilize the shape of a topological object by making the overlapping value fixed. The barcode generation code for persistent homology was writen in JAVA using library [javaplex-4.3.0.jar](https://github.com/appliedtopology/javaplex/releases/tag/4.3.0).
+The shape of a topological object changes by changing the bucket overlapping value. We used persistent homology to stabilize the shape of a topological object by making the overlapping value constant. The barcode is used to indicate the stabilize situation and the choice of overlap value for this stable object. The barcode generation code for persistent homology is writen in JAVA using library [javaplex-4.3.0.jar](https://github.com/appliedtopology/javaplex/releases/tag/4.3.0).
 
 
 
