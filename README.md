@@ -13,11 +13,20 @@ This is a high dimensional data visualization tool. This tool is mainly built in
 
 
 ## TDA
-Topological data ananlysis (TDA) uses [![algebraic topology](algebraic topology)](https://en.wikipedia.org/wiki/Algebraic_topology) (a branch of mathematics) which deals with point clouds and generate the shape of point cloud data in a coordinateless fashion. There has three steps through which TDA generates the shape of a dataset and these are:
+Topological data ananlysis (TDA) uses [algebraic topology](https://en.wikipedia.org/wiki/Algebraic_topology) (a branch of mathematics) which deals with point clouds and generate the shape of point cloud data in a coordinateless fashion. There has three steps through which TDA generates the shape of a dataset and these are:
 
 - [Filtering](#filtering)
 - [Partial clustering](#partial_clustering)
 - [Topological object construction](#topological_object_construction)
 
 
+## Filtering
 
+
+## Partial clustering
+
+
+## Topological object construction
+
+
+## Persistent homology
