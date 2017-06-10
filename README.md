@@ -5,19 +5,19 @@ This is a high dimensional data visualization tool. This tool is mainly built in
 
 ## Contents
 - [TDA](#tda)
-- [Single filter function](#single_filter_function)
-- [Double filter function](#double_filter_function)
-- [Persistent homology](#persistent_homology)
-- [Graph plotting](#graph_plotting)
-- [Visual representation](#visual_representation)
+- [Single filter function](#single-filter-function)
+- [Double filter function](#double-filter-function)
+- [Persistent homology](#persistent-homology)
+- [Graph plotting](#graph-plotting)
+- [Visual representation](#visual-representation)
 
 
 ## TDA
 Topological data ananlysis (TDA) uses [algebraic topology](https://en.wikipedia.org/wiki/Algebraic_topology) (a branch of mathematics) which deals with point clouds and generate the shape of point cloud data in a coordinateless fashion. There has three steps through which TDA generates the shape of a dataset and these are:
 
 - [Filtering](#filtering)
-- [Partial clustering](#partial_clustering)
-- [Topological object construction](#topological_object_construction)
+- [Partial clustering](#partial-clustering)
+- [Topological object construction](#topological-object-construction)
 
 
 ## Filtering
