@@ -48,4 +48,4 @@ The shape of a topological object changes by changing the bucket overlapping val
 We implemented the topological object construction process using both `single filter function` and `double filter function` in `C++` and saved the object (graph) in a `gml` formatted file. In order to visualize the graph, we used `igraph` package of `R` to read the saved `gml` formatted file and visualize in a `XQuartz` panel. In this panel, we can easily rearrange the graph orientation by changing node position using mouse pointer. The rearranged graph is saved in a `eps` formatted file, which we converted into a `png` formatted file to use in `HTML canvas`.
 
 ## Visual representation
-We used different color and pie chart to represent the graph more meaningfully. To do this, we used `HTML canvas`.
+We used different color and pie chart to represent the graph more meaningfully. To do this, we used `HTML canvas` and the data source is a JSON formated data, which is generated from our main `topological object construction` code that implemented in `C++`.
