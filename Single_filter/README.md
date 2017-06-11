@@ -3,6 +3,12 @@ Topological object construction using single filter function
 
 The source codes are in the `src` named folder and the test dataset in the `data` folder.
 
+### Filter functions
+1. `DAP`
+2. `Humidity`
+3. `Temperature`
+4. `Solar radiation`
+
 ### Input
 The input csv file contains following columns:
 1. `Time`
