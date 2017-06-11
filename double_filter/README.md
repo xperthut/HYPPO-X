@@ -21,6 +21,9 @@ The input csv file contains following columns:
 9. `Environmental attribute 3`
 10. `Environmental attribute 4`
 
+### Output
+Output is a `gml` formatted file with prefix `graph_RESIDUAL`.
+
 ### Individual id
 This is an integer value. If there have multiple individuals' id under same `genotype` and `location` combination then one can place it by ` # ` separator, i.e. `1 # 3 # 4`.
 
