@@ -5,5 +5,23 @@ R
 
 # Load gml formatted graph
 ```
+load(igraph)
 g = read.graph(file.choose(),"gml")
 ```
+
+# Plot graph
+```
+id = tkplot(g, canvas.width = 1455, canvas.height = 777)
+```
+
+# Get node coordinates of graph
+```
+coord = tk_coords(id)
+```
+
+# Convert node coordinate to html adjustable coordinate and save the coordinates in a csv file, i.e. test_coord.csv
+```
+graph_coordinate_to_html_coordinate(g,coord,"test_coord.csv","[absolute path of this file]/")
+```
+
+# Save the image plotted in R as a `eps` formatted file and convert it into a `png` formatted file. This `png` formatted file will use in HTML file for further processing.
