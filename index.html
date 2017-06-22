@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="css/css.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/style.css" media="screen" type="text/css">
+    <link rel="stylesheet" href="css/print.css" media="print" type="text/css">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Hypothesis extraction tool for high dimensional phenomics dataset</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <a href="https://xperthut.github.io/HYPPOX/">
+          <h1>HYPPOX</h1>
+        </a>
+        <h2>Discovering the underlying effect of both environment and 
+genotype on a phenotype of an individual (plant/animal) using 
+topological data analysis.</h2>
+        
+          <a href="https://github.com/xperthut/HYPPOX" class="button"><small>View project on</small> GitHub</a>
+        
+        
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1><img src="HYPPOX%20by%20xperthut_files/project_logo.png" alt="Project name and logo"></h1>
+
+<p>This is a hypothesis extraction tool from high dimensional phenomix dataset. This tool is mainly built in <code class="highlighter-rouge">c++</code>. The object that we generated from our method is a graph and we used <code class="highlighter-rouge">igraph</code> package of <code class="highlighter-rouge">R</code> to visually represent the graph. We also use <code class="highlighter-rouge">HTML canvas</code> to represent the graph more meaningfully using pie chart and colors.</p>
+
+<h2 id="contents">Contents</h2>
+<ul>
+  <li><a href="#tda">TDA</a></li>
+  <li><a href="#single-filter-function">Single filter function</a></li>
+  <li><a href="#double-filter-function">Double filter function</a></li>
+  <li><a href="#persistent-homology">Persistent homology</a></li>
+  <li><a href="#graph-plotting">Graph plotting</a></li>
+  <li><a href="#visual-representation">Visual representation</a></li>
+</ul>
+
+<h2 id="tda">TDA</h2>
+<p>Topological data ananlysis (TDA) uses <a href="https://en.wikipedia.org/wiki/Algebraic_topology">algebraic topology</a>
+ (a branch of mathematics) which deals with point clouds and generate 
+the shape of point cloud data in a coordinateless fashion. There has 
+three steps through which TDA generates the shape of a dataset and these
+ are:</p>
+
+<ul>
+  <li><a href="#filtering">Filtering</a></li>
+  <li><a href="#partial-clustering">Partial clustering</a></li>
+  <li><a href="#topological-object-construction">Topological object construction</a></li>
+</ul>
+
+<h2 id="filtering">Filtering</h2>
+<p>The filter is a reference to represent any attribute of a point 
+cloud. For instance, the attribute we want to measure of our dataset is 
+the plant phenotype (growth rate) and we can represent it by any other 
+referene like time. If we represent the phenotypic measurement of plants
+ using time as a single filter function then the interpretation will be,
+ how the plant phenotypic value changes with the change of time. We also
+ can use multiple filters. For instance, in our experiment, we used both
+ time and environmental attribute humidity as two filter function and 
+the interpretation is, how the plant phenotype changes with respect to 
+the change of both time and humidity. We have option to use more than 
+two filter function but in this release, we used only <a href="#single_filter_function">Single filter function</a> and <a href="#double_filter_function">Double filter function</a>.</p>
+
+<h2 id="single-filter-function">Single filter function</h2>
+<p>We used time as a single filter function and the time value available in our dataset is <code class="highlighter-rouge">days after planting (DAP)</code>. We also used environmental attribute <code class="highlighter-rouge">humidity</code>, <code class="highlighter-rouge">temperature</code> and <code class="highlighter-rouge">solar radiation</code> at a time as a single filter function. We implemented the code of single filter function using <code class="highlighter-rouge">C++</code>.</p>
+
+<h2 id="double-filter-function">Double filter function</h2>
+<p>Our dataset is temporal, because of this, we used DAP as one of the 
+two filters in double filter function. The environmental attribute 
+humidity is used as the other filter. We also built topological object 
+using DAP and temperature as a double filter function and DAP and solar 
+radiation as a double filter function. We implemented the code of double
+ filter function using <code class="highlighter-rouge">C++</code>.</p>
+
+<h2 id="partial-clustering">Partial clustering</h2>
+<p>Clustering is used to group all similar phenotypic individuals. We 
+created buckets along each filter attribute and apply clustering 
+mechanism to the points in a bucket. We used density based clustering 
+and in our experiment, we implemented <a href="https://en.wikipedia.org/wiki/DBSCAN">DBSCAN</a> in <code class="highlighter-rouge">C++</code>. The overlapping buckets generate share points between two clusters.</p>
+
+<h2 id="topological-object-construction">Topological object construction</h2>
+<p>We treated each cluster as a node and if two clusters have 
+overlapping points then we consider an edge between two nodes 
+corresponding these two clusters. In this fashion, we build our 
+topological object which is a graph and save it in a <code class="highlighter-rouge">gml</code> formatted file.</p>
+
+<h2 id="persistent-homology">Persistent homology</h2>
+<p>The shape of a topological object changes by changing the bucket 
+overlapping value. We used persistent homology to stabilize the shape of
+ a topological object by making the overlapping value constant. The 
+barcode is used to indicate the stabilize situation and the choice of 
+overlap value for this stable object. The barcode generation code for 
+persistent homology is writen in <code class="highlighter-rouge">JAVA</code> using an opensource library <a href="https://github.com/appliedtopology/javaplex/releases/tag/4.3.0">javaplex-4.3.0.jar</a>.</p>
+
+<h2 id="graph-plotting">Graph plotting</h2>
+<p>We implemented the topological object construction process using both <code class="highlighter-rouge">single filter function</code> and <code class="highlighter-rouge">double filter function</code> in <code class="highlighter-rouge">C++</code> and saved the object (graph) in a <code class="highlighter-rouge">gml</code> formatted file. In order to visualize the graph, we used <code class="highlighter-rouge">igraph</code> package of <code class="highlighter-rouge">R</code> to read the saved <code class="highlighter-rouge">gml</code> formatted file and visualize in a <code class="highlighter-rouge">XQuartz</code>
+ panel. In this panel, we can easily rearrange the graph orientation by 
+changing node position using mouse pointer. The rearranged graph is 
+saved in a <code class="highlighter-rouge">eps</code> formatted file, which we converted into a <code class="highlighter-rouge">png</code> formatted file to use in <code class="highlighter-rouge">HTML canvas</code>.</p>
+
+<h2 id="visual-representation">Visual representation</h2>
+<p>We used different color and pie chart to represent the graph more meaningfully. To do this, we used <code class="highlighter-rouge">HTML canvas</code> and the data source is a JSON formated data, which is generated from our main <code class="highlighter-rouge">topological object construction</code> code that implemented in <code class="highlighter-rouge">C++</code>.</p>
+
+        </section>
+
+        <aside id="sidebar">
+          
+
+          
+            <p class="repo-owner"><a href="https://github.com/xperthut/HYPPOX">HYPPOX</a> is maintained by <a href="https://github.com/xperthut">xperthut</a>.</p>
+          
+
+          <p>This page was generated by <a href="https://pages.github.com/">GitHub Pages</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+    
+  
+
+</body></html>

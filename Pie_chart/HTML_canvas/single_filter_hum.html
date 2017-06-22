@@ -1,0 +1,193 @@
+
+<!--**************************************************************************************************
+ Copyright © 2016-2017 Md.Kamruzzaman. All rights reserved.
+ The generated code is released under following licenses:
+ GNU GENERAL PUBLIC LICENSE, Version 3, 29 June 2007
+ --------------------------------------------------------------------------------------------------
+ File name: single_filter_hum.html
+ Objective: Plot pie chart to the topological object constructed by single filter function Humidity
+ Additional information: NA
+ --------------------------------------------------------------------------------------------------
+ Contributors                   Date            Task details
+ -------------------------    ----------      --------------------
+ Md. Kamruzzaman              02/24/2017      Initial version
+ 
+ **************************************************************************************************-->
+
+<html>
+	<head>
+
+	</head>
+	<body>
+
+		<script type="text/javascript">
+			function drawLineWithArrowheads(_canvas, data){
+
+				var ctx = _canvas.getContext('2d');
+
+	            drawLine(_canvas, data);
+
+	            ctx.strokeStyle = data.color;
+	            ctx.fillStyle=data.color;
+
+	            // draw the starting arrowhead
+	            var startRadians=Math.atan((data.y2-data.y1)/(data.x2-data.x1));
+	            startRadians+=((data.x2>data.x1)?-90:90)*Math.PI/180;
+	            drawArrowhead(ctx,data.x2,data.y2,startRadians);
+	        }
+
+	        function drawArrowhead(ctx,x,y,radians){
+	            ctx.save();
+	            ctx.beginPath();
+	            ctx.translate(x,y);
+	            ctx.rotate(radians);
+	            ctx.moveTo(0,0);
+	            ctx.lineTo(5,20);
+	            ctx.lineTo(-5,20);
+	            ctx.closePath();
+	            ctx.restore();
+	            ctx.fill();
+	        }
+
+			function drawLine(_canvas, data){
+				var ctx = _canvas.getContext('2d');
+				ctx.beginPath();
+				ctx.moveTo(data.x1, data.y1);
+				ctx.lineTo(data.x2, data.y2);
+				ctx.lineWidth = data.width;
+				// set line color
+				ctx.strokeStyle = data.color;
+				ctx.stroke();
+			}
+
+			function drawText(_canvas, text, position, style){
+				var context = _canvas.getContext('2d');
+
+				context.font = style.font;//'bold 10pt Calibri';
+				context.fillStyle = style.color;
+  				context.fillText(text, (position.x1+position.x2)/2, (position.y1+position.y2)/2);
+			}
+
+			function drawPie(_canvas, position, data, _id){
+				var total = 0;
+				  for (obj of data) {
+				    total += obj.value;
+				  }
+
+				  var ctx = _canvas.getContext('2d');
+				  var previousRadian;
+				  var middle = {
+				  	// for 3 paths
+				    x: position.x,
+				    y: 777-position.y,
+
+				    // for all paths
+				    //x: position.x+1,
+				    //y: position.y-13,
+				    radius: position.rad,
+				  };
+				  
+				   //background
+				  ctx.beginPath();
+				  ctx.arc(middle.x, middle.y, middle.radius, 0, 2 * Math.PI);
+				  ctx.closePath();
+				  ctx.stroke();
+				  ctx.fillStyle = "black";
+				  ctx.fill();
+				   //end of background
+
+				  for (obj of data) {
+				    previousRadian = previousRadian || 0;
+				    obj.percentage = parseInt((obj.value / total) * 100)
+				    
+				    ctx.beginPath();
+				    ctx.fillStyle = obj.color;
+				    obj.radian = (Math.PI * 2) * (obj.value / total);
+				    ctx.moveTo(middle.x, middle.y);
+				    //middle.radius - 2 is to add border between the background and the pie chart
+				    ctx.arc(middle.x, middle.y, middle.radius - 2, previousRadian, previousRadian + obj.radian, false);
+				    ctx.closePath();
+				    ctx.fill();
+				    ctx.save();
+				    ctx.translate(middle.x, middle.y);
+				    ctx.fillStyle = "white";
+				    ctx.font = middle.radius / 10 + "px Arial";
+				    ctx.rotate(previousRadian + obj.radian);
+				    //\var labelText = "'" + obj.label + "' " + obj.percentage  + "%";
+				    //ctx.fillText(labelText, ctx.measureText(labelText).width / 2, 0);
+
+				    //tx.fillText(_id);
+				    ctx.restore();
+
+				    previousRadian += obj.radian;
+				  }
+
+			}
+		</script>
+
+		<!-- Adjust the canvas width and height. It is a viewport. -->
+		<canvas id="myCanvas" width="1455" height="300"></canvas>
+		<script type="text/javascript">
+			var canvas = document.getElementById('myCanvas');
+
+			// Place the JSON data here which is generated in our main 'C++' project
+ 			var data=[{id:40,p:{x:1272.000000,y:745.000000,rad:15.00}, d:[{label: "BK",value: 24,color: '#ff0000'}]},{id:35,p:{x:1223.000000,y:743.000000,rad:15.00}, d:[{label: "BK",value: 18,color: '#ff0000'}]},{id:42,p:{x:1410.000000,y:516.000000,rad:15.15}, d:[{label: "BK",value: 12,color: '#ff0000'},{label: "AK",value: 10,color: '#0000ff'}]},{id:19,p:{x:695.000000,y:677.000000,rad:15.07}, d:[{label: "BK",value: 6,color: '#ff0000'},{label: "AK",value: 10,color: '#0000ff'}]},{id:31,p:{x:1064.000000,y:637.000000,rad:19.53}, d:[{label: "BK",value: 162,color: '#ff0000'},{label: "BN",value: 15,color: '#E67E22'},{label: "AN",value: 15,color: '#00ff00'},{label: "AK",value: 135,color: '#0000ff'}]},{id:37,p:{x:1324.000000,y:704.000000,rad:15.07}, d:[{label: "BK",value: 6,color: '#ff0000'},{label: "AK",value: 10,color: '#0000ff'}]},{id:41,p:{x:1405.000000,y:639.000000,rad:15.78}, d:[{label: "BK",value: 36,color: '#ff0000'},{label: "AK",value: 30,color: '#0000ff'}]},{id:18,p:{x:650.000000,y:622.000000,rad:16.79}, d:[{label: "BK",value: 42,color: '#ff0000'},{label: "BN",value: 25,color: '#E67E22'},{label: "AN",value: 20,color: '#00ff00'},{label: "AK",value: 45,color: '#0000ff'}]},{id:30,p:{x:932.000000,y:709.000000,rad:15.07}, d:[{label: "BK",value: 12,color: '#ff0000'},{label: "AK",value: 5,color: '#0000ff'}]},{id:39,p:{x:1332.000000,y:573.000000,rad:15.31}, d:[{label: "BK",value: 6,color: '#ff0000'},{label: "AK",value: 25,color: '#0000ff'}]},{id:38,p:{x:1406.000000,y:583.000000,rad:15.00}, d:[{label: "BK",value: 6,color: '#ff0000'},{label: "AK",value: 5,color: '#0000ff'}]},{id:15,p:{x:592.000000,y:622.000000,rad:16.71}, d:[{label: "BK",value: 24,color: '#ff0000'},{label: "BN",value: 35,color: '#E67E22'},{label: "AN",value: 45,color: '#00ff00'},{label: "AK",value: 20,color: '#0000ff'}]},{id:36,p:{x:1328.000000,y:638.000000,rad:16.64}, d:[{label: "BK",value: 72,color: '#ff0000'},{label: "AK",value: 55,color: '#0000ff'}]},{id:34,p:{x:1218.000000,y:578.000000,rad:15.07}, d:[{label: "AK",value: 15,color: '#0000ff'}]},{id:33,p:{x:1177.000000,y:635.000000,rad:17.18}, d:[{label: "BK",value: 90,color: '#ff0000'},{label: "AK",value: 75,color: '#0000ff'}]},{id:32,p:{x:1123.000000,y:636.000000,rad:17.96}, d:[{label: "BK",value: 120,color: '#ff0000'},{label: "AK",value: 100,color: '#0000ff'}]},{id:29,p:{x:973.000000,y:651.000000,rad:15.15}, d:[{label: "BK",value: 12,color: '#ff0000'},{label: "AK",value: 10,color: '#0000ff'}]},{id:28,p:{x:1005.000000,y:587.000000,rad:20.00}, d:[{label: "BK",value: 156,color: '#ff0000'},{label: "BN",value: 30,color: '#E67E22'},{label: "AN",value: 30,color: '#00ff00'},{label: "AK",value: 140,color: '#0000ff'}]},{id:26,p:{x:830.000000,y:711.000000,rad:15.23}, d:[{label: "BK",value: 24,color: '#ff0000'},{label: "AK",value: 5,color: '#0000ff'}]},{id:25,p:{x:886.000000,y:650.000000,rad:15.23}, d:[{label: "BK",value: 6,color: '#ff0000'},{label: "AK",value: 20,color: '#0000ff'}]},{id:24,p:{x:833.000000,y:592.000000,rad:18.82}, d:[{label: "BK",value: 132,color: '#ff0000'},{label: "BN",value: 15,color: '#E67E22'},{label: "AN",value: 15,color: '#00ff00'},{label: "AK",value: 115,color: '#0000ff'}]},{id:23,p:{x:755.000000,y:737.000000,rad:15.07}, d:[{label: "BK",value: 18,color: '#ff0000'}]},{id:22,p:{x:756.000000,y:676.000000,rad:15.23}, d:[{label: "BK",value: 12,color: '#ff0000'},{label: "AK",value: 15,color: '#0000ff'}]},{id:21,p:{x:755.000000,y:622.000000,rad:17.81}, d:[{label: "BK",value: 102,color: '#ff0000'},{label: "BN",value: 5,color: '#E67E22'},{label: "AN",value: 5,color: '#00ff00'},{label: "AK",value: 95,color: '#0000ff'}]},{id:20,p:{x:697.000000,y:738.000000,rad:15.00}, d:[{label: "BK",value: 12,color: '#ff0000'}]},{id:14,p:{x:521.000000,y:747.000000,rad:15.09}, d:[{label: "BN",value: 15,color: '#E67E22'},{label: "AN",value: 15,color: '#00ff00'}]},{id:3,p:{x:129.000000,y:684.000000,rad:19.32}, d:[{label: "BN",value: 120,color: '#E67E22'},{label: "AN",value: 130,color: '#00ff00'}]},{id:13,p:{x:472.000000,y:611.000000,rad:15.28}, d:[{label: "BN",value: 20,color: '#E67E22'},{label: "AN",value: 20,color: '#00ff00'}]},{id:12,p:{x:472.000000,y:746.000000,rad:16.25}, d:[{label: "BN",value: 45,color: '#E67E22'},{label: "AN",value: 45,color: '#00ff00'}]},{id:11,p:{x:424.000000,y:610.000000,rad:15.28}, d:[{label: "BN",value: 20,color: '#E67E22'},{label: "AN",value: 20,color: '#00ff00'}]},{id:10,p:{x:382.000000,y:742.000000,rad:18.17}, d:[{label: "BN",value: 95,color: '#E67E22'},{label: "AN",value: 95,color: '#00ff00'}]},{id:9,p:{x:287.000000,y:593.000000,rad:15.00}, d:[{label: "BN",value: 15,color: '#E67E22'},{label: "AN",value: 10,color: '#00ff00'}]},{id:8,p:{x:320.000000,y:695.000000,rad:19.42}, d:[{label: "BN",value: 125,color: '#E67E22'},{label: "AN",value: 130,color: '#00ff00'}]},{id:7,p:{x:235.000000,y:593.000000,rad:15.19}, d:[{label: "BN",value: 20,color: '#E67E22'},{label: "AN",value: 15,color: '#00ff00'}]},{id:6,p:{x:236.000000,y:689.000000,rad:20.00}, d:[{label: "BN",value: 140,color: '#E67E22'},{label: "AN",value: 145,color: '#00ff00'}]},{id:4,p:{x:181.000000,y:743.000000,rad:15.19}, d:[{label: "BN",value: 15,color: '#E67E22'},{label: "AN",value: 20,color: '#00ff00'}]},{id:2,p:{x:74.000000,y:685.000000,rad:17.78}, d:[{label: "BN",value: 85,color: '#E67E22'},{label: "AN",value: 85,color: '#00ff00'}]},{id:1,p:{x:25.000000,y:685.000000,rad:15.67}, d:[{label: "BN",value: 30,color: '#E67E22'},{label: "AN",value: 30,color: '#00ff00'}]},{id:5,p:{x:132.000000,y:594.000000,rad:15.00}, d:[{label: "BN",value: 20,color: '#E67E22'},{label: "AN",value: 5,color: '#00ff00'}]}];
+
+				// Load background image
+				var background = new Image();
+				background.src = "./1D_HUM_9.png";
+				
+				// Make sure the image is loaded first otherwise nothing will draw.
+				background.onload = function(){
+					var ctx = canvas.getContext('2d');
+					ctx.drawImage(background,0,0,1440,783);
+
+					for(k=0;k<data.length;k++){
+					 	var position = data[k].p;
+					 	drawPie(canvas, position, data[k].d, data[k].id);
+					 }
+
+					 var nIDList=[
+					 	{text:"10", nl:[52,42,33,34,36,29,22,23], style:{font:'bold 18pt Calibri',color:"black"}, offset:[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]]},
+					 	{text:"11", nl:[26,33,44,56,60], style:{font:'bold 18pt Calibri',color:"black"}, offset:[[0,0],[0,0],[0,0],[0,0]]},
+					 	{text:"01", nl:[51,46,56,58], style:{font:'bold 18pt Calibri',color:"black"}, offset:[[-10,0],[0,30],[0,30]]},
+					 	{text:"10", nl:[72,73,74,67,60], style:{font:'bold 18pt Calibri',color:"black"}, offset:[[0,10],[-10,20],[0,-10],[0,30]]}
+					 ];
+
+					 for(n=0;n<nIDList.length;n++){
+					 	var nlist = nIDList[n];
+					 	
+
+					 	for(j=1;j<nlist.nl.length; j++){
+					 		var position={};
+
+							for(k=0;k<data.length;k++){
+						 		if(data[k].id == nlist.nl[j-1]){
+
+						 			position.x1=data[k].p.x+nlist.offset[j-1][0];
+						 			position.y1=777-data[k].p.y+nlist.offset[j-1][1];
+
+						 		}else if(data[k].id == nlist.nl[j]){
+
+						 			position.x2=data[k].p.x;
+						 			position.y2=777-data[k].p.y;
+
+						 		}
+						 		
+						 	}
+						 	//drawText(canvas, nlist.text, position, nlist.style);
+					 	}
+					 
+					 }
+
+
+					 // Save as png
+					 window.location = canvas.toDataURL("image/png");
+				}
+
+				
+			
+		</script>
+	</body>
+
+</html>
