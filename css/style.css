@@ -283,7 +283,7 @@ a.button { width: 134px; height: 58px; padding-top: 22px; padding-left: 68px; fo
 
 a.button small { display: block; font-size: 11px; }
 
-header a.button { position: absolute; top: 0; right: 0; background: transparent url(images/github-button.png) 0 0 no-repeat; }
+header a.button { position: absolute; top: 0; right: 0; background: transparent url(../images/github-button.png) 0 0 no-repeat; }
 
 aside a.button { display: block; width: 138px; padding-left: 64px; margin-bottom: 20px; font-size: 21px; background: transparent url(../images/download-button.png) 0 0 no-repeat; }
 
