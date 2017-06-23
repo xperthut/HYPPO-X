@@ -1,7 +1,7 @@
 Topological object construction using single filter function
 ============================================================
 
-The construction of `topological object` using `single filter function` implemented using `C++`.
+We implemented the process of generating a `topological object` using `single filter function` in `C++` [see [How to run the code](#How-to-run-the-code)].
 The source codes are in the `src` folder and the test dataset `(gxe_pat.csv)` is in the `data` folder.
 
 ### Filter functions
@@ -32,7 +32,7 @@ The default value is an integer. If there have multiple individuals under same `
 ### Configuration file
 The file named `config.h` is responsible for all types of configuration. One can change the value of the configuration file to make change in the code.
 
-### Step by step
+### How to run the code
 Step #1: One can change the filter function using following flag in `config.h` file. Our program accepts four values `0-3`.
 ```cpp
 #define FILTER_1 VALUE
@@ -43,7 +43,11 @@ Step #2: Set the link of your source data file in the `config.h` file. Currently
 // Specify full path of the data file
 #define DATA_FILE_NAME "FILENAME.csv"
 ```
+
 Step #3: Set the number of windows along the filter function using the following constant in `config.h` file.
 ```cpp
 #define WINDOW_X VALUE
 ``` 
+
+
+
