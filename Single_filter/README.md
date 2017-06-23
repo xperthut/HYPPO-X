@@ -87,5 +87,11 @@ stream.addVertex(2, 0.000);
 stream.addElement(new int[]{53,54},  45.00);
 /************ End here *************/
 ```
-7. `Copy this code block and paste it in the Barcode.java file. You have to paste here:`
-
+7. `Copy this code block and paste it in the Barcode.java file at following position:`
+```java
+public void GetStreamForData(ExplicitSimplexStream stream) {
+   /*
+        Add the simplex code generated from our main project writen in C++
+    */
+}
+```
