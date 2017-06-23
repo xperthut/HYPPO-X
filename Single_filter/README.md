@@ -1,7 +1,7 @@
 Topological object construction using single filter function
 ============================================================
 
-We implemented the process of generating a `topological object` using `single filter function` in `C++` [see [How to run the code](#How-to-run-the-code)].
+We implemented the process of generating a `topological object` using `single filter function` in `C++` [see [How to run the code](#how-to-run-the-code)].
 The source codes are in the `src` folder and the test dataset `(gxe_pat.csv)` is in the `data` folder.
 
 ## Filter functions
