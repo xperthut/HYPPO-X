@@ -1,7 +1,7 @@
 Topological object construction using single filter function
 ============================================================
 
-We implemented the process of generating a `topological object` using `single filter function` in `C++` [see [Change settings](#change-settings) to make custom changes in the setting. Also see [Run the code](#run-the-code)].
+We implemented the process of generating a `topological object` using `single filter function` in `C++` [see [Change settings](#change-settings) to make custom changes in the setting. Also see [Build object](#build-object)].
 The source codes are in the `src` folder and the test dataset `(gxe_pat.csv)` is in the `data` folder.
 
 ## Filter functions
@@ -72,9 +72,20 @@ Adjust the node size of the generated topological object using following constan
 #define NODE_SIZE_MIN MIN_SIZE
 ```
 
-## Run the code
+## Build object
 1. `Configure [DATA_FILE_NAME]`
 2. `Configure [FILTER_1]`
-3. `Configure the `
-
+3. `Configure [WINDOW_X]`
+4. `Configure [CLUSTER_RADIUS]`
+5. `Set barcode flag [PRINT_BARCODE]`
+6. `Run the program to generate simplex timeline in Java. For instance, you will get something like this:`
+```java
+/************ Start from here *************/
+stream.addVertex(1, 0.000);
+stream.addVertex(2, 0.000);
+...
+stream.addElement(new int[]{53,54},  45.00);
+/************ End here *************/
+```
+7. `Copy this code block and paste it in the Barcode.java file. You have to paste here:`
 
