@@ -100,7 +100,7 @@ public void GetStreamForData(ExplicitSimplexStream stream) {
     */
 }
 ```
-8. `Run Homology/src/Barcode.java file to generate barcode and identify the persistent value identified along X axis` and configure [OVERLAP] with this value.
+8. `Run Homology/src/Barcode.java file to generate barcode and identify the persistent value indicating along X axis` and configure [OVERLAP] with this value.
 9. `Unset barcode flag [PRINT_BARCODE]`
 10. `Run the program to generate the output which is a .gml formatted file with prefix graph_COMPOSITE`
 11. `Open this .gml file using R. The command is as below:`
