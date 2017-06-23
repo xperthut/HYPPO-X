@@ -71,3 +71,15 @@ Adjust the node size of the generated topological object using following constan
 #define NODE_SIZE_MAX MAX_SIZE
 #define NODE_SIZE_MIN MIN_SIZE
 ```
+
+## Project setup
+### Setup for Mac users
+1. `Create an empty project in 'xcode' and run the project.`
+2. `Open the project folder. Copy all the files from 'src' named folder to your project's source folder.`
+3. `Copy the data files to [project folder]/Build/Products/Debug/ folder.`
+
+### Setup for Windows users
+1. `Create an empty 'console' project in 'Visual studio' and run the project.`
+2. `In 'solution explorer', right click on the 'source' and select 'add existing item'. Specify all '.cpp' extended files in our 'src' folder.`
+3. `In 'solution explorer', right click on the 'header' and select 'add existing item'. Specify all '.h' extended files in our 'src' folder.`
+4. `In 'solution explorer', right click on the 'resource' and select 'add existing item'. Specify all '.csv' extended files in our 'data' folder.`
