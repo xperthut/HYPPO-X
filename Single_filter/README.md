@@ -1,32 +1,40 @@
 Topological object construction using single filter function
 ============================================================
 
-The source codes are in the `src` named folder and the test dataset in the `data` folder.
+The construction of `topological object` using `single filter function` implemented using `C++`.
+The source codes are in the `src` folder and the test dataset `(gxe_pat.csv)` is in the `data` folder.
 
 ### Filter functions
+Based on our dataset, we can use following attribute as a filter function.
 1. `DAP`
 2. `Humidity`
 3. `Temperature`
 4. `Solar radiation`
 
 ### Input
-The input csv file contains following columns:
-1. `Time`
-2. `Genotype`
-3. `Location`
-4. `Individual id`
-5. `Date`
-6. `Phenotypic value`
-7. `Environmental attribute 1`
-8. `Environmental attribute 2`
-9. `Environmental attribute 3`
-10. `Environmental attribute 4`
+The input csv file contains following columns. One can change the column name and the value but can't expand the columns or change the type of the value. i.e. `Time` column contains integer values like `1,2,...` which does not allow any text here.
+1. `Time, integer type. i.e. Days After Planting (DAP)`
+2. `Genotype, string/text type`
+3. `Location, string/text type`
+4. `Individual id, see in [Individual id](#individual-id)`
+5. `Date, string/text type`
+6. `Phenotypic value, float/real type`
+7. `Environmental attribute 1, float/real type, i.e. temperature`
+8. `Environmental attribute 2, float/real type, i.e. solar radiation`
+9. `Environmental attribute 3, float/real type, i.e. humidity`
 
 ### Output
-Output is a `gml` formatted file with prefix `graph_RESIDUAL`.
+Output is a `gml` formatted file with prefix `graph_COMPOSITE`.
 
 ### Individual id
-This is an integer value. If there have multiple individuals' id under same `genotype` and `location` combination then one can place it by ` # ` separator, i.e. `1 # 3 # 4`.
+The default value is an integer. If there have multiple individuals under same `genotype` and `location` combination then one can place it by ` # ` separator, i.e. `1 # 3 # 4`.
 
 ### Configuration file
 The file named `config.h` is responsible for all types of configuration. One can change the value of the configuration file to make change in the code.
+
+### Step by step
+####Step 1. Set the link of your source data file here in the `config.h` file. Currently, our program accepts only comma `,` separated `csv` formatted data file.
+```
+// Specify full path of the data file
+#define DATA_FILE_NAME "input.csv"
+```
