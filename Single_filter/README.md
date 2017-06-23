@@ -56,6 +56,11 @@ Set the cluster radius. It accepts `real/float` value.
 #define CLUSTER_RADIUS VALUE
 ```
 
+Set the overlap value. It accepts `real/float` value.
+```cpp
+#define OVERLAP VALUE
+```
+
 Enable flag to print simplex timeline statements. Copy these statements to our barcode generated `Barcode.java` file to generate barcode image.
 ```cpp
 #define PRINT_BARCODE true
@@ -95,3 +100,15 @@ public void GetStreamForData(ExplicitSimplexStream stream) {
     */
 }
 ```
+8. `Run Homology/src/Barcode.java file to generate barcode and identify the persistent value identified along X axis` and configure [OVERLAP] with this value.
+9. `Unset barcode flag [PRINT_BARCODE]`
+10. `Run the program to generate the output which is a .gml formatted file with prefix graph_COMPOSITE`
+11. `Open this .gml file using R. The command is as below:`
+```R
+library(igraph)
+g = read.graph(file.choose(),"gml")
+id = tkplot(g, canvas.width = 1455, canvas.height = 777)
+```
+
+
+
