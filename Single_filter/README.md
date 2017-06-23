@@ -33,21 +33,27 @@ The default value is an integer. If there have multiple individuals under same `
 The file named `config.h` is responsible for all types of configuration. One can change the value of the configuration file to make change in the code.
 
 ## Change settings
-Step #1: One can change the filter function using following flag in `config.h` file. Our program accepts four values `0-3`.
+The `config.h` is the setting page. Necessary settings are here: 
+
+Change filter function using following constant. Our program accepts four values `0-3`.
 ```cpp
 #define FILTER_1 VALUE
 ```
 
-Step #2: Set the link of your source data file in the `config.h` file. Currently, our program accepts only comma `,` separated `csv` formatted data file.
+Set the link of your source data file. Currently, our program accepts only comma `(,)` separated `csv` formatted data file.
 ```cpp
 // Specify full path of the data file
 #define DATA_FILE_NAME "FILENAME.csv"
 ```
 
-Step #3: Set the number of windows along the filter function using the following constant in `config.h` file.
+Set the number of windows along the filter function using the following constant.
 ```cpp
 #define WINDOW_X VALUE
 ``` 
 
+Set the cluster radius. It accepts `real/float` value.
+```cpp
+#define CLUSTER_RADIUS VALUE
+```
 
 
