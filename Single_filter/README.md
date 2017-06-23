@@ -16,7 +16,7 @@ The input csv file contains following columns. One can change the column name an
 1. `Time, integer type. i.e. Days After Planting (DAP)`
 2. `Genotype, string/text type`
 3. `Location, string/text type`
-4. `Individual id, see in [Individual id](#individual-id)`
+4. `Individual id, see in` [Individual id](#individual-id)
 5. `Date, string/text type`
 6. `Phenotypic value, float/real type`
 7. `Environmental attribute 1, float/real type, i.e. temperature`
