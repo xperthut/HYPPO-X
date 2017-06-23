@@ -56,4 +56,18 @@ Set the cluster radius. It accepts `real/float` value.
 #define CLUSTER_RADIUS VALUE
 ```
 
+Enable flag to print simplex timeline statements. Copy these statements to our barcode generated `Barcode.java` file to generate barcode image.
+```cpp
+#define PRINT_BARCODE true
+```
 
+Enable flag to print `Javascript` code which is used to create `pie chart` and coloring nodes based on different measuring attribute `i.e. time, phenotype, environment`.
+```cpp
+#define PIE_CHART_CODE true
+```
+
+Adjust the node size of the generated topological object using following constants.
+```cpp
+#define NODE_SIZE_MAX MAX_SIZE
+#define NODE_SIZE_MIN MIN_SIZE
+```
