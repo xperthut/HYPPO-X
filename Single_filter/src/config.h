@@ -15,7 +15,7 @@
  **************************************************************************************************/
 
 // Define the filter
-// 0: filter by DAP, this is fixed.
+// 0: filter by DAP
 // 1: filter by Temperature
 // 2: filter by solar radiation
 // 3: filter by humidity
@@ -25,12 +25,12 @@
 #define ENV_NAMES {"",""}
 
 // Total environmental attributes
-#define ENV_ATTR 4
+#define ENV_ATTR 3
 
 #define PRINT_ALL_PATHS false
 
 // Specify full path of the data file
-#define DATA_FILE_NAME "gxe_pat.csv"
+#define DATA_FILE_NAME "input.csv"
 
 // DBSCAN parameters
 // 0.6 for DAP,SR
@@ -135,7 +135,7 @@
 #define DELTA_CHANGE 0.0
 
 // Print all graphs for barcode
-#define PRINT_BARCODE false
+#define PRINT_BARCODE true
 
 /* Any one will be true */
 #define NORMALIZE_UNIFORM_DIST false

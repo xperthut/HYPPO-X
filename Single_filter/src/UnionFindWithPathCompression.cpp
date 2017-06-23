@@ -71,11 +71,11 @@ void UnionFindWithPathCompression::PrintForest(){
     cout<<"\n";
 }
 
-unordered_map<long, list<long>> UnionFindWithPathCompression::GetAllConnectedComponents(){
+unordered_map<long, list<long> > UnionFindWithPathCompression::GetAllConnectedComponents(){
     
     this->Adjust();
     
-    unordered_map<long, list<long>> scc;
+    unordered_map<long, list<long> > scc;
     long index = 0;
     
     set<long> treeRoots;
@@ -97,14 +97,14 @@ unordered_map<long, list<long>> UnionFindWithPathCompression::GetAllConnectedCom
                 subGraphs.push_front(i);
         }
         
-        scc.insert(pair<long, list<long>>(index, subGraphs));
+        scc.insert(pair<long, list<long> >(index, subGraphs));
         index++;
     }
     
     return scc;
 }
 
-#pragma Private_Methods
+//#pragma Private_Methods
 void UnionFindWithPathCompression::UnionSets(long rootA, long rootB){
     if(rootA != rootB){
         if(this->s[rootB]<this->s[rootA]){

@@ -23,7 +23,7 @@ FileHandler::FileHandler(string fileName){
 
 FileHandler::~FileHandler(){}
 
-#pragma Public_Method
+//#pragma Public_Method
 void FileHandler::readNodePosition(string _fileName, unordered_map<long, float*> *positionMap){
     
     try {
@@ -77,8 +77,8 @@ void FileHandler::ReadFileData(list<DataPoint*> *dataPointList){
     //DataPoint *dataPoint = NULL;
     int lineCounter=0;
     string compLast="",compThis, key;
-    unordered_map<float, list<Phenotype*>> pointMap;
-    unordered_map<float, list<Phenotype*>>::iterator pItr;
+    unordered_map<float, list<Phenotype*> > pointMap;
+    unordered_map<float, list<Phenotype*> >::iterator pItr;
     
     try {
         ifstream fileReader(this->fileName);
@@ -130,13 +130,9 @@ void FileHandler::ReadFileData(list<DataPoint*> *dataPointList){
                 env[1] = line.substr(0,pos);
                 line=line.substr(pos+1,line.length()-pos-1);
                 
-                pos = line.find(",");
-                env[2] = line.substr(0,pos);
-                line=line.substr(pos+1,line.length()-pos-1);
-                
                 pos=line.length();
                 pos = line.find("\r");
-                env[3] = line.substr(0,pos);
+                env[2] = line.substr(0,pos);
                 
                 // Buld the comparison string
                 switch (FILTER_1) {
@@ -178,7 +174,7 @@ void FileHandler::ReadFileData(list<DataPoint*> *dataPointList){
                     list<Phenotype*> phList;
                     phList.push_back(phType);
                     
-                    pointMap.insert(pair<float, list<Phenotype*>>(stof(key), phList));
+                    pointMap.insert(pair<float, list<Phenotype*> >(stof(key), phList));
                 }else{
                     pItr->second.push_back(phType);
                 }
@@ -242,7 +238,7 @@ string FileHandler::WriteDataToFile(string fileName, string extention, string da
     return realpath(fileName.c_str(), NULL);
 }
 
-#pragma Private methods
+//#pragma Private methods
 
 /****
  Get current date/time, format is YYYY-MM-DD_HH:mm:ss

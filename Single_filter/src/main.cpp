@@ -40,6 +40,10 @@ int main(int argc, const char * argv[]) {
     
     cout<<"Total time:"<<_time<<unit<<endl;
     
+    char ch;
+    cout<<"\n\nPress any key to exit";
+    ch=getchar();
+    
     return 0;
 }
 

@@ -416,12 +416,12 @@ string ClusteringRegion::PrintGraph(list<Phenotype *> *overlappedPhList, list<An
         ufpc.Union(node_1, node_2);
     }
     
-    unordered_map<long, list<long>> scc = ufpc.GetAllConnectedComponents();
-    long maxSize = 0;
+    unordered_map<long, list<long> > scc = ufpc.GetAllConnectedComponents();
+    //long maxSize = 0;
     list<long> maxCC;
     
     /*cout<<"Connected components are:\n";
-    for(unordered_map<long, list<long>>::iterator itr = scc.begin(); itr!=scc.end(); itr++){
+    for(unordered_map<long, list<long> >::iterator itr = scc.begin(); itr!=scc.end(); itr++){
         long index = itr->first;
         list<long> lst = itr->second;
         
@@ -441,8 +441,8 @@ string ClusteringRegion::PrintGraph(list<Phenotype *> *overlappedPhList, list<An
         cout<<"\n\n";
     }*/
     
-    unordered_map<long, unordered_map<string, Phenotype*>> nodeList;
-    unordered_map<long, unordered_map<string, Phenotype*>>::iterator nodeItr;
+    unordered_map<long, unordered_map<string, Phenotype*> > nodeList;
+    unordered_map<long, unordered_map<string, Phenotype*> >::iterator nodeItr;
     
     for(list<Phenotype *>::iterator itr=overlappedPhList->begin(); itr!=overlappedPhList->end(); itr++){
         Phenotype* ph = *itr;
@@ -461,7 +461,7 @@ string ClusteringRegion::PrintGraph(list<Phenotype *> *overlappedPhList, list<An
                     unordered_map<string, Phenotype*> phMap;
                     phMap.insert(pair<string, Phenotype*>(key,ph));
                     
-                    nodeList.insert(pair<long, unordered_map<string, Phenotype*>>(id, phMap));
+                    nodeList.insert(pair<long, unordered_map<string, Phenotype*> >(id, phMap));
                 }else{
                     unordered_map<string, Phenotype*>::iterator phItr = nodeItr->second.find(key);
                     
@@ -479,7 +479,7 @@ string ClusteringRegion::PrintGraph(list<Phenotype *> *overlappedPhList, list<An
     mainGraph->setEnvName(envName);
     int ccIndex = 0;
     
-    for(unordered_map<long, list<long>>::iterator itr = scc.begin(); itr!=scc.end(); itr++){
+    for(unordered_map<long, list<long> >::iterator itr = scc.begin(); itr!=scc.end(); itr++){
         
         CompositeGraph* rGraph =  mainGraph->getCC(ccIndex);
         ccIndex++;
@@ -487,7 +487,7 @@ string ClusteringRegion::PrintGraph(list<Phenotype *> *overlappedPhList, list<An
         //if(maxCC.size()>0){
         list<long> lstNode = itr->second;//maxCC;
         
-        float range[FILTER+2][2]={0.0};
+        float range[FILTER+2][2]={{0.0}};
         bool first = true;
         bool mean_first = true;
         
@@ -501,7 +501,7 @@ string ClusteringRegion::PrintGraph(list<Phenotype *> *overlappedPhList, list<An
             float sum[FILTER+1]={0.0};
             float meanValues[FILTER+1]={0.0};
             
-            unordered_map<long, unordered_map<string, Phenotype*>>::iterator nodeItr = nodeList.find(nodeID);
+            unordered_map<long, unordered_map<string, Phenotype*> >::iterator nodeItr = nodeList.find(nodeID);
             
             if(nodeItr!=nodeList.end()){
                 for(unordered_map<string, Phenotype*>::iterator phItr=nodeItr->second.begin(); phItr!=nodeItr->second.end(); phItr++){
@@ -578,7 +578,7 @@ string ClusteringRegion::PrintGraph(list<Phenotype *> *overlappedPhList, list<An
         
         float nw[] = {range[FILTER+1][0],range[FILTER+1][1]};
         float ns[] = {range[0][0],range[0][1]};
-        float ew[FILTER][2]={0};
+        float ew[FILTER][2]={{0}};
         for(int e=0;e<FILTER;e++){
             ew[e][0] = range[e+1][0];
             ew[e][1]=range[e+1][1];
@@ -735,7 +735,7 @@ void ClusteringRegion::ShuffleClusters(){
     
 }
 
-#pragma Private_Methods
+//#pragma Private_Methods
 
 void ClusteringRegion::SplitRegion(){
     float x1 = this->xMin, y1=this->yMin;
@@ -994,7 +994,7 @@ void ClusteringRegion::CreateGraph(list<Phenotype*> cpList, short* clusterIndex,
             if(isTwoWayOverlap){
                 //cout<<"2 way " + s + " overlap.\n";
                 
-                unordered_map<string, list<Phenotype*>>::iterator nodeItr;
+                unordered_map<string, list<Phenotype*> >::iterator nodeItr;
                 
                 //if(idList[clusterIndex[0]] == 23){
                     //cout<<"\n";
@@ -1007,7 +1007,7 @@ void ClusteringRegion::CreateGraph(list<Phenotype*> cpList, short* clusterIndex,
                         list<Phenotype*> phenoList;
                         phenoList.push_back(ph);
                         
-                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*>>(key, phenoList));
+                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*> >(key, phenoList));
                     }else{
                         
                         list<Phenotype*>::iterator tmpNdItr;
@@ -1033,7 +1033,7 @@ void ClusteringRegion::CreateGraph(list<Phenotype*> cpList, short* clusterIndex,
                         list<Phenotype*> phenoList;
                         phenoList.push_back(ph);
                         
-                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*>>(key, phenoList));
+                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*> >(key, phenoList));
                     }else{
                         list<Phenotype*>::iterator tmpNdItr;
                         bool match = false;
@@ -1085,10 +1085,10 @@ void ClusteringRegion::CreateGraph(list<Phenotype*> cpList, short* clusterIndex,
                         box.phenoList.push_back(ph);
                         faceWeight = ph->GetWeight(clusterIndex[0], clusterIndex[1]);
                         
-                        this->graph.edge.edgeList.insert(pair<string, pair<float, Box>>(key, pair<float, Box>(faceWeight, box)));
+                        this->graph.edge.edgeList.insert(pair<string, pair<float, Box> >(key, pair<float, Box>(faceWeight, box)));
                         
                     }else{
-                        unordered_map<string, pair<float, Box>>::iterator eItr;
+                        unordered_map<string, pair<float, Box> >::iterator eItr;
                         
                         if((eItr = this->graph.edge.edgeList.find(key)) != this->graph.edge.edgeList.end()){
                             
@@ -1107,7 +1107,7 @@ void ClusteringRegion::CreateGraph(list<Phenotype*> cpList, short* clusterIndex,
             }else{
                 //cout<<"4 way " + s + " overlap.\n";
                 
-                unordered_map<string, list<Phenotype*>>::iterator nodeItr;
+                unordered_map<string, list<Phenotype*> >::iterator nodeItr;
                 
                 if(idList[clusterIndex[0]] > 0){
                     key = "" + to_string(idList[clusterIndex[0]]);
@@ -1116,7 +1116,7 @@ void ClusteringRegion::CreateGraph(list<Phenotype*> cpList, short* clusterIndex,
                         list<Phenotype*> phenoList;
                         phenoList.push_back(ph);
                         
-                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*>>(key, phenoList));
+                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*> >(key, phenoList));
                     }else{
                         list<Phenotype*>::iterator tmpNdItr;
                         bool match = false;
@@ -1141,7 +1141,7 @@ void ClusteringRegion::CreateGraph(list<Phenotype*> cpList, short* clusterIndex,
                         list<Phenotype*> phenoList;
                         phenoList.push_back(ph);
                         
-                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*>>(key, phenoList));
+                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*> >(key, phenoList));
                     }else{
                         list<Phenotype*>::iterator tmpNdItr;
                         bool match = false;
@@ -1166,7 +1166,7 @@ void ClusteringRegion::CreateGraph(list<Phenotype*> cpList, short* clusterIndex,
                         list<Phenotype*> phenoList;
                         phenoList.push_back(ph);
                         
-                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*>>(key, phenoList));
+                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*> >(key, phenoList));
                     }else{
                         list<Phenotype*>::iterator tmpNdItr;
                         bool match = false;
@@ -1191,7 +1191,7 @@ void ClusteringRegion::CreateGraph(list<Phenotype*> cpList, short* clusterIndex,
                         list<Phenotype*> phenoList;
                         phenoList.push_back(ph);
                         
-                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*>>(key, phenoList));
+                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*> >(key, phenoList));
                     }else{
                         list<Phenotype*>::iterator tmpNdItr;
                         bool match = false;
@@ -1209,7 +1209,7 @@ void ClusteringRegion::CreateGraph(list<Phenotype*> cpList, short* clusterIndex,
                     }
                 }
                 
-                if(idList[0] > 0 && idList[1] > 0 && idList[2] > 0 && idList[3] > 0){
+                if(idList[0] > 0 && idList[1] > 0 && idList[2] > 0){
                     long keyIDList[]={idList[0], idList[1], idList[2], idList[3]};
                     
                     this->SortClusterIDs(keyIDList, 4);
@@ -1226,10 +1226,10 @@ void ClusteringRegion::CreateGraph(list<Phenotype*> cpList, short* clusterIndex,
                         box.phenoList.push_back(ph);
                         faceWeight = ph->GetWeight();
                         
-                        this->graph.edge.edgeList.insert(pair<string, pair<float, Box>>(key, pair<float, Box>(faceWeight, box)));
+                        this->graph.edge.edgeList.insert(pair<string, pair<float, Box> >(key, pair<float, Box>(faceWeight, box)));
                         
                     }else{
-                        unordered_map<string, pair<float, Box>>::iterator eItr;
+                        unordered_map<string, pair<float, Box> >::iterator eItr;
                         
                         if((eItr = this->graph.edge.edgeList.find(key)) != this->graph.edge.edgeList.end()){
                             
@@ -1285,7 +1285,7 @@ void ClusteringRegion::CreateGraph_new(list<Phenotype*> cpList, short* clusterIn
             if(isTwoWayOverlap){
                 //cout<<"2 way " + s + " overlap.\n";
                 
-                unordered_map<string, list<Phenotype*>>::iterator nodeItr;
+                unordered_map<string, list<Phenotype*> >::iterator nodeItr;
                 
                 //if(idList[clusterIndex[0]] == 23){
                 //cout<<"\n";
@@ -1299,25 +1299,25 @@ void ClusteringRegion::CreateGraph_new(list<Phenotype*> cpList, short* clusterIn
                     if(this->graph.nodeList.find(thisID)==this->graph.nodeList.end()){
                         for(int k=0; k<TOTAL_CLUSTER_IDS; k++){
                             if(idList[k]>0 && thisID!=idList[k]){
-                                unordered_map<long, list<Phenotype*>> aMap;
+                                unordered_map<long, list<Phenotype*> > aMap;
                                 list<Phenotype*> aPh;
                                 
                                 aPh.push_back(ph);
-                                aMap.insert(pair<long, list<Phenotype*>>(idList[k], aPh));
+                                aMap.insert(pair<long, list<Phenotype*> >(idList[k], aPh));
                             }
                         }
                     }else{
-                        unordered_map<long, unordered_map<long, list<Phenotype*>>>::iterator nlItr = this->graph.nodeList.find(thisID);
+                        unordered_map<long, unordered_map<long, list<Phenotype*> > >::iterator nlItr = this->graph.nodeList.find(thisID);
                         
                         for(int k=0; k<TOTAL_CLUSTER_IDS; k++){
                             if(idList[k]>0 && thisID!=idList[k]){
-                                unordered_map<long, list<Phenotype*>>::iterator nl2Itr = nlItr->second.find(idList[k]);
+                                unordered_map<long, list<Phenotype*> >::iterator nl2Itr = nlItr->second.find(idList[k]);
                                 
                                 if(nl2Itr == nlItr->second.end()){
                                     list<Phenotype*> aPh;
                                     
                                     aPh.push_back(ph);
-                                    nlItr->second.insert(pair<long, list<Phenotype*>>(idList[k], aPh));
+                                    nlItr->second.insert(pair<long, list<Phenotype*> >(idList[k], aPh));
                                 }else{
                                     nl2Itr->second.push_back(ph);
                                 }
@@ -1331,7 +1331,7 @@ void ClusteringRegion::CreateGraph_new(list<Phenotype*> cpList, short* clusterIn
                         list<Phenotype*> phenoList;
                         phenoList.push_back(ph);
                         
-                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*>>(key, phenoList));
+                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*> >(key, phenoList));
                     }else{
                         
                         list<Phenotype*>::iterator tmpNdItr;
@@ -1358,25 +1358,25 @@ void ClusteringRegion::CreateGraph_new(list<Phenotype*> cpList, short* clusterIn
                     if(this->graph.nodeList.find(thisID)==this->graph.nodeList.end()){
                         for(int k=0; k<TOTAL_CLUSTER_IDS; k++){
                             if(idList[k]>0 && thisID!=idList[k]){
-                                unordered_map<long, list<Phenotype*>> aMap;
+                                unordered_map<long, list<Phenotype*> > aMap;
                                 list<Phenotype*> aPh;
                                 
                                 aPh.push_back(ph);
-                                aMap.insert(pair<long, list<Phenotype*>>(idList[k], aPh));
+                                aMap.insert(pair<long, list<Phenotype*> >(idList[k], aPh));
                             }
                         }
                     }else{
-                        unordered_map<long, unordered_map<long, list<Phenotype*>>>::iterator nlItr = this->graph.nodeList.find(thisID);
+                        unordered_map<long, unordered_map<long, list<Phenotype*> > >::iterator nlItr = this->graph.nodeList.find(thisID);
                         
                         for(int k=0; k<TOTAL_CLUSTER_IDS; k++){
                             if(idList[k]>0 && thisID!=idList[k]){
-                                unordered_map<long, list<Phenotype*>>::iterator nl2Itr = nlItr->second.find(idList[k]);
+                                unordered_map<long, list<Phenotype*> >::iterator nl2Itr = nlItr->second.find(idList[k]);
                                 
                                 if(nl2Itr == nlItr->second.end()){
                                     list<Phenotype*> aPh;
                                     
                                     aPh.push_back(ph);
-                                    nlItr->second.insert(pair<long, list<Phenotype*>>(idList[k], aPh));
+                                    nlItr->second.insert(pair<long, list<Phenotype*> >(idList[k], aPh));
                                 }else{
                                     nl2Itr->second.push_back(ph);
                                 }
@@ -1390,7 +1390,7 @@ void ClusteringRegion::CreateGraph_new(list<Phenotype*> cpList, short* clusterIn
                         list<Phenotype*> phenoList;
                         phenoList.push_back(ph);
                         
-                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*>>(key, phenoList));
+                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*> >(key, phenoList));
                     }else{
                         list<Phenotype*>::iterator tmpNdItr;
                         bool match = false;
@@ -1413,7 +1413,7 @@ void ClusteringRegion::CreateGraph_new(list<Phenotype*> cpList, short* clusterIn
             }else{
                 //cout<<"4 way " + s + " overlap.\n";
                 
-                unordered_map<string, list<Phenotype*>>::iterator nodeItr;
+                unordered_map<string, list<Phenotype*> >::iterator nodeItr;
                 
                 if(idList[clusterIndex[0]] > 0){
                     key = "" + to_string(idList[clusterIndex[0]]);
@@ -1423,25 +1423,25 @@ void ClusteringRegion::CreateGraph_new(list<Phenotype*> cpList, short* clusterIn
                     if(this->graph.nodeList.find(thisID)==this->graph.nodeList.end()){
                         for(int k=0; k<TOTAL_CLUSTER_IDS; k++){
                             if(idList[k]>0 && thisID!=idList[k]){
-                                unordered_map<long, list<Phenotype*>> aMap;
+                                unordered_map<long, list<Phenotype*> > aMap;
                                 list<Phenotype*> aPh;
                                 
                                 aPh.push_back(ph);
-                                aMap.insert(pair<long, list<Phenotype*>>(idList[k], aPh));
+                                aMap.insert(pair<long, list<Phenotype*> >(idList[k], aPh));
                             }
                         }
                     }else{
-                        unordered_map<long, unordered_map<long, list<Phenotype*>>>::iterator nlItr = this->graph.nodeList.find(thisID);
+                        unordered_map<long, unordered_map<long, list<Phenotype*> > >::iterator nlItr = this->graph.nodeList.find(thisID);
                         
                         for(int k=0; k<TOTAL_CLUSTER_IDS; k++){
                             if(idList[k]>0 && thisID!=idList[k]){
-                                unordered_map<long, list<Phenotype*>>::iterator nl2Itr = nlItr->second.find(idList[k]);
+                                unordered_map<long, list<Phenotype*> >::iterator nl2Itr = nlItr->second.find(idList[k]);
                                 
                                 if(nl2Itr == nlItr->second.end()){
                                     list<Phenotype*> aPh;
                                     
                                     aPh.push_back(ph);
-                                    nlItr->second.insert(pair<long, list<Phenotype*>>(idList[k], aPh));
+                                    nlItr->second.insert(pair<long, list<Phenotype*> >(idList[k], aPh));
                                 }else{
                                     nl2Itr->second.push_back(ph);
                                 }
@@ -1454,7 +1454,7 @@ void ClusteringRegion::CreateGraph_new(list<Phenotype*> cpList, short* clusterIn
                         list<Phenotype*> phenoList;
                         phenoList.push_back(ph);
                         
-                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*>>(key, phenoList));
+                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*> >(key, phenoList));
                     }else{
                         list<Phenotype*>::iterator tmpNdItr;
                         bool match = false;
@@ -1480,25 +1480,25 @@ void ClusteringRegion::CreateGraph_new(list<Phenotype*> cpList, short* clusterIn
                     if(this->graph.nodeList.find(thisID)==this->graph.nodeList.end()){
                         for(int k=0; k<TOTAL_CLUSTER_IDS; k++){
                             if(idList[k]>0 && thisID!=idList[k]){
-                                unordered_map<long, list<Phenotype*>> aMap;
+                                unordered_map<long, list<Phenotype*> > aMap;
                                 list<Phenotype*> aPh;
                                 
                                 aPh.push_back(ph);
-                                aMap.insert(pair<long, list<Phenotype*>>(idList[k], aPh));
+                                aMap.insert(pair<long, list<Phenotype*> >(idList[k], aPh));
                             }
                         }
                     }else{
-                        unordered_map<long, unordered_map<long, list<Phenotype*>>>::iterator nlItr = this->graph.nodeList.find(thisID);
+                        unordered_map<long, unordered_map<long, list<Phenotype*> > >::iterator nlItr = this->graph.nodeList.find(thisID);
                         
                         for(int k=0; k<TOTAL_CLUSTER_IDS; k++){
                             if(idList[k]>0 && thisID!=idList[k]){
-                                unordered_map<long, list<Phenotype*>>::iterator nl2Itr = nlItr->second.find(idList[k]);
+                                unordered_map<long, list<Phenotype*> >::iterator nl2Itr = nlItr->second.find(idList[k]);
                                 
                                 if(nl2Itr == nlItr->second.end()){
                                     list<Phenotype*> aPh;
                                     
                                     aPh.push_back(ph);
-                                    nlItr->second.insert(pair<long, list<Phenotype*>>(idList[k], aPh));
+                                    nlItr->second.insert(pair<long, list<Phenotype*> >(idList[k], aPh));
                                 }else{
                                     nl2Itr->second.push_back(ph);
                                 }
@@ -1512,7 +1512,7 @@ void ClusteringRegion::CreateGraph_new(list<Phenotype*> cpList, short* clusterIn
                         list<Phenotype*> phenoList;
                         phenoList.push_back(ph);
                         
-                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*>>(key, phenoList));
+                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*> >(key, phenoList));
                     }else{
                         list<Phenotype*>::iterator tmpNdItr;
                         bool match = false;
@@ -1538,25 +1538,25 @@ void ClusteringRegion::CreateGraph_new(list<Phenotype*> cpList, short* clusterIn
                     if(this->graph.nodeList.find(thisID)==this->graph.nodeList.end()){
                         for(int k=0; k<TOTAL_CLUSTER_IDS; k++){
                             if(idList[k]>0 && thisID!=idList[k]){
-                                unordered_map<long, list<Phenotype*>> aMap;
+                                unordered_map<long, list<Phenotype*> > aMap;
                                 list<Phenotype*> aPh;
                                 
                                 aPh.push_back(ph);
-                                aMap.insert(pair<long, list<Phenotype*>>(idList[k], aPh));
+                                aMap.insert(pair<long, list<Phenotype*> >(idList[k], aPh));
                             }
                         }
                     }else{
-                        unordered_map<long, unordered_map<long, list<Phenotype*>>>::iterator nlItr = this->graph.nodeList.find(thisID);
+                        unordered_map<long, unordered_map<long, list<Phenotype*> > >::iterator nlItr = this->graph.nodeList.find(thisID);
                         
                         for(int k=0; k<TOTAL_CLUSTER_IDS; k++){
                             if(idList[k]>0 && thisID!=idList[k]){
-                                unordered_map<long, list<Phenotype*>>::iterator nl2Itr = nlItr->second.find(idList[k]);
+                                unordered_map<long, list<Phenotype*> >::iterator nl2Itr = nlItr->second.find(idList[k]);
                                 
                                 if(nl2Itr == nlItr->second.end()){
                                     list<Phenotype*> aPh;
                                     
                                     aPh.push_back(ph);
-                                    nlItr->second.insert(pair<long, list<Phenotype*>>(idList[k], aPh));
+                                    nlItr->second.insert(pair<long, list<Phenotype*> >(idList[k], aPh));
                                 }else{
                                     nl2Itr->second.push_back(ph);
                                 }
@@ -1569,7 +1569,7 @@ void ClusteringRegion::CreateGraph_new(list<Phenotype*> cpList, short* clusterIn
                         list<Phenotype*> phenoList;
                         phenoList.push_back(ph);
                         
-                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*>>(key, phenoList));
+                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*> >(key, phenoList));
                     }else{
                         list<Phenotype*>::iterator tmpNdItr;
                         bool match = false;
@@ -1595,25 +1595,25 @@ void ClusteringRegion::CreateGraph_new(list<Phenotype*> cpList, short* clusterIn
                     if(this->graph.nodeList.find(thisID)==this->graph.nodeList.end()){
                         for(int k=0; k<TOTAL_CLUSTER_IDS; k++){
                             if(idList[k]>0 && thisID!=idList[k]){
-                                unordered_map<long, list<Phenotype*>> aMap;
+                                unordered_map<long, list<Phenotype*> > aMap;
                                 list<Phenotype*> aPh;
                                 
                                 aPh.push_back(ph);
-                                aMap.insert(pair<long, list<Phenotype*>>(idList[k], aPh));
+                                aMap.insert(pair<long, list<Phenotype*> >(idList[k], aPh));
                             }
                         }
                     }else{
-                        unordered_map<long, unordered_map<long, list<Phenotype*>>>::iterator nlItr = this->graph.nodeList.find(thisID);
+                        unordered_map<long, unordered_map<long, list<Phenotype*> > >::iterator nlItr = this->graph.nodeList.find(thisID);
                         
                         for(int k=0; k<TOTAL_CLUSTER_IDS; k++){
                             if(idList[k]>0 && thisID!=idList[k]){
-                                unordered_map<long, list<Phenotype*>>::iterator nl2Itr = nlItr->second.find(idList[k]);
+                                unordered_map<long, list<Phenotype*> >::iterator nl2Itr = nlItr->second.find(idList[k]);
                                 
                                 if(nl2Itr == nlItr->second.end()){
                                     list<Phenotype*> aPh;
                                     
                                     aPh.push_back(ph);
-                                    nlItr->second.insert(pair<long, list<Phenotype*>>(idList[k], aPh));
+                                    nlItr->second.insert(pair<long, list<Phenotype*> >(idList[k], aPh));
                                 }else{
                                     nl2Itr->second.push_back(ph);
                                 }
@@ -1626,7 +1626,7 @@ void ClusteringRegion::CreateGraph_new(list<Phenotype*> cpList, short* clusterIn
                         list<Phenotype*> phenoList;
                         phenoList.push_back(ph);
                         
-                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*>>(key, phenoList));
+                        this->graph.node.nodeList.insert(pair<string, list<Phenotype*> >(key, phenoList));
                     }else{
                         list<Phenotype*>::iterator tmpNdItr;
                         bool match = false;
@@ -1777,7 +1777,7 @@ void ClusteringRegion::CreateGraph(list<DataPoint*> dpList, short* clusterIndex,
                     if(isTwoWayOverlap){
                         //cout<<"2 way " + s + " overlap.\n";
                         
-                        unordered_map<string, list<DataPoint*>>::iterator nodeItr;
+                        unordered_map<string, list<DataPoint*> >::iterator nodeItr;
                         
                         //if(idList[clusterIndex[0]] == 23){
                         //cout<<"\n";
@@ -1790,7 +1790,7 @@ void ClusteringRegion::CreateGraph(list<DataPoint*> dpList, short* clusterIndex,
                                 list<DataPoint*> dataPointList;
                                 dataPointList.push_back(dp);
                                 
-                                this->graph.node.nodeListDP.insert(pair<string, list<DataPoint*>>(key, dataPointList));
+                                this->graph.node.nodeListDP.insert(pair<string, list<DataPoint*> >(key, dataPointList));
                             }else{
                                 
                                 list<DataPoint*>::iterator tmpNdItr;
@@ -1816,7 +1816,7 @@ void ClusteringRegion::CreateGraph(list<DataPoint*> dpList, short* clusterIndex,
                                 list<DataPoint*> phenoList;
                                 phenoList.push_back(dp);
                                 
-                                this->graph.node.nodeListDP.insert(pair<string, list<DataPoint*>>(key, phenoList));
+                                this->graph.node.nodeListDP.insert(pair<string, list<DataPoint*> >(key, phenoList));
                             }else{
                                 list<DataPoint*>::iterator tmpNdItr;
                                 bool match = false;
@@ -1868,10 +1868,10 @@ void ClusteringRegion::CreateGraph(list<DataPoint*> dpList, short* clusterIndex,
                                 box.dpList.push_back(dp);
                                 faceWeight = dp->GetWeight(clusterIndex[0], clusterIndex[1]);
                                 
-                                this->graph.edge.edgeList.insert(pair<string, pair<float, Box>>(key, pair<float, Box>(faceWeight, box)));
+                                this->graph.edge.edgeList.insert(pair<string, pair<float, Box> >(key, pair<float, Box>(faceWeight, box)));
                                 
                             }else{
-                                unordered_map<string, pair<float, Box>>::iterator eItr;
+                                unordered_map<string, pair<float, Box> >::iterator eItr;
                                 
                                 if((eItr = this->graph.edge.edgeList.find(key)) != this->graph.edge.edgeList.end()){
                                     
@@ -1890,7 +1890,7 @@ void ClusteringRegion::CreateGraph(list<DataPoint*> dpList, short* clusterIndex,
                     }else{
                         //cout<<"4 way " + s + " overlap.\n";
                         
-                        unordered_map<string, list<DataPoint*>>::iterator nodeItr;
+                        unordered_map<string, list<DataPoint*> >::iterator nodeItr;
                         
                         if(idList[clusterIndex[0]] > 0){
                             key = "" + to_string(idList[clusterIndex[0]]);
@@ -1899,7 +1899,7 @@ void ClusteringRegion::CreateGraph(list<DataPoint*> dpList, short* clusterIndex,
                                 list<DataPoint*> phenoList;
                                 phenoList.push_back(dp);
                                 
-                                this->graph.node.nodeListDP.insert(pair<string, list<DataPoint*>>(key, phenoList));
+                                this->graph.node.nodeListDP.insert(pair<string, list<DataPoint*> >(key, phenoList));
                             }else{
                                 list<DataPoint*>::iterator tmpNdItr;
                                 bool match = false;
@@ -1924,7 +1924,7 @@ void ClusteringRegion::CreateGraph(list<DataPoint*> dpList, short* clusterIndex,
                                 list<DataPoint*> phenoList;
                                 phenoList.push_back(dp);
                                 
-                                this->graph.node.nodeListDP.insert(pair<string, list<DataPoint*>>(key, phenoList));
+                                this->graph.node.nodeListDP.insert(pair<string, list<DataPoint*> >(key, phenoList));
                             }else{
                                 list<DataPoint*>::iterator tmpNdItr;
                                 bool match = false;
@@ -1949,7 +1949,7 @@ void ClusteringRegion::CreateGraph(list<DataPoint*> dpList, short* clusterIndex,
                                 list<DataPoint*> phenoList;
                                 phenoList.push_back(dp);
                                 
-                                this->graph.node.nodeListDP.insert(pair<string, list<DataPoint*>>(key, phenoList));
+                                this->graph.node.nodeListDP.insert(pair<string, list<DataPoint*> >(key, phenoList));
                             }else{
                                 list<DataPoint*>::iterator tmpNdItr;
                                 bool match = false;
@@ -1974,7 +1974,7 @@ void ClusteringRegion::CreateGraph(list<DataPoint*> dpList, short* clusterIndex,
                                 list<DataPoint*> phenoList;
                                 phenoList.push_back(dp);
                                 
-                                this->graph.node.nodeListDP.insert(pair<string, list<DataPoint*>>(key, phenoList));
+                                this->graph.node.nodeListDP.insert(pair<string, list<DataPoint*> >(key, phenoList));
                             }else{
                                 list<DataPoint*>::iterator tmpNdItr;
                                 bool match = false;
@@ -1993,7 +1993,7 @@ void ClusteringRegion::CreateGraph(list<DataPoint*> dpList, short* clusterIndex,
                         }
                         
                         
-                        if(idList[0] > 0 && idList[1] > 0 && idList[2] > 0 && idList[3] > 0){
+                        if(idList[0] > 0 && idList[1] > 0 && idList[2] > 0){
                             long keyIDList[]={idList[0], idList[1], idList[2], idList[3]};
                             
                             this->SortClusterIDs(keyIDList, 4);
@@ -2010,10 +2010,10 @@ void ClusteringRegion::CreateGraph(list<DataPoint*> dpList, short* clusterIndex,
                                 box.dpList.push_back(dp);
                                 faceWeight = dp->GetWeight();
                                 
-                                this->graph.edge.edgeList.insert(pair<string, pair<float, Box>>(key, pair<float, Box>(faceWeight, box)));
+                                this->graph.edge.edgeList.insert(pair<string, pair<float, Box> >(key, pair<float, Box>(faceWeight, box)));
                                 
                             }else{
-                                unordered_map<string, pair<float, Box>>::iterator eItr;
+                                unordered_map<string, pair<float, Box> >::iterator eItr;
                                 
                                 if((eItr = this->graph.edge.edgeList.find(key)) != this->graph.edge.edgeList.end()){
                                     

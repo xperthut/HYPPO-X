@@ -39,7 +39,7 @@ public:
     
     void PrintArray();
     void PrintForest();
-    unordered_map<long, list<long>> GetAllConnectedComponents();
+    unordered_map<long, list<long> > GetAllConnectedComponents();
 };
 
 #endif /* UnionFindWithPathCompression_h */

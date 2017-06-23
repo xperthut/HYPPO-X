@@ -188,7 +188,7 @@ void PersistentHomology::CreateClusterAndGraph(){
             //}
         }
         
-        cout<<"\nDump the following codes to Java file to generate barcode.\n"<<sc.PrintSimplex()<<endl;
+        cout<<"\nDump the following codes to Java file to generate barcode.\n\n/************ Start from here *************/\n"<<sc.PrintSimplex()<<"/************ End here *************/\n\n";
         
     }else{
         
@@ -278,7 +278,7 @@ void PersistentHomology::CreateClusterAndGraph(){
 }
 
 
-#pragma PrivateMethods
+//#pragma PrivateMethods
 
 void PersistentHomology::GetCoordinates(list<float> *coordList, float percentageIncrease, float center_shift, bool xAxis){
     

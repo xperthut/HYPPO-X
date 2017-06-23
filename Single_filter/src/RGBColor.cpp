@@ -69,7 +69,7 @@ void RGBColor::ChangeRGB(short &R, short &G, short &B, short m){
     }
 }
 
-#pragma Private_Methods
+//#pragma Private_Methods
 float RGBColor::GetWaveLength(float value){
     
     float waveLength = (this->maxLimit-this->minLimit)==0?0:((value-this->minLimit)/(this->maxLimit-this->minLimit));

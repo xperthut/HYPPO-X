@@ -47,7 +47,7 @@ public:
 
 class Edge{
 public:
-    unordered_map<string, pair<float, Box>> edgeList;
+    unordered_map<string, pair<float, Box> > edgeList;
 };
 
 class Edges{
@@ -65,10 +65,10 @@ public:
 
 class Node{
 public:
-    unordered_map<string,list<Phenotype*>> nodeList;
-    unordered_map<string,list<DataPoint*>> nodeListDP;
-    unordered_map<long, unordered_map<string, list<float>>> phenotypeVariation; // KS_A,KS_B,NE_A,NE_B
-    unordered_map<long, unordered_map<string, list<float>>> envVariation[FILTER];
+    unordered_map<string,list<Phenotype*> > nodeList;
+    unordered_map<string,list<DataPoint*> > nodeListDP;
+    unordered_map<long, unordered_map<string, list<float> > > phenotypeVariation; // KS_A,KS_B,NE_A,NE_B
+    unordered_map<long, unordered_map<string, list<float> > > envVariation[FILTER];
 };
 
 class Graph{
@@ -77,7 +77,7 @@ public:
     Edge edge;
     unordered_map<string, Edges> edgeList;
     unordered_map<string, Edges>::iterator edgeItr;
-    unordered_map<long, unordered_map<long, list<Phenotype*>>> nodeList;
+    unordered_map<long, unordered_map<long, list<Phenotype*> > > nodeList;
 };
 
 class GmlNode{
@@ -165,7 +165,7 @@ private:
     short variation;
     rNode** nextNodes;
     rNode** prevNodes;
-    CustomHashMap<string, list<float>> phenotypeSummary;
+    CustomHashMap<string, list<float> > phenotypeSummary;
     
 public:
     rNode(rNode* node);
@@ -184,7 +184,7 @@ public:
     rNode* getNextNode(int index);
     rNode* getPrevNode(int index);
     short getVariations();
-    unordered_map<string, list<float>>& getPhenotyeSummary();
+    unordered_map<string, list<float> >& getPhenotyeSummary();
     int getGenLocWeight(string gen, string loc);
     string getGenLoc();
     string getNodeJS();

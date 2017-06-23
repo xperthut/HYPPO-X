@@ -50,7 +50,7 @@ private:
     float Eps;
     float minPoints;
     set<long> nodeList;
-    list<set<long>> edgeList;
+    list<set<long> > edgeList;
     Graph graph;
     GmlGraph gmlGraph;
     long totalClusters;

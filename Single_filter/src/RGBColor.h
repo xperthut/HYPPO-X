@@ -31,8 +31,8 @@ private:
     float maxLimit;
     float gamma;
     
-    short const minVisibleWaveLength = 380.0;
-    short const maxVisibleWaveLength = 780.0;
+    //short const minVisibleWaveLength = 380.0;
+    //short const maxVisibleWaveLength = 780.0;
     short const intensityMax = 255;
     
     float GetWaveLength(float value);

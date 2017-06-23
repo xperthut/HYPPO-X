@@ -15,7 +15,7 @@
 
 #include "Graph.h"
 
-#pragma Environment_class
+//#pragma Environment_class
 Environment::Environment(){
     for(int i=0; i<FILTER; i++){
         weight[i] = 0.0;
@@ -36,7 +36,7 @@ void Environment::setWeight(float value, int index){
         weight[index]=value;
 }
 
-#pragma rNode_class
+//#pragma rNode_class
 
 rNode::rNode(rNode* node){
     this->id = node->id;
@@ -79,14 +79,14 @@ int rNode::getTotalOutDegree(){return out_degree;}
 float rNode::getEnvWeight(int index){return env.getWeight(index);}
 bool rNode::IsThisNodeASource(){return isSource;}
 short rNode::getVariations(){return variation;}
-unordered_map<string, list<float>>& rNode::getPhenotyeSummary(){return phenotypeSummary.getMap();}
+unordered_map<string, list<float> >& rNode::getPhenotyeSummary(){return phenotypeSummary.getMap();}
 string rNode::getNodeJS(){
     string js = "[";
     
-    unordered_map<string, list<float>> tmpSummary = phenotypeSummary.getMap();
+    unordered_map<string, list<float> > tmpSummary = phenotypeSummary.getMap();
     long index[]={0,0,0,0};
     
-    for(unordered_map<string, list<float>>::iterator itr=tmpSummary.begin(); itr!=tmpSummary.end(); itr++){
+    for(unordered_map<string, list<float> >::iterator itr=tmpSummary.begin(); itr!=tmpSummary.end(); itr++){
         string key = itr->first;
         
         size_t pos = key.find("#");
@@ -141,8 +141,8 @@ void rNode::setVariations(short v){variation=v;}
 void rNode::setPhenotypeSummary(string genotype, string location, long plantID, int dap, float filter, float value){
     string key = genotype+"#"+location+"#"+to_string(dap)+"#"+to_string(plantID) + "#" + fixPrecision(filter, 2);
     
-    unordered_map<string, list<float>> tmpSummary = phenotypeSummary.getMap();
-    unordered_map<string, list<float>>::iterator itr;
+    unordered_map<string, list<float> > tmpSummary = phenotypeSummary.getMap();
+    unordered_map<string, list<float> >::iterator itr;
     
     if(!phenotypeSummary.hasItem(key)){
         list<float> alist;
@@ -157,10 +157,10 @@ void rNode::setPhenotypeSummary(string genotype, string location, long plantID, 
 }
 
 string rNode::getGenLoc(){
-    unordered_map<string, list<float>> tmpSummary = phenotypeSummary.getMap();
+    unordered_map<string, list<float> > tmpSummary = phenotypeSummary.getMap();
     long index[]={0,0,0,0};
     
-    for(unordered_map<string, list<float>>::iterator itr=tmpSummary.begin(); itr!=tmpSummary.end(); itr++){
+    for(unordered_map<string, list<float> >::iterator itr=tmpSummary.begin(); itr!=tmpSummary.end(); itr++){
         string key = itr->first;
         
         size_t pos = key.find("#");
@@ -218,10 +218,10 @@ int rNode::getGenLocWeight(string gen, string loc){
 }
 
 int rNode::getGenLocColorIndex(){
-    unordered_map<string, list<float>> tmpSummary = phenotypeSummary.getMap();
+    unordered_map<string, list<float> > tmpSummary = phenotypeSummary.getMap();
     short index[]={0,0,0,0};
     
-    for(unordered_map<string, list<float>>::iterator itr=tmpSummary.begin(); itr!=tmpSummary.end(); itr++){
+    for(unordered_map<string, list<float> >::iterator itr=tmpSummary.begin(); itr!=tmpSummary.end(); itr++){
         string key = itr->first;
         
         size_t pos = key.find("#");
@@ -351,7 +351,7 @@ void rNode::resetLinkNodes(){
     in_degree = out_degree = 0;
 }
 
-#pragma rEdge_class
+//#pragma rEdge_class
 
 rEdge::rEdge(rNode* node1, rNode* node2){
     if(node1->getWeight() > node2->getWeight()){
@@ -498,7 +498,7 @@ bool rEdge::getSignatureAtIndex(int index){
     return false;
 }
 
-# pragma Path_class
+//#pragma Path_class
 Path::Path(){
     score = 0.0;
     color = "#000000";
@@ -581,7 +581,7 @@ list<long> Path::getAllNodesInAPath(){
     return pathNodeOrder;
 }
 
-#pragma RGB_class
+//#pragma RGB_class
 RGB::RGB(){}
 RGB::RGB(short R, short G, short B){this->R=R;this->G=G;this->B=B;}
 RGB::~RGB(){}
@@ -594,7 +594,7 @@ void RGB::setR(short R){this->R=R;}
 void RGB::setG(short G){this->G=G;}
 void RGB::setB(short B){this->B=B;}
 
-#pragma Residual_Graph_class
+//#pragma Residual_Graph_class
 
 CompositeGraph::CompositeGraph(){
     pathCounter = 0;
@@ -2432,14 +2432,14 @@ void CompositeGraph::analyzePaths(int begin, size_t last, bool allPaths, Graph* 
         list<long> nList = path->getAllNodesInAPath();
         //long pathLength = nList.size();
         unordered_set<string> AllInd;
-        unordered_map<long, unordered_set<string>> nodeIndv;
-        unordered_map<long, unordered_set<string>>::iterator nodeIndvItr;
+        unordered_map<long, unordered_set<string> > nodeIndv;
+        unordered_map<long, unordered_set<string> >::iterator nodeIndvItr;
         
         for(list<long>::iterator nItr=nList.begin(); nItr!=nList.end(); nItr++){
             long n = *nItr;
             unordered_set<string> tmp;
             
-            unordered_map<string,list<Phenotype*>>::iterator nodeItr = graph->node.nodeList.find(to_string(n));
+            unordered_map<string,list<Phenotype*> >::iterator nodeItr = graph->node.nodeList.find(to_string(n));
             list<Phenotype*> pList = nodeItr->second;
             
             for(list<Phenotype*>::iterator pItr=pList.begin(); pItr!=pList.end(); pItr++){
@@ -2483,7 +2483,7 @@ void CompositeGraph::analyzePaths(int begin, size_t last, bool allPaths, Graph* 
             }
             
             if((nodeIndvItr=nodeIndv.find(n)) == nodeIndv.end()){
-                nodeIndv.insert(pair<long, unordered_set<string>>(n, tmp));
+                nodeIndv.insert(pair<long, unordered_set<string> >(n, tmp));
             }
         }
         
@@ -2543,8 +2543,8 @@ void CompositeGraph::analyzeAndSummarizePaths(string fileNameSuffix){
     string csv = "PathID,Location,Genotype,PlantID,DAP,nodeOrder,nodeID,Avg.Growth.Rate,plant.id.color,Loc.Gen.color\n";
     string plantColor[]={""};
     
-    unordered_map<string, list<float>> pathSummary;
-    unordered_map<string, list<float>>::iterator pathItr;
+    unordered_map<string, list<float> > pathSummary;
+    unordered_map<string, list<float> >::iterator pathItr;
     
     for(list<Path*>::iterator itr=pathList.begin();itr!=pathList.end(); itr++){
         Path *path = *itr;
@@ -2560,8 +2560,8 @@ void CompositeGraph::analyzeAndSummarizePaths(string fileNameSuffix){
             
             rNode* n = nodeList.getValue(nID);
             
-            unordered_map<string, list<float>> phSummary = n->getPhenotyeSummary();
-            for(unordered_map<string, list<float>>::iterator phItr=phSummary.begin(); phItr!=phSummary.end(); phItr++){
+            unordered_map<string, list<float> > phSummary = n->getPhenotyeSummary();
+            for(unordered_map<string, list<float> >::iterator phItr=phSummary.begin(); phItr!=phSummary.end(); phItr++){
                 string key = phItr->first;
                 list<float> phValList = phItr->second;
                 
@@ -2584,7 +2584,7 @@ void CompositeGraph::analyzeAndSummarizePaths(string fileNameSuffix){
                 key = to_string(pathID) + "$" + genotype + "$" + location + "$" + plantID + "$" + dap + "$" + to_string(nID) + "$" + to_string(nodeOrder) + "$" + pCol + "$" + getGenLocColor(genotype, location);
                 
                 if((pathItr=pathSummary.find(key)) == pathSummary.end()){
-                    pathSummary.insert(pair<string, list<float>>(key, phValList));
+                    pathSummary.insert(pair<string, list<float> >(key, phValList));
                 }else{
                     pathItr->second.merge(phValList);
                 }
@@ -2651,8 +2651,8 @@ string CompositeGraph::analyzeNodes(){
         
         long n = node->getID();
         
-        unordered_map<string, list<float>> phSummary = node->getPhenotyeSummary();
-        for(unordered_map<string, list<float>>::iterator phItr=phSummary.begin(); phItr!=phSummary.end(); phItr++){
+        unordered_map<string, list<float> > phSummary = node->getPhenotyeSummary();
+        for(unordered_map<string, list<float> >::iterator phItr=phSummary.begin(); phItr!=phSummary.end(); phItr++){
             string key = phItr->first;
             list<float> phValList = phItr->second;
             
@@ -2689,7 +2689,7 @@ string CompositeGraph::analyzeNodes(){
     
 }
 
-#pragma Main_graph_class
+//#pragma Main_graph_class
 MainGraph::MainGraph(int ccCounter){
     this->ccCounter = ccCounter;
     connectedComponents = new CompositeGraph[ccCounter];
@@ -2719,7 +2719,7 @@ void MainGraph::printCompositeGraph(string fileNameSuffix){
     if(!DIRECTED_EDGE)
         gmlData = "graph\n[\ndirected 0\nweighted 1\n";
     
-    string fileName_dag = "graph_RESIDUAL_";
+    string fileName_dag = "graph_COMPOSITE_";
     
     if(DELTA_CHANGE>0)
         fileName_dag += "ROBUST_" + fixPrecision(DELTA_CHANGE, 2) + "_";
