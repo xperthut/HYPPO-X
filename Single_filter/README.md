@@ -102,13 +102,25 @@ public void GetStreamForData(ExplicitSimplexStream stream) {
 ```
 8. `Run Homology/src/Barcode.java file to generate barcode and identify the persistent value indicating along X axis` and configure [OVERLAP] with this value.
 9. `Unset barcode flag [PRINT_BARCODE]`
-10. `Run the program to generate the output which is a .gml formatted file with prefix graph_COMPOSITE`
+10. `Run the program to generate the output which is a .gml formatted file with prefix 'graph_COMPOSITE'`
 11. `Open this .gml file using R. The command is as below:`
 ```R
 library(igraph)
 g = read.graph(file.choose(),"gml")
 id = tkplot(g, canvas.width = 1455, canvas.height = 777)
 ```
+`The file will open as a graph in 'XQuartz' terminal where you can change the node position. After rearranging the graph nodes, run the following codes in R console to generate and save the list of coordinates of the nodes in a csv formatted file.
+```R
+coord = tkplot.getcoords(id)
+tk_set_coords(id, coord)
+coord = tkplot.getcoords(id)
+coord[,2]=coord[,2]+X // Here X can be replaced with any numerical value to adjust the graph's vertical position in XQuartz
+coord = tkplot.getcoords(id)
 
+// File name is any csv formated file
+// File path is the absolute path of the above file
+graph_coordinate_to_html_coordinate(g,coord,[file name],[file path]) 
+```
+The tab 'view' has option to show or hide the labels in the graph. Hide all the labels and save image. The image will save in '.eps' format.` 
 
 
