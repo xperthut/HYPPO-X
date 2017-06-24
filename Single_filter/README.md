@@ -114,11 +114,11 @@ id = tkplot(g, canvas.width = 1455, canvas.height = 777)
 coord = tkplot.getcoords(id)
 tk_set_coords(id, coord)
 coord = tkplot.getcoords(id)
-coord[,2]=coord[,2]+X // Here X can be replaced with any numerical value to adjust the graph's vertical position in XQuartz
+coord[,2]=coord[,2]+X # Here X can be replaced with any numerical value to adjust the graph's vertical position in XQuartz
 coord = tkplot.getcoords(id)
 
-// File name is any csv formated file
-// File path is the absolute path of the above file
+# File name is any csv formated file
+# File path is the absolute path of the above file
 graph_coordinate_to_html_coordinate(g,coord,[file name],[file path]) 
 ```
 `The tab 'view' has option to show or hide the labels in the graph. Hide all the labels and save image. The image will save in '.eps' format.` 
