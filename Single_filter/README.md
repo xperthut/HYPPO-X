@@ -109,7 +109,7 @@ library(igraph)
 g = read.graph(file.choose(),"gml")
 id = tkplot(g, canvas.width = 1455, canvas.height = 777)
 ```
-`The file will open as a graph in 'XQuartz' terminal where you can change the node position. After rearranging the graph nodes, run the following codes in R console to generate and save the list of coordinates of the nodes in a csv formatted file.
+`The file will open as a graph in 'XQuartz' terminal where you can change the node position. After rearranging the graph nodes, run the following codes in R console to generate and save the list of coordinates of the nodes in a csv formatted file.`
 ```R
 coord = tkplot.getcoords(id)
 tk_set_coords(id, coord)
@@ -121,6 +121,6 @@ coord = tkplot.getcoords(id)
 // File path is the absolute path of the above file
 graph_coordinate_to_html_coordinate(g,coord,[file name],[file path]) 
 ```
-The tab 'view' has option to show or hide the labels in the graph. Hide all the labels and save image. The image will save in '.eps' format.` 
+`The tab 'view' has option to show or hide the labels in the graph. Hide all the labels and save image. The image will save in '.eps' format.` 
 
 
