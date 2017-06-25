@@ -121,6 +121,21 @@ coord = tkplot.getcoords(id)
 # File path is the absolute path of the above file
 graph_coordinate_to_html_coordinate(g,coord,[file name],[file path]) 
 ```
-`The tab 'view' has option to show or hide the labels in the graph. Hide all the labels and save image. The image will save in '.eps' format.` 
+`The tab 'view' at top of the XQuartz panel has a option to show or hide the labels in the graph. Hide all the labels and save the image. The image will save in '.eps' format.` 
 
+12. `Open the csv file generated at earlier step and remove the first blank row and save it. Copy this file to the c++ project folder and add its reference in the project editor (xcode or MS Visual studio).`
+13. `Configure this file name with path here:`
+```cpp
+// Specify full path of the data file
+#define COORDINATE_FILE_NAME [file name with path]
+```
+14. `Set the flag [PIE_CHART_CODE] to generate JSON code for drawing pie chart and coloring the nodes. Run the program again. The javascript variable (i.e. 'var data') holds the JSON data for pie chart. If there have multiple graphs for a topological object then our code generates JSON data for each graph separately. You have to merge all the JSON data to form a single JSON data before use it in the HTML file. You can merge the JSON data as follows:
+```javascript
+// Before merging
+var data = [{id:value, p:{}, d:[{}]}];
+var data = [{id:value, p:{}, d:[{}]}];
 
+// After merging
+var data = [{id:value, p:{}, d:[{}]}, {id:value, p:{}, d:[{}]}];
+```
+`You can save the pie chart in a png formatted image`
