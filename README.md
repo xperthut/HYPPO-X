@@ -8,6 +8,8 @@ This is a hypothesis extraction tool from high dimensional phenomix dataset. Thi
 - [Filter functions](#filter-functions)
 - [Input](#input)
 - [Output](#output)
+- [Change configuration](#change-configuration)
+- [Build object](#build-object)
 
 
 ## Project setup
@@ -37,7 +39,7 @@ Based on our dataset, we can use following attribute as a filter function.
 4. `Solar radiation`
 
 ### Double filter function
-We have option to choose any two attributes among the above four attributes. In our experiment, we fixed `DAP` as the first filter and one of the environmental attributes (humidity, temperature and solar radiation) as the send filter.
+We have option to choose any two attributes among the above four attributes. In our experiment, we fixed `DAP` as the first filter and one of the environmental attributes (humidity, temperature and solar radiation) as the second filter.
 
 ## Input
 The input csv file contains following columns. One can change the column name and the value but can't expand the columns or change the type of the value. i.e. `Time` column contains integer values like `1,2,...` which does not allow any text here.
@@ -57,51 +59,51 @@ The default value is an integer. If there have multiple individuals under same `
 ## Output
 Output is a `gml` formatted file with prefix `graph_COMPOSITE`.
 
-## Configuration file
-The file named `config.h` contains all types of configuration. One can change the value of the configuration file to make change in the code and to generate output. Necessary configurations are here: 
+## Change configuration
+The file named `config.h`contains all settings. One can change the value of the configuration file to make change in the code and change the output. Necessary configurations are here: 
 
-Set the value of first filter using following constant. Our program accepts four values `0-3`.
+### Set the value of first filter using following constant. Our program accepts four values `0-3`.
 ```cpp
 #define FILTER_1 VALUE
 ```
 
-Set the value of second filter using following constant. For `Single filter` the value for this filter is `1`.  For `Double filter function` our program accepts four values `0-3`.
+### Set the value of second filter using following constant. For `Single filter` the value for this filter is `1`.  For `Double filter function` our program accepts four values `0-3`.
 ```cpp
 #define FILTER_2 VALUE
 ```
 
-Set the link of your source data file. Currently, our program accepts only comma `(,)` separated `csv` formatted data file.
+### Set the link of your source data file. Currently, our program accepts only comma `(,)` separated `csv` formatted data file.
 ```cpp
 // Specify full path of the data file
 #define DATA_FILE_NAME "FILENAME.csv"
 ```
 
-Set the number of windows along the filter function using the following constant.
+### Set the number of windows along the filter function using the following constant.
 ```cpp
 #define WINDOW_X VALUE
 ``` 
 
-Set the cluster radius. It accepts `real/float` value.
+### Set the cluster radius. It accepts `real/float` value.
 ```cpp
 #define CLUSTER_RADIUS VALUE
 ```
 
-Set the overlap value. It accepts `real/float` value.
+### Set the overlap value. It accepts `real/float` value.
 ```cpp
 #define OVERLAP VALUE
 ```
 
-Enable flag to print simplex timeline statements. Copy these statements to our barcode generated `Barcode.java` file to generate barcode image.
+### Enable flag to print simplex timeline statements. Copy these statements to our barcode generated `Barcode.java` file to generate barcode image.
 ```cpp
 #define PRINT_BARCODE true
 ```
 
-Enable flag to print `Javascript` code which is used to create `pie chart` and coloring nodes based on different measuring attribute `i.e. time, phenotype, environment`.
+### Enable flag to print `Javascript` code which is used to create `pie chart` and coloring nodes based on different measuring attribute `i.e. time, phenotype, environment`.
 ```cpp
 #define PIE_CHART_CODE true
 ```
 
-Adjust the node size of the generated topological object using following constants.
+### Adjust the node size of the generated topological object using following constants.
 ```cpp
 #define NODE_SIZE_MAX MAX_SIZE
 #define NODE_SIZE_MIN MIN_SIZE
@@ -159,7 +161,7 @@ graph_coordinate_to_html_coordinate(g,coord,[file name],[file path])
 // Specify full path of the data file
 #define COORDINATE_FILE_NAME [file name with path]
 ```
-14. `Set the flag [PIE_CHART_CODE] to generate JSON code for drawing pie chart and coloring the nodes. Run the program again. The javascript variable (i.e. 'var data') holds the JSON data for pie chart. If there have multiple graphs for a topological object then our code generates JSON data for each graph separately. You have to merge all the JSON data to form a single JSON data before use it in the HTML file. You can merge the JSON data as follows:
+14. `Set the flag [PIE_CHART_CODE] to generate JSON code for drawing pie chart and coloring the nodes. Run the program again. The javascript variable (i.e. 'var data') holds the JSON data for pie chart. If there have multiple graphs for a topological object then our code generates JSON data for each graph separately. You have to merge all the JSON data to form a single JSON data before use it in the HTML file. You can merge the JSON data as follows:`
 ```javascript
 // Before merging
 var data = [{id:value, p:{}, d:[{}]}];
@@ -168,4 +170,4 @@ var data = [{id:value, p:{}, d:[{}]}];
 // After merging
 var data = [{id:value, p:{}, d:[{}]}, {id:value, p:{}, d:[{}]}];
 ```
-`You can save the pie chart in a png formatted image.
+`You can save the pie chart in a png formatted image.`
