@@ -66,69 +66,69 @@ The file named `config.h`contains all settings. One can change the value of the 
 #define FILTER_1 VALUE
 ```
 
-### Set the value of second filter using following constant. For `Single filter` the value for this filter is `1`.  For `Double filter function` our program accepts four values `0-3`.
+#### Set the value of second filter using following constant. For `Single filter` the value for this filter is `1`.  For `Double filter function` our program accepts four values `0-3`.
 ```cpp
 #define FILTER_2 VALUE
 ```
 
-### Set the link of your source data file. Currently, our program accepts only comma `(,)` separated `csv` formatted data file.
+#### Set the link of your source data file. Currently, our program accepts only comma `(,)` separated `csv` formatted data file.
 ```cpp
 // Specify full path of the data file
 #define DATA_FILE_NAME "FILENAME.csv"
 ```
 
-### Set the number of windows along the filter for `single filter function`. For `double filter function`, set the number of windows along the `first filter`.
+#### Set the number of windows along the filter for `single filter function`. For `double filter function`, set the number of windows along the `first filter`.
 ```cpp
 #define WINDOW_X VALUE
 ``` 
 
-### Set the number of windows along the `second filter` for `double filter function`. For `single filter function`, the value of this constant must be `1`.
+#### Set the number of windows along the `second filter` for `double filter function`. For `single filter function`, the value of this constant must be `1`.
 ```cpp
 #define WINDOW_Y VALUE
 ``` 
 
-### Set the cluster radius. It accepts `real/float` value.
+#### Set the cluster radius. It accepts `real/float` value.
 ```cpp
 #define CLUSTER_RADIUS VALUE
 ```
 
-### Set the overlap value. It accepts `real/float` value.
+#### Set the overlap value. It accepts `real/float` value.
 ```cpp
 #define OVERLAP VALUE
 ```
 
-### Enable flag to print simplex timeline statements. Copy these statements to our barcode generated `Barcode.java` file to generate barcode image.
+#### Enable flag to print simplex timeline statements. Copy these statements to our barcode generated `Barcode.java` file to generate barcode image.
 ```cpp
 #define PRINT_BARCODE true
 ```
 
-### Enable flag to print `Javascript` code which is used to create `pie chart` and coloring nodes based on different measuring attribute `i.e. time, phenotype, environment`.
+#### Enable flag to print `Javascript` code which is used to create `pie chart` and coloring nodes based on different measuring attribute `i.e. time, phenotype, environment`.
 ```cpp
 #define PIE_CHART_CODE true
 ```
 
-### Adjust the node size of the generated topological object using following constants.
+#### Adjust the node size of the generated topological object using following constants.
 ```cpp
 #define NODE_SIZE_MAX MAX_SIZE
 #define NODE_SIZE_MIN MIN_SIZE
 ```
 
-### Set the following constant when you want to see all the `interesting paths`. For `single filter function`, unset this constant's value.
+#### Set the following constant when you want to see all the `interesting paths`. For `single filter function`, unset this constant's value.
 ```cpp
 #define PRINT_ALL_PATHS true
 ```
 
-### If you want to show and color selected interesting paths then set the following flag. Unset this flag if you want to see all interesting paths with default colors.
+#### If you want to show and color selected interesting paths then set the following flag. Unset this flag if you want to see all interesting paths with default colors.
 ```cpp
 #define ASSIGN_PATH_COLOR_MANUAL false
 ```
 
-### Print the order of sub graphs or connected compoments (CCs) of a topological object by setting the following flag. You will also get the path information of a CC. The format of the order of a CC is `CC:XX`, where `XX` is the order of a CC and it starts from `1`. The format of a path is: `Path_YY_[SCORE,COLOR] : node1#node2,node2#node3,...,node(n-1)#node(n)`. Here, `YY` is the order of a path in a CC. `SCORE` is the interestingness score of that path. `COLOR` is the automatically geneated color from our code. If you enable manual coloring flag (see below) then all the color code will be `#000000`. `node1#node2` means the terminal nodes of an edge along this path.
+#### Print the order of sub graphs or connected compoments (CCs) of a topological object by setting the following flag. You will also get the path information of a CC. The format of the order of a CC is `CC:XX`, where `XX` is the order of a CC and it starts from `1`. The format of a path is: `Path_YY_[SCORE,COLOR] : node1#node2,node2#node3,...,node(n-1)#node(n)`. Here, `YY` is the order of a path in a CC. `SCORE` is the interestingness score of that path. `COLOR` is the automatically geneated color from our code. If you enable manual coloring flag (see below) then all the color code will be `#000000`. `node1#node2` means the terminal nodes of an edge along this path.
 ```cpp
 #define PRINT_CC_PATH true
 ```
 
-### If you set the flag `ASSIGN_PATH_COLOR_MANUAL` then you must have to set the following two constants with proper values. The values placed in the array are in following format: `{Number of connected components on which the selected paths exist, Order of selected connected component, Number of selected paths, order of a path belongs in a CC}`. For instance, the topological object contructed by double filter function of `DAP and Temperature` (in supplementary document) has four sub graphs or connected compoments (CC). The array content to print specific paths are as: `{2,2,4,1,2,3,4,4,4,1,2,3,4}`. Here, (start from left most element) the first element `2` means that all the paths which we want to color manually belong in `two` out of `four` sub graphs or connected compoments. Next `2` is the order of a CC (see previous flag). Next `4` means the number of paths we want to maually color. Following `1,2,3,4` are the order of paths under `CC 2`. The eighth element `4` indicates the order of next CC. The very next `4` means that we want to color four paths. The last four elements are the order of the paths of `CC 4`.
+#### If you set the flag `ASSIGN_PATH_COLOR_MANUAL` then you must have to set the following two constants with proper values. The values placed in the array are in following format: `{Number of connected components on which the selected paths exist, Order of selected connected component, Number of selected paths, order of a path belongs in a CC}`. For instance, the topological object contructed by double filter function of `DAP and Temperature` (in supplementary document) has four sub graphs or connected compoments (CC). The array content to print specific paths are as: `{2,2,4,1,2,3,4,4,4,1,2,3,4}`. Here, (start from left most element) the first element `2` means that all the paths which we want to color manually belong in `two` out of `four` sub graphs or connected compoments. Next `2` is the order of a CC (see previous flag). Next `4` means the number of paths we want to maually color. Following `1,2,3,4` are the order of paths under `CC 2`. The eighth element `4` indicates the order of next CC. The very next `4` means that we want to color four paths. The last four elements are the order of the paths of `CC 4`.
 The array format of color is same as the array format of path_list. Here we assign each path order with a color and replace other digits by empty string.
 ```cpp
 #define PATH_LIST {2,2,4,1,2,3,4,4,4,1,2,3,4}
