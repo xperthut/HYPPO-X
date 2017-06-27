@@ -61,64 +61,64 @@ Output is a `gml` formatted file with prefix `graph_COMPOSITE`.
 ## Change configuration
 The file named `config.h`contains all settings. One can change the value of the configuration file to make change in the code and change the output. Necessary configurations are here: 
 
-#### Set the value of first filter using following constant. Our program accepts four values `0-3`.
+##### Set the value of first filter using following constant. Our program accepts four values `0-3`.
 ```cpp
 #define FILTER_1 VALUE
 ```
 
-#### Set the value of second filter using following constant. For `Single filter` the value for this filter is `1`.  For `Double filter function` our program accepts four values `0-3`.
+##### Set the value of second filter using following constant. For `Single filter` the value for this filter is `1`.  For `Double filter function` our program accepts four values `0-3`.
 ```cpp
 #define FILTER_2 VALUE
 ```
 
-#### Set the link of your source data file. Currently, our program accepts only comma `(,)` separated `csv` formatted data file.
+##### Set the link of your source data file. Currently, our program accepts only comma `(,)` separated `csv` formatted data file.
 ```cpp
 // Specify full path of the data file
 #define DATA_FILE_NAME "FILENAME.csv"
 ```
 
-#### Set the number of windows along the filter for `single filter function`. For `double filter function`, set the number of windows along the `first filter`.
+##### Set the number of windows along the filter for `single filter function`. For `double filter function`, set the number of windows along the `first filter`.
 ```cpp
 #define WINDOW_X VALUE
 ``` 
 
-#### Set the number of windows along the `second filter` for `double filter function`. For `single filter function`, the value of this constant must be `1`.
+##### Set the number of windows along the `second filter` for `double filter function`. For `single filter function`, the value of this constant must be `1`.
 ```cpp
 #define WINDOW_Y VALUE
 ``` 
 
-#### Set the cluster radius. It accepts `real/float` value.
+##### Set the cluster radius. It accepts `real/float` value.
 ```cpp
 #define CLUSTER_RADIUS VALUE
 ```
 
-#### Set the overlap value. It accepts `real/float` value.
+##### Set the overlap value. It accepts `real/float` value.
 ```cpp
 #define OVERLAP VALUE
 ```
 
-#### Enable flag to print simplex timeline statements. Copy these statements to our barcode generated `Barcode.java` file to generate barcode image.
+##### Enable flag to print simplex timeline statements. Copy these statements to our barcode generated `Barcode.java` file to generate barcode image.
 ```cpp
 #define PRINT_BARCODE true
 ```
 
-#### Enable flag to print `Javascript` code which is used to create `pie chart` and coloring nodes based on different measuring attribute `i.e. time, phenotype, environment`.
+##### Enable flag to print `Javascript` code which is used to create `pie chart` and coloring nodes based on different measuring attribute `i.e. time, phenotype, environment`.
 ```cpp
 #define PIE_CHART_CODE true
 ```
 
-#### Adjust the node size of the generated topological object using following constants.
+##### Adjust the node size of the generated topological object using following constants.
 ```cpp
 #define NODE_SIZE_MAX MAX_SIZE
 #define NODE_SIZE_MIN MIN_SIZE
 ```
 
-#### Set the following constant when you want to see all the `interesting paths`. For `single filter function`, unset this constant's value.
+##### Set the following constant when you want to see all the `interesting paths`. For `single filter function`, unset this constant's value.
 ```cpp
 #define PRINT_ALL_PATHS true
 ```
 
-#### If you want to show and color selected interesting paths then set the following flag. Unset this flag if you want to see all interesting paths with default colors.
+##### If you want to show and color selected interesting paths then set the following flag. Unset this flag if you want to see all interesting paths with default colors.
 ```cpp
 #define ASSIGN_PATH_COLOR_MANUAL false
 ```
