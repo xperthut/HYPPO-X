@@ -11,7 +11,6 @@ This is a hypothesis extraction tool from high dimensional phenomix dataset. Thi
 - [Change configuration](#change-configuration)
 - [Build object](#build-object)
 
-
 ## Project setup
 ### Setup for Mac users
 1. `Create an empty project in 'xcode' and run the project.`
@@ -78,9 +77,14 @@ The file named `config.h`contains all settings. One can change the value of the 
 #define DATA_FILE_NAME "FILENAME.csv"
 ```
 
-### Set the number of windows along the filter function using the following constant.
+### Set the number of windows along the filter for `single filter function`. For `double filter function`, set the number of windows along the `first filter`.
 ```cpp
 #define WINDOW_X VALUE
+``` 
+
+### Set the number of windows along the `second filter` for `double filter function`. For `single filter function`, the value of this constant must be `1`.
+```cpp
+#define WINDOW_Y VALUE
 ``` 
 
 ### Set the cluster radius. It accepts `real/float` value.
@@ -108,6 +112,24 @@ The file named `config.h`contains all settings. One can change the value of the 
 #define NODE_SIZE_MAX MAX_SIZE
 #define NODE_SIZE_MIN MIN_SIZE
 ```
+
+### Set the following constant when you want to see all the `interesting paths`. For `single filter function`, unset this constant's value.
+```cpp
+#define PRINT_ALL_PATHS true
+```
+
+### If you want to show and color selected interesting paths then set the following flag. Unset this flag if you want to see all interesting paths with default colors.
+```cpp
+#define ASSIGN_PATH_COLOR_MANUAL false
+```
+
+### If you set the previous flag `ASSIGN_PATH_COLOR_MANUAL` then you must have to set the following two constants with proper values. The values placed in the array are in following format: `{Number of connected components on which the selected paths exist, Order of selected connected component, Number of selected paths, path ids}`. i.e. `{2,3,2,4,5,4,3,1,2,3}`
+```cpp
+#define PATH_LIST {1,1,9,1,2,3,4,5,6,7,8,11}
+#define PATH_COLOR {"","","","#ff0000","#da2577","#75a920","#0eafc9","#0000ff","#8e44ad","#8e44ad","#8e44ad","#8e44ad"}      
+```
+
+
 
 ## Build object
 1. `Configure [DATA_FILE_NAME]`
