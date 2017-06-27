@@ -1,5 +1,5 @@
-HYPPOX
-=======
+TOPOHYPPO
+=========
 
 This is a hypothesis extraction tool from high dimensional phenomix dataset. This tool is mainly built in `c++`. The object that we generated from our method is a graph and we used `igraph` package of `R` to visually represent the graph. We also use `HTML canvas` to represent the graph more meaningfully using pie chart and colors.
 
