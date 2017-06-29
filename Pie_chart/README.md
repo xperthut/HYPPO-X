@@ -22,7 +22,7 @@ Run the `HTML` file in any `HTML 5` supported browser `Opera, Firefox, and Safar
   				context.fillText(text, (position.x1+position.x2)/2, (position.y1+position.y2)/2);
 			}
 
-			function drawPie(_canvas, position, data, _id){
+			function drawPie(_canvas, position, data, _id, _offset){
 				var total = 0;
 				  for (obj of data) {
 				    total += obj.value;
@@ -31,8 +31,8 @@ Run the `HTML` file in any `HTML 5` supported browser `Opera, Firefox, and Safar
 				  var ctx = _canvas.getContext('2d');
 				  var previousRadian;
 				  var middle = {
-				    x: position.x,
-				    y: 777-position.y,
+				    x: position.x-_offset.x,
+				    y: _offset.y-position.y,
 				    radius: position.rad,
 				  };
 				  
@@ -90,9 +90,10 @@ Run the `HTML` file in any `HTML 5` supported browser `Opera, Firefox, and Safar
 				var ctx = canvas.getContext('2d');
 				ctx.drawImage(background,0,0,[WIDTH],[HEIGHT]);
 
+				_offset = {x:0,y:777};
 				for(k=0;k<data.length;k++){
 				 	var position = data[k].p;
-				 	drawPie(canvas, position, data[k].d, data[k].id);
+				 	drawPie(canvas, position, data[k].d, data[k].id, _offset);
 				}
 
 				// Save as png
