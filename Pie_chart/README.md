@@ -88,7 +88,9 @@ Run the `HTML` file in any `HTML 5` supported browser `Opera, Firefox, and Safar
 			// Make sure the image is loaded first otherwise nothing will draw.
 			background.onload = function(){
 				var ctx = canvas.getContext('2d');
-				ctx.drawImage(background,0,0,[WIDTH],[HEIGHT]);
+				// START X: Start position along x axis
+				// START Y: Start position along y axis
+				ctx.drawImage(background,[START X],[START Y],[WIDTH],[HEIGHT]);
 
 				_offset = {x:0,y:777};
 				for(k=0;k<data.length;k++){
