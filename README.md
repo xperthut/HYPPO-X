@@ -136,12 +136,12 @@ The file named `config.h`contains all settings. One can change the value of the 
 
 
 ## Build object
-##### 1. Configure [DATA_FILE_NAME]
-2. `Configure [FILTER_1]`
-3. `Configure [WINDOW_X]`
-4. `Configure [CLUSTER_RADIUS]`
-5. `Set barcode flag [PRINT_BARCODE]`
-6. `Run the program to generate simplex timeline in Java. For instance, you will get something like this:`
+##### 1. Configure `DATA_FILE_NAME`
+##### 2. Configure `FILTER_1`
+##### 3. Configure `WINDOW_X`
+##### 4. Configure `CLUSTER_RADIUS`
+##### 5. Set barcode flag `PRINT_BARCODE`
+##### 6. Run the program to generate simplex timeline in Java. For instance, you will get something like this:##### 
 ```java
 /************ Start from here *************/
 stream.addVertex(1, 0.000);
@@ -150,7 +150,7 @@ stream.addVertex(2, 0.000);
 stream.addElement(new int[]{53,54},  45.00);
 /************ End here *************/
 ```
-7. `Copy this code block and paste it in the Homology/src/Barcode.java file at following position:`
+##### 7. Copy this code block and paste it in the Homology/src/Barcode.java file at following position:##### 
 ```java
 public void GetStreamForData(ExplicitSimplexStream stream) {
    /*
@@ -158,16 +158,16 @@ public void GetStreamForData(ExplicitSimplexStream stream) {
     */
 }
 ```
-8. `Run Homology/src/Barcode.java file to generate barcode and identify the persistent value indicating along X axis` and configure [OVERLAP] with this value.
-9. `Unset barcode flag [PRINT_BARCODE]`
-10. `Run the program to generate the output which is a .gml formatted file with prefix 'graph_COMPOSITE'`
-11. `Open this .gml file using R. The command is as below:`
+##### 8. Run Homology/src/Barcode.java file to generate barcode and identify the persistent value indicating along X axis and configure `OVERLAP` with this value.
+##### 9. Unset barcode flag `PRINT_BARCODE`
+##### 10. Run the program to generate the output which is a .gml formatted file with prefix `graph_COMPOSITE`
+##### 11. Open this .gml file using R. The command is as below:
 ```R
 library(igraph)
 g = read.graph(file.choose(),"gml")
 id = tkplot(g, canvas.width = 1455, canvas.height = 777)
 ```
-`The file will open as a graph in 'XQuartz' terminal where you can change the node position. After rearranging the graph nodes, run the following codes in R console to generate and save the list of coordinates of the nodes in a csv formatted file.`
+The file will open as a graph in `XQuartz` terminal where you can change the node position. After rearranging the graph nodes, run the following codes in R console to generate and save the list of coordinates of the nodes in a `csv` formatted file.
 ```R
 coord = tkplot.getcoords(id)
 tk_set_coords(id, coord)
@@ -179,15 +179,15 @@ coord = tkplot.getcoords(id)
 # File path is the absolute path of the above file
 graph_coordinate_to_html_coordinate(g,coord,[file name],[file path]) 
 ```
-`The tab 'view' at top of the XQuartz panel has a option to show or hide the labels in the graph. Hide all the labels and save the image. The image will save in '.eps' format.` 
+The tab `view` at top of the `XQuartz` panel has a option to show or hide the labels in the graph. Hide all the labels and save the image. The image will save in `eps` format.` 
 
-12. `Open the csv file generated at earlier step and remove the first blank row and save it. Copy this file to the c++ project folder and add its reference in the project editor (xcode or MS Visual studio).`
-13. `Configure this file name with path here:`
+##### 12. Open the csv file generated at earlier step and remove the first blank row and save it. Copy this file to the `c++ project` folder and add its reference in the project editor (xcode or MS Visual studio).
+##### 13. Configure this file name with path here:
 ```cpp
 // Specify full path of the data file
 #define COORDINATE_FILE_NAME [file name with path]
 ```
-14. `Set the flag [PIE_CHART_CODE] to generate JSON code for drawing pie chart and coloring the nodes. Run the program again. The javascript variable (i.e. 'var data') holds the JSON data for pie chart. If there have multiple graphs for a topological object then our code generates JSON data for each graph separately. You have to merge all the JSON data to form a single JSON data before use it in the HTML file. You can merge the JSON data as follows:`
+##### 14. Set the flag `PIE_CHART_CODE` to generate JSON code for drawing pie chart and coloring the nodes. Run the program again. The javascript variable (`i.e. var data`) holds the JSON data for pie chart. If there have multiple graphs for a topological object then our code generates JSON data for each graph separately. You have to merge all the JSON data to form a single JSON data before use it in the HTML file. You can merge the JSON data as follows:`
 ```javascript
 // Before merging
 var data = [{id:value, p:{}, d:[{}]}];
