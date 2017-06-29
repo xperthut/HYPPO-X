@@ -150,7 +150,7 @@ stream.addVertex(2, 0.000);
 stream.addElement(new int[]{53,54},  45.00);
 /************ End here *************/
 ```
-##### 7. Copy this code block and paste it in the Homology/src/Barcode.java file at following position:##### 
+##### 7. Copy this code block and paste it in the `Homology/src/Barcode.java` file at following position:
 ```java
 public void GetStreamForData(ExplicitSimplexStream stream) {
    /*
