@@ -9,7 +9,7 @@ The output of our graph plotting project using `R` is saved in an `eps` formatte
 Run the `HTML` file in any `HTML 5` supported browser `Opera, Firefox, and Safari`. One can save the image in a `png` formatted file.
 
 
-### HTML template to generate `Pie-chart` at graph node
+##### HTML template to generate `Pie-chart`
 ```html
 <html>
 	<head>
@@ -83,12 +83,12 @@ Run the `HTML` file in any `HTML 5` supported browser `Opera, Firefox, and Safar
 			// Load background image
 			// If image is under same directory of the html file then use ./filename.png
 			var background = new Image();
-			background.src = "[PNG file with]";
+			background.src = "[PNG file with path]";
 			
 			// Make sure the image is loaded first otherwise nothing will draw.
 			background.onload = function(){
 				var ctx = canvas.getContext('2d');
-				ctx.drawImage(background,0,0,2062,271);
+				ctx.drawImage(background,0,0,[WIDTH],[HEIGHT]);
 
 				for(k=0;k<data.length;k++){
 				 	var position = data[k].p;
