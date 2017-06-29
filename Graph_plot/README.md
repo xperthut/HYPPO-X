@@ -67,7 +67,7 @@ coord = tk_coords(id)
 
 ### Convert node coordinate to html adjustable coordinate and save the coordinates in a csv file, i.e. test_coord.csv
 ```R
-graph_coordinate_to_html_coordinate(g,coord,"test_coord.csv","[absolute path of this file]/")
+graph_coordinate_to_html_coordinate(g,coord,"test_coord.csv","[absolute path of this file ending with '/']")
 ```
 
 ### Save the graph image in a `eps` formatted file.
