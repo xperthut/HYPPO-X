@@ -10,7 +10,7 @@ Run the `HTML` file in any `HTML 5` supported browser `Opera, Firefox, and Safar
 
 
 ### HTML template to generate `Pie-chart` at graph node
-```html5
+```html
 <html>
 	<head>
 		<script type="text/javascript">
