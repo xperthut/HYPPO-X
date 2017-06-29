@@ -65,6 +65,23 @@ id = tkplot(g, canvas.width = 1455, canvas.height = 777)
 coord = tk_coords(id)
 ```
 
+### Set node coordinates to a graph
+```R
+tk_set_coords(id, coord)
+```
+
+### Save the `coord` data in a csv file
+```R
+write.csv(coord, "[FILE DIRECTORY]/[FILE NAME].csv")
+
+```
+
+### Read the csv file contained coordinate information of a graph and load it in `coord` variable. When we saved a coordinate matrix in a csv file then it stored index data at first column. We have to get rid of this column after loading the data in a matrix format as below:
+```R
+coord=as.matrix(read.csv(file.choose()))
+coord = coord[,-1] # Remove first column for all rows
+```
+
 ### Convert node coordinate to html adjustable coordinate and save the coordinates in a csv file, i.e. test_coord.csv
 ```R
 graph_coordinate_to_html_coordinate(g,coord,"test_coord.csv","[absolute path of this file ending with '/']")
