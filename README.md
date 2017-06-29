@@ -198,5 +198,6 @@ var data = [{id:value, p:{}, d:[{}]}];
 // After merging
 var data = [{id:value, p:{}, d:[{}]}, {id:value, p:{}, d:[{}]}];
 ```
-`See [README.md](https://github.com/xperthut/HYPPOX/tree/master/Pie_chart) for details construction of a HTML file using this data. You can save the pie chart in a png formatted image.`
+##### See [README.md](https://github.com/xperthut/HYPPOX/tree/master/Pie_chart) for details construction of a HTML file using this data. You can save the pie chart in a png formatted image.
+
 
