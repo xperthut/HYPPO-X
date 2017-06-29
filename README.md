@@ -200,4 +200,5 @@ var data = [{id:value, p:{}, d:[{}]}, {id:value, p:{}, d:[{}]}];
 ```
 ##### See [README.md](https://github.com/xperthut/HYPPOX/tree/master/Pie_chart) for details construction of a HTML file using this data. You can save the pie chart in a png formatted image.
 
+##### 14. When you enable the flag `PIE_CHART_CODE` for `double filter function` then you will get three more JSON variables. One of those variable is `var ph`. The other two variables' name depend on the choice of the filter functions and the name of the variables are same as the specified names in the constant `FILTER_NAMES`. As discussed in previous step, you have to merge the data of a variable if it appears in multiple times. These variables are used to color the nodes. See [README.md](https://github.com/xperthut/HYPPOX/tree/master/Pie_chart) for details construction of a HTML file using the data of these variables. You can save the an image in `png` format.
 
