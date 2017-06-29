@@ -10,9 +10,9 @@ public void GetStreamForData(ExplicitSimplexStream stream) {
 }
 ```
 
-#### One can change the barcode file name and maximum range of timeline of a simplex using fillowing code snap in the `main` method of the `Barcode.java` file. For our dataset, the maximum timeline value is `50`.
+##### One can change the barcode file name using fillowing code snap in the `main` method of the `Barcode.java` file.
 ```Java
-edu.stanford.math.plex4.api.Plex4.createBarcodePlot(intervals_index, "[FILE Name PREFIX]", [MAX TIMELINE]);
+edu.stanford.math.plex4.api.Plex4.createBarcodePlot(intervals_index, "[FILE Name PREFIX]", 50);
 ```
 
 ### Output
