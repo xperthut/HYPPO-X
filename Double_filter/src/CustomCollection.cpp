@@ -15,7 +15,7 @@
 
 #include "CustomCollection.h"
 
-#pragma Custom_List_Class
+//#pragma Custom_List_Class
 template<class T>
 CustomList<T>::CustomList(){}
 
@@ -46,7 +46,7 @@ size_t CustomList<T>::getSize(){
     return cList.size();
 }
 
-#pragma Custom_Set_Class
+//#pragma Custom_Set_Class
 template<class T>
 CustomSet<T>::CustomSet(){}
 
@@ -77,7 +77,7 @@ size_t CustomSet<T>::getSize(){
     return cSet.size();
 }
 
-#pragma Custom_Map_Class
+//#pragma Custom_Map_Class
 template<class K, class T>
 CustomMap<K,T>::CustomMap(){}
 
@@ -118,7 +118,7 @@ size_t CustomMap<K,T>::getSize(){
     return cMap.size();
 }
 
-#pragma Custom_HashSet_Class
+//#pragma Custom_HashSet_Class
 template<class T>
 CustomHashSet<T>::CustomHashSet(){}
 
@@ -160,7 +160,7 @@ size_t CustomHashSet<T>::getSize(){
     return cSet.size();
 }
 
-#pragma Custom_HashMap_Class
+//#pragma Custom_HashMap_Class
 template<class K, class T>
 CustomHashMap<K,T>::CustomHashMap(){}
 

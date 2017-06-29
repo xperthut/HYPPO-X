@@ -43,7 +43,7 @@ QuadNode::~QuadNode(){
     
 }
 
-#pragma Getter
+//#pragma Getter
 float QuadNode::GetStartXPosition(){return this->startX;}
 float QuadNode::GetStartYPosition(){return this->startY;}
 float QuadNode::GetLengthAlongXAxis(){return this->lengthX;}
@@ -76,7 +76,7 @@ bool QuadNode::IsThisLeafNode(){
     return (this->data != NULL);
 }
 
-#pragma Setter
+//#pragma Setter
 void QuadNode::SetArea(float x, float y, float lx, float ly){
     
     this->id_x = x+(lx/2);
@@ -127,7 +127,7 @@ void QuadNode::CopyData(DataPoint *data){
     }
 }
 
-#pragma Other_Methods
+//#pragma Other_Methods
 void QuadNode::AddDataToNode(DataPoint *data){
     
     // Initially check all children of root to insert data
@@ -157,7 +157,7 @@ void QuadNode::AddDataToNode(DataPoint *data){
     }
 }
 
-#pragma Private_Methods
+//#pragma Private_Methods
 void QuadNode::AddDataToNode(int childIndex, DataPoint *data){
     
     QuadNode* child = this->children[childIndex];

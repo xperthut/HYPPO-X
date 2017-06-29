@@ -972,7 +972,7 @@ void ClusteringRegion::GenerateGraphUsingOverlappingClusters(Grid **mesh, list<P
 string ClusteringRegion::PrintGraph(list<Phenotype *> *overlappedPhList, list<AnEdge *> *edgeList){
     
     
-    string envName[]=ENV_NAMES;
+    string envName[]=FILTER_NAMES;
     string fileName_suffix = to_string(this->overlapX).substr(0,4) + "_" + "R" + to_string(this->Eps).substr(0,4) + "_{" + envName[0] + "," + envName[1] + "}";
     
     UnionFindWithPathCompression ufpc(Cluster::GetClusterID());
@@ -1061,7 +1061,7 @@ string ClusteringRegion::PrintGraph(list<Phenotype *> *overlappedPhList, list<An
         //if(maxCC.size()>0){
         list<long> lstNode = itr->second;//maxCC;
         
-        float range[FILTER+2][2]={0.0};
+        float range[FILTER+2][2]={{0.0}};
         bool first = true;
         bool mean_first = true;
         
@@ -1172,7 +1172,7 @@ string ClusteringRegion::PrintGraph(list<Phenotype *> *overlappedPhList, list<An
         
         float nw[] = {range[1][0],range[1][1]};
         float ns[] = {range[0][0],range[0][1]};
-        float ew[FILTER][2]={0};
+        float ew[FILTER][2]={{0}};
         for(int e=0;e<FILTER;e++){
             ew[e][0] = range[e+2][0];
             ew[e][1]=range[e+2][1];
@@ -1562,7 +1562,7 @@ string ClusteringRegion::PrintGraph(SimplicialComplex* sc){
         
         float nw[] = {minMeanVal,maxMeanVal};
         float ns[] = {minVal,maxVal};
-        float ew[FILTER][2]={0};
+        float ew[FILTER][2]={{0}};
         for(int e=0;e<FILTER;e++){
             ew[e][0] = minX[e];
             ew[e][1]=maxX[e];
@@ -1830,7 +1830,7 @@ string ClusteringRegion::PrintGraph(SimplicialComplex* sc){
             
             float nw[] = {minMeanVal,maxMeanVal};
             float ns[] = {minVal,maxVal};
-            float ew[FILTER][2]={0};
+            float ew[FILTER][2]={{0}};
             for(int e=0;e<FILTER;e++){
                 ew[e][0] = minX[e];
                 ew[e][1]=maxX[e];
@@ -2048,380 +2048,7 @@ void ClusteringRegion::menu(MainGraph* mGraph, Graph *graph, string suffix, int 
 }
 
 string ClusteringRegion::PrintGraphForDataPoint(SimplicialComplex* sc){
-    /*string str = "";
-    //string nodes = "graph\n[\ndirected 0\nweighted 1\n";
-    //string edges = "";
-    //string gmlData = "";
-    float minVal = 16777215.0, maxVal = 0.0, minMeanVal = 16777215.0, maxMeanVal = 0.0;
-    float minX = 16777215.0, minY = 16777215.0, maxX = 0.0, maxY = 0.0;
-    bool isPh = false;
-    bool isTemp = true;
-    long totalNodes = 0;
-    string type = "";
-    CompositeGraph* rGraph = new CompositeGraph();
     
-    if(isPh){
-        type = "ph";
-    }else if(isTemp){
-        type = "silt";
-    }else{
-        type = "prec";
-    }
-    
-    string envName[]={"silt","prec"};
-    
-    // o=.5, lx=2, ly=.5
-    set<long>nodeList;
-    //string fileName = "graph_"+ type +"_" + to_string(this->windowSizeX).substr(0,3) + "_" + to_string(this->windowSizeY).substr(0,3) +"_" + to_string(this->shiftX).substr(0,4) + "_" + to_string(this->shiftY).substr(0,4) + "_" + to_string(this->overlapX).substr(0,4) + "_" + to_string(this->overlapY).substr(0,4) + "R" + to_string(this->Eps).substr(0,2);
-    
-    string fileName_suffix = to_string(this->windowSizeX).substr(0,3) + "_" + to_string(this->windowSizeY).substr(0,3) +
-        "_" + to_string(this->shiftX).substr(0,4) + "_" + to_string(this->shiftY).substr(0,4) + "_" +
-        to_string(this->overlapX).substr(0,4) + "_" + to_string(this->overlapY).substr(0,4) + "R" + to_string(this->Eps).substr(0,2);
-    
-    // Print isolated clusters
-    long totalClusters = Cluster::GetClusterID();
-    for(long nnid=1; nnid <= totalClusters; nnid++){
-        sc->AddZeroSimplex(nnid, 0.00);
-    }
-    
-    UnionFindWithPathCompression ufpc(Cluster::GetClusterID());
-    
-    for(this->graph.edgeItr = this->graph.edgeList.begin(); this->graph.edgeItr != this->graph.edgeList.end(); this->graph.edgeItr++){
-        
-        long node_1 = this->graph.edgeItr->second.node1;
-        long node_2 = this->graph.edgeItr->second.node2;
-        
-        ufpc.Union(node_1, node_2);
-    }
-    
-    unordered_map<long, list<long>> scc = ufpc.GetAllConnectedComponents();
-    unordered_map<long, list<long>>::iterator mitr;
-    long maxSize = 0;
-    list<long> maxCC;
-    
-    cout<<"Connected components are:\n";
-    
-    for(mitr = scc.begin(); mitr!=scc.end(); mitr++){
-        long index = mitr->first;
-        list<long> lst = mitr->second;
-        list<long>::iterator litr;
-        
-        if(lst.size() > maxSize){
-            maxSize = lst.size();
-            maxCC = lst;
-        }
-        
-        cout<<index<<": ";
-        
-        for(litr = lst.begin(); litr!=lst.end(); litr++){
-            long ide = *litr;
-            
-            cout<<ide<<",";
-        }
-        
-        cout<<"\n\n";
-    }
-    
-    unordered_map<string,list<DataPoint*>>::iterator nodeItr;
-    list<DataPoint*>::iterator nphItr;
-    
-    clock_t start_Time = clock();
-    long lastTime = 0;
-    
-    //for(mitr = scc.begin(); mitr!=scc.end(); mitr++){
-    if(maxCC.size()>0){
-        list<long> lstNode = maxCC;
-        list<long>::iterator nlItr;
-        
-        this->gmlGraph.gmlNodeList.clear();
-        
-        minVal = 16777215.0;
-        maxVal = 0.0;
-        minMeanVal = 16777215.0;
-        maxMeanVal = 0.0;
-        minX = 16777215.0;
-        minY = 16777215.0;
-        maxX = 0.0;
-        maxY = 0.0;
-        
-        for(nlItr = lstNode.begin(); nlItr!=lstNode.end(); nlItr++){
-            long ide = *nlItr;
-            
-            nodeItr = this->graph.node.nodeListDP.find(to_string(ide));
-            
-            string id = nodeItr->first;
-            
-            float size = 0;
-            float sum = 0.0;
-            float sumX = 0.0, sumY = 0.0;
-            GmlNode node;
-            node.id = ide;
-            long count = 0;
-            
-            list<DataPoint*> nodePhList = nodeItr->second;
-            
-            for(nphItr = nodePhList.begin(); nphItr != nodePhList.end(); nphItr++){
-                DataPoint* ph = *nphItr;
-                count += ph->phenotypeList.size();
-                
-                sum += ph->GetValue();
-                
-                size += ph->GetWeight(stol(id));
-                
-                sumX += ph->positionX;
-                sumY += ph->positionY;
-            }
-            
-            float avg = sum/count;
-            float avgX = sumX/nodePhList.size();
-            float avgY = sumY/nodePhList.size();
-            
-            node.size = size;
-            node.avgValue = avg;
-            node.avgValueX = avgX;
-            node.avgValueY = avgY;
-            
-            this->gmlGraph.gmlNodeList.push_back(node);
-            
-            rNode *rn = new rNode(ide, avg, size);
-            rn->setEnvWeight(avgX, 0);
-            rn->setEnvWeight(avgY, 1);
-            rGraph->addNode(rn);
-            
-            if(minVal > size && size > 0) minVal = size;
-            if(maxVal < size) maxVal = size;
-            
-            if(maxMeanVal < avg) maxMeanVal = avg;
-            if(minMeanVal > avg && avg > 0) minMeanVal = avg;
-            
-            if(maxX < avgX) maxX = avgX;
-            if(minX > avgX && avgX > 0) minX = avgX;
-            
-            if(maxY < avgY) maxY = avgY;
-            if(minY > avgY && avgY > 0) minY = avgY;
-        }
-        
-        //start_Time = clock();
-        float nw[] = {minMeanVal,maxMeanVal};
-        float ns[] = {minVal,maxVal};
-        float ew[FILTER][2]={{minX,maxX},{minY,maxY}};
-        
-        rGraph->storeRange(ns, nw, ew, envName);
-        
-        for(this->gmlGraph.gnItr = this->gmlGraph.gmlNodeList.begin(); this->gmlGraph.gnItr != this->gmlGraph.gmlNodeList.end(); this->gmlGraph.gnItr++){
-            
-            GmlNode node = *this->gmlGraph.gnItr;
-            
-            node.adjustColor(minMeanVal, maxMeanVal);
-            node.adjustColorByX(minX, maxX);
-            node.adjustColorByY(minY, maxY);
-            node.adjustSize(minVal, maxVal);
-            
-            string size = to_string(node.size);
-            long pos = 0;
-            if((pos =size.find(".")) != string::npos){
-                pos += 3;
-                size = size.substr(0, pos);
-            }
-            
-            string avgVal = to_string(node.avgValue);
-            pos = 0;
-            if((pos =avgVal.find(".")) != string::npos){
-                pos += 3;
-                avgVal = avgVal.substr(0, pos);
-            }
-            
-            string avgValX = to_string(node.avgValueX);
-            pos = 0;
-            if((pos =avgValX.find(".")) != string::npos){
-                pos += 3;
-                avgValX = avgValX.substr(0, pos);
-            }
-            
-            string avgValY = to_string(node.avgValueY);
-            pos = 0;
-            if((pos =avgValY.find(".")) != string::npos){
-                pos += 3;
-                avgValY = avgValY.substr(0, pos);
-            }
-            
-            lastTime = (clock()-start_Time)/CLK_TCK;
-            //str_non_isolatedVertices += "stream.addVertex(" + to_string(node.id) + ", " + to_string(this->overlapX*100).substr(0,5) + ");\n";
-            //sc->AddZeroSimplex(node.id, this->overlapX*50);
-            
-            if(nodeList.find(node.id) == nodeList.end()){
-                nodeList.insert(node.id);
-            }
-            
-            /*if(isPh){
-                // Node color based on avg ph value
-                nodes += "node\n[\n id " + to_string(node.id) + "\n label \"" + avgVal + "\" \n size " + to_string(node.relSize) + "\n color \"" + node.color + "\"\n textcolor \"#ff0000\" \n shape \"circle\" \n]\n";
-                // No color
-                //nodes += "node\n[\n id " + to_string(node.id) + "\n size " + to_string(15) + "\n label \""+ to_string(node.id) +"\" \n color \"#ffffff\" \n shape \"circle\" \n]\n";
-                // No node label
-                //nodes += "node\n[\n id " + to_string(node.id) + "\n label \"\" \n size " + to_string(node.relSize) + "\n color \"" + node.color + "\" \n shape \"circle\" \n]\n";
-            }else if(isTemp){
-                // Node color based on x value
-                nodes += "node\n[\n id " + to_string(node.id) + "\n label \"" + avgValX + "\" \n size " + to_string(node.relSize) + "\n color \"" + node.colorX + "\" \n shape \"circle\" \n]\n";
-                //No node label
-                //nodes += "node\n[\n id " + to_string(node.id) + "\n label \"\" \n size " + to_string(node.relSize) + "\n color \"" + node.colorX + "\" \n shape \"circle\" \n]\n";
-            }else{
-                // Node color based on y value
-                nodes += "node\n[\n id " + to_string(node.id) + "\n label \"" +  avgValY + "\" \n size " + to_string(node.relSize) + "\n color \"" + node.colorY + "\" \n shape \"circle\" \n]\n";
-                // No node label
-                //nodes += "node\n[\n id " + to_string(node.id) + "\n label \"\" \n size " + to_string(node.relSize) + "\n color \"" + node.colorY + "\" \n shape \"circle\" \n]\n";
-            }*/
-            
-            /*totalNodes++;
-            
-        }
-    }
-    
-    unordered_map<string, pair<float, Box>>::iterator edgeItr;
-    unordered_map<string, Edges> edgeListFinal;
-    
-    for(edgeItr=this->graph.edge.edgeList.begin(); edgeItr != this->graph.edge.edgeList.end(); edgeItr++){
-        Box b = edgeItr->second.second;
-        
-        str += b.toString() + "Face weight:" + to_string(edgeItr->second.first) + "\n";
-        
-        list<DataPoint*> phList = b.dpList;
-        if(phList.size() > 0){
-            list<DataPoint*>::iterator itr;
-            
-            for(itr = phList.begin(); itr != phList.end(); itr++){
-                DataPoint* ph = *itr;
-                
-                if(b.twoWayOverlap){
-                    short id[2], k=0;
-                    
-                    for(short i=0; i<4; i++){
-                        if(b.clusterIndex[i] != -1){
-                            id[k] = i;
-                            k++;
-                        }
-                    }
-                    
-                    str += ph->toString(id[0], id[1]);
-                }else{
-                    str += ph->toString();
-                }
-            }
-        }
-    }
-    
-    start_Time = clock();
-    
-    minVal = 16777215.0, maxVal=0.0;
-    
-    for(this->graph.edgeItr = this->graph.edgeList.begin(); this->graph.edgeItr != this->graph.edgeList.end(); this->graph.edgeItr++){
-        
-        if(rGraph->hasNode(this->graph.edgeItr->second.node1, this->graph.edgeItr->second.node2)){
-            rGraph->addEdge(this->graph.edgeItr->second.node1, this->graph.edgeItr->second.node2);
-            
-            //if(this->graph.edgeItr->second.face_weight > 0){
-                
-                float w = this->graph.edgeItr->second.face_weight;
-                
-                if(minVal > w && w>0) minVal = w;
-                if(maxVal < w) maxVal = w;
-                
-                GmlEdge edge;
-                
-                edge.node1 = this->graph.edgeItr->second.node1;
-                edge.node2 = this->graph.edgeItr->second.node2;
-                edge.weight = this->graph.edgeItr->second.face_weight;
-                
-                this->gmlGraph.gmlEdgeList.push_back(edge);
-                
-            //}else{
-              //  cout<<"";
-            //}
-        }
-    }
-    
-    for(this->gmlGraph.geItr = this->gmlGraph.gmlEdgeList.begin(); this->gmlGraph.geItr != this->gmlGraph.gmlEdgeList.end(); this->gmlGraph.geItr++){
-        GmlEdge edge = *this->gmlGraph.geItr;
-        edge.adjustWeight(minVal, maxVal);
-        
-        string face_weight = to_string(edge.weight);
-        long pos = 0;
-        if((pos =face_weight.find(".")) != string::npos){
-            pos += 3;
-            face_weight = face_weight.substr(0, pos);
-        }
-        
-        //str_edges += "stream.addElement(new int[]{" + to_string(edge.node1) + ", " + to_string(edge.node2) + "},  " + to_string(this->overlapX*100).substr(0,5) + ");\n";
-        sc->AddOneSimplex(edge.node1, edge.node2, this->overlapX*50);
-        
-        //edges += "edge\n[\n source " + to_string(edge.node1) + "\n target " + to_string(edge.node2) + "\n width " + to_string(edge.relWeight) + "\n color \"" + edge.color + "\"\n]\n";
-    }
-    
-    map<long, string>::iterator simItr;
-    
-    if(this->tries.size() > 0){
-        for(simItr = this->tries.begin(); simItr != this->tries.end(); simItr++){
-            string val = simItr->second + ",";
-            
-            short pos = -1, index=0;
-            long tempID[] = {-1,-1,-1};
-            
-            while((pos = val.find(",")) != string::npos){
-                tempID[index] = stol(val.substr(0, pos));
-                val = val.substr(pos+1, val.length());
-                index++;
-            }
-            
-            //str_triangles += "stream.addElement(new int[]{" + to_string(tempID[0]) + ", " + to_string(tempID[1]) + ", " + to_string(tempID[2]) + "},  " + to_string(this->overlapX*100).substr(0,5) + ");\n";
-            sc->AddTwoSimplex(tempID[0], tempID[1], tempID[2], this->overlapX*50);
-        }
-        
-    }
-    
-    if(this->tetras.size() > 0){
-        for(simItr = this->tetras.begin(); simItr != this->tetras.end(); simItr++){
-            string val = simItr->second + ",";;
-            short pos = -1, index=0;
-            long tempID[] = {-1,-1,-1,-1};
-            
-            while((pos = val.find(",")) != string::npos){
-                tempID[index] = stol(val.substr(0, pos));
-                val = val.substr(pos+1, val.length());
-                index++;
-            }
-            
-            //str_triangles += "stream.addElement(new int[]{" + to_string(tempID[0]) + ", " + to_string(tempID[1]) + ", " + to_string(tempID[2]) + "}, " + to_string(this->overlapX*100).substr(0,5) + ");\n";
-            sc->AddTwoSimplex(tempID[0], tempID[1], tempID[2], this->overlapX*50);
-            
-            //str_triangles += "stream.addElement(new int[]{" + to_string(tempID[0]) + ", " + to_string(tempID[2]) + ", " + to_string(tempID[3]) + "}, " + to_string(this->overlapX*100).substr(0,5) + ");\n";
-            sc->AddTwoSimplex(tempID[0], tempID[2], tempID[3], this->overlapX*50);
-            
-            //str_triangles += "stream.addElement(new int[]{" + to_string(tempID[0]) + ", " + to_string(tempID[1]) + ", " + to_string(tempID[3]) + "}, " + to_string(this->overlapX*100).substr(0,5) + ");\n";
-            sc->AddTwoSimplex(tempID[0], tempID[1], tempID[3], this->overlapX*50);
-            
-            //str_triangles += "stream.addElement(new int[]{" + to_string(tempID[1]) + ", " + to_string(tempID[2]) + ", " + to_string(tempID[3]) + "}, " + to_string(this->overlapX*100).substr(0,5) + ");\n";
-            sc->AddTwoSimplex(tempID[1], tempID[2], tempID[3], this->overlapX*50);
-            
-            //str_tetrahiddrens += "stream.addElement(new int[]{" + to_string(tempID[0]) + ", " + to_string(tempID[1]) + ", " + to_string(tempID[2]) + ", " + to_string(this->overlapX*100).substr(0,5) + ");\n";
-            sc->AddThreeSimplex(tempID[0], tempID[1], tempID[2], tempID[3], this->overlapX*50);
-        }
-        
-    }
-    
-    /*gmlData = nodes+edges+"]";
-    
-    FileHandler* fileHandler = new FileHandler("");
-    fileHandler->WriteDataToFile(fileName, "gml", gmlData, false);
-    delete fileHandler;*/
-    
-    /*rGraph->findInterestingPaths(fileName_suffix);
-    
-    delete rGraph;
-    
-    cout<<"\n("<<totalNodes<<"/"<<Cluster::GetClusterID()<<")"<<endl;
-    
-    //cout<<str_isolatedVertices<<str_non_isolatedVertices<<str_edges<<str_triangles<<str_tetrahiddrens<<endl;
-    */
     return "";
 }
 
@@ -2501,7 +2128,7 @@ void ClusteringRegion::ShuffleClusters(){
     delete []allClusters;
 }
 
-#pragma Private_Methods
+//#pragma Private_Methods
 
 void ClusteringRegion::SplitRegion(){
     float x1 = this->xMin, y1=this->yMin;
@@ -3021,12 +2648,12 @@ void ClusteringRegion::CreateGraph_new(list<Phenotype*> cpList, short* clusterIn
     
     long idList[]={-1,-1,-1,-1};
     int xMaxBox = this->maxBlockX/2;
-    float minX = BoxCoOrdinate[0], minY = BoxCoOrdinate[1], maxX = BoxCoOrdinate[2], maxY = BoxCoOrdinate[3];
+    //float minX = BoxCoOrdinate[0], minY = BoxCoOrdinate[1], maxX = BoxCoOrdinate[2], maxY = BoxCoOrdinate[3];
     int i = positionCoOrdinate[0], j = positionCoOrdinate[1];
     list<Phenotype*>::iterator itr;
     string key = "";
     string points = "";
-    float faceWeight = 0.0;
+    //float faceWeight = 0.0;
     short boxID[]={0,0,0,0};
     
     if(!isTwoWayOverlap){

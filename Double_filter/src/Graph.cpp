@@ -16,7 +16,7 @@
 
 #include "Graph.h"
 
-#pragma Environment_class
+//#pragma Environment_class
 Environment::Environment(){
     for(int i=0; i<FILTER; i++){
         this->weight[i] = 0.0;
@@ -37,7 +37,7 @@ void Environment::setWeight(float value, int index){
         weight[index]=value;
 }
 
-#pragma rNode_class
+//#pragma rNode_class
 
 rNode::rNode(rNode* node){
     this->id = node->id;
@@ -381,7 +381,7 @@ void rNode::resetLinkNodes(){
     in_degree = out_degree = 0;
 }
 
-#pragma rEdge_class
+//#pragma rEdge_class
 
 rEdge::rEdge(rNode* node1, rNode* node2){
     if(node1->getWeight() > node2->getWeight()){
@@ -529,7 +529,7 @@ bool rEdge::getSignatureAtIndex(int index){
     return false;
 }
 
-# pragma Path_class
+//#pragma Path_class
 Path::Path(){
     this->score = 0.0;
     this->color = "#000000";
@@ -612,7 +612,7 @@ list<long> Path::getAllNodesInAPath(){
     return pathNodeOrder;
 }
 
-#pragma RGB_class
+//#pragma RGB_class
 RGB::RGB(){}
 RGB::RGB(short R, short G, short B){this->R=R;this->G=G;this->B=B;}
 RGB::~RGB(){}
@@ -625,7 +625,7 @@ void RGB::setR(short R){this->R=R;}
 void RGB::setG(short G){this->G=G;}
 void RGB::setB(short B){this->B=B;}
 
-#pragma Residual_Graph_class
+//#pragma Residual_Graph_class
 
 CompositeGraph::CompositeGraph(){
     this->pathCounter = 0;
@@ -2481,7 +2481,8 @@ string CompositeGraph::printCompositeGraphsWithPath(string fileNameSuffix){
         
         this->reconstructPaths();
         
-        //std::cout<<"\n\nCC:"<<this->CCNumber<<"\nTerminal nodes:\n"<<this->printPaths();
+        if(PRINT_CC_PATH)
+            std::cout<<"\n\nCC:"<<this->CCNumber<<"\nTerminal nodes:\n"<<this->printPaths();
     }
     
     // false: print normalized weight, true: signature
@@ -2770,7 +2771,7 @@ string CompositeGraph::analyzeNodes(){
     
 }
 
-#pragma Main_graph_class
+//#pragma Main_graph_class
 MainGraph::MainGraph(int ccCounter){
     this->ccCounter = ccCounter;
     this->connectedComponents = new CompositeGraph[ccCounter];

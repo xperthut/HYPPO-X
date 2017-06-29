@@ -26,7 +26,7 @@ QuadTree::~QuadTree(){
     delete this->root;
 }
 
-#pragma Public_Methods
+//#pragma Public_Methods
 void QuadTree::AddDataToNode(DataPoint* data){
     this->root->AddDataToNode(data);
 }
@@ -48,7 +48,7 @@ void QuadTree::SearchDataPoints(float x1, float y1, float x2, float y2, set<long
 
 }
 
-#pragma Private_Methods
+//#pragma Private_Methods
 int QuadTree::PrintNode(QuadNode *node){
     if(node == NULL) return 0;
     

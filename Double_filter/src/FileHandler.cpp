@@ -23,7 +23,7 @@ FileHandler::FileHandler(string fileName){
 
 FileHandler::~FileHandler(){}
 
-#pragma Public_Method
+//#pragma Public_Method
 void FileHandler::readNodePosition(string _fileName, unordered_map<long, float*> *positionMap){
     
     try {
@@ -64,6 +64,9 @@ void FileHandler::readNodePosition(string _fileName, unordered_map<long, float*>
             
             fileReader.close();
             
+        }else{
+            cout<<"\nError to read file. Please check the constant [COORDINATE_FILE_NAME] contained file name and path in config.h\n"<<endl;
+            exit(0);
         }
         
     } catch (exception &e) {
@@ -123,7 +126,6 @@ void FileHandler::ReadFileData(list<DataPoint*> *dataPointList){
                 date = line.substr(0,pos);
                 line=line.substr(pos+1,line.length()-pos-1);
                 
-                
                 pos = line.find(",");
                 value = line.substr(0,pos);
                 line=line.substr(pos+1,line.length()-pos-1);
@@ -145,19 +147,78 @@ void FileHandler::ReadFileData(list<DataPoint*> *dataPointList){
                 env[3] = line.substr(0,pos);
                 
                 // Assign filters
-                filter1 = dap;
-                
-                switch (FILTER_2) {
+                switch (FILTER_1) {
+                    case 0:
+                        filter1 = dap;
+                        switch (FILTER_2) {
+                            case 1:
+                                filter2 = env[0];
+                                break;
+                            case 2:
+                                filter2 = env[1];
+                                break;
+                            case 3:
+                                filter2 = env[2];
+                                break;
+                            default:
+                                filter2 = env[0];
+                                break;
+                        }
+                        break;
                     case 1:
-                        filter2 = env[0];
+                        filter1 = env[0];
+                        switch (FILTER_2) {
+                            case 1:
+                                filter2 = dap;
+                                break;
+                            case 2:
+                                filter2 = env[1];
+                                break;
+                            case 3:
+                                filter2 = env[2];
+                                break;
+                            default:
+                                filter2 = dap;
+                                break;
+                        }
                         break;
                     case 2:
-                        filter2 = env[1];
+                        filter1 = env[1];
+                        switch (FILTER_2) {
+                            case 1:
+                                filter2 = dap;
+                                break;
+                            case 2:
+                                filter2 = env[0];
+                                break;
+                            case 3:
+                                filter2 = env[2];
+                                break;
+                            default:
+                                filter2 = dap;
+                                break;
+                        }
                         break;
                     case 3:
-                        filter2 = env[2];
+                        filter1 = env[2];
+                        switch (FILTER_2) {
+                            case 1:
+                                filter2 = dap;
+                                break;
+                            case 2:
+                                filter2 = env[0];
+                                break;
+                            case 3:
+                                filter2 = env[1];
+                                break;
+                            default:
+                                filter2 = dap;
+                                break;
+                        }
                         break;
                     default:
+                        filter1 = dap;
+                        filter2 = env[0];
                         break;
                 }
                 
@@ -215,6 +276,9 @@ void FileHandler::ReadFileData(list<DataPoint*> *dataPointList){
             
             fileReader.close();
             
+        }else{
+            cout<<"\nError to read file. Please check the constant [DATA_FILE_NAME] contained file name and path in config.h\n"<<endl;
+            exit(0);
         }
         
     } catch (exception &e) {
@@ -255,7 +319,7 @@ string FileHandler::WriteDataToFile(string fileName, string extention, string da
     return realpath(fileName.c_str(), NULL);
 }
 
-#pragma Private methods
+//#pragma Private methods
 
 /****
  Get current date/time, format is YYYY-MM-DD_HH:mm:ss

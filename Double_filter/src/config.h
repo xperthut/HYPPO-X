@@ -21,10 +21,15 @@
 #define GENOME 1
 
 // Define the filter
-// 0: filter by DAP, this is fixed.
+// We have option to change any of this four as a first filter
+// 0: filter by DAP
+// 1: filter by Temperature
+// 2: filter by solar radiation
+// 3: filter by humidity
 #define FILTER_1 0
 
-// We have option to change any of this three as a second filter
+// We have option to change any of this four as a second filter
+// 0: filter by DAP
 // 1: filter by Temperature
 // 2: filter by solar radiation
 // 3: filter by humidity
@@ -35,13 +40,50 @@
 // 10X10 for sr, temp
 // dap,hum, (A), {1,1,10,1,2,3,4,5,9,11,13,14}
 
+#if FILTER_1==0
+    #if FILTER_2==1
+        #define FILTER_NAMES {"dap","temp"}
+    #elif FILTER_2==2
+        #define FILTER_NAMES {"dap","sr"}
+    #elif FILTER_2==3
+        #define FILTER_NAMES {"dap","hum"}
+    #endif
+
+#elif FILTER_1==1
+    #if FILTER_2==0
+        #define FILTER_NAMES {"temp","dap"}
+    #elif FILTER_2==2
+        #define FILTER_NAMES {"temp","sr"}
+    #elif FILTER_2==3
+        #define FILTER_NAMES {"temp","hum"}
+    #endif
+#elif FILTER_1==2
+    #if FILTER_2==0
+        #define FILTER_NAMES {"sr","dap"}
+    #elif FILTER_2==1
+        #define FILTER_NAMES {"sr","temp"}
+    #elif FILTER_2==3
+        #define FILTER_NAMES {"sr","hum"}
+    #endif
+#elif FILTER_1==3
+    #if FILTER_2==0
+        #define FILTER_NAMES {"hum","dap"}
+    #elif FILTER_2==1
+        #define FILTER_NAMES {"hum","temp"}
+    #elif FILTER_2==2
+        #define FILTER_NAMES {"hum","sr"}
+    #endif
+#endif
+
+
+
 #if GENOME==0
     // Specify full path of the data file
-    #define DATA_FILE_NAME "gxe_pat.csv"
+    #define DATA_FILE_NAME "../data/input.csv"
+
     #if FILTER_2==1
         #define CLUSTER_RADIUS 0.9
         #define OVERLAP 0.93
-        #define ENV_NAMES {"dap","temp"}
         #define WINDOW_X 30
         #define WINDOW_Y 5
         #define PRINT_ALL_PATHS true
@@ -49,11 +91,10 @@
         #define PATH_LIST {}
         #define PATH_COLOR {}
         // Specify full path of the data file
-        #define COORDINATE_FILE_NAME "gxe_node_position_2D_dap_temp_9.csv"
+        #define COORDINATE_FILE_NAME "../data/gxe_node_position_2D_dap_temp_9.csv"
     #elif FILTER_2==2
         #define CLUSTER_RADIUS 0.7
         #define OVERLAP 0.95
-        #define ENV_NAMES {"dap","sr"}
         #define WINDOW_X 20
         #define WINDOW_Y 5
         #define PRINT_ALL_PATHS true
@@ -61,11 +102,10 @@
         #define PATH_LIST {}
         #define PATH_COLOR {}
         // Specify full path of the data file
-        #define COORDINATE_FILE_NAME "gxe_node_position_dap_sr_7.csv"
+        #define COORDINATE_FILE_NAME "../data/gxe_node_position_dap_sr_7.csv"
     #elif FILTER_2==3
         #define CLUSTER_RADIUS 0.8
         #define OVERLAP 0.92
-        #define ENV_NAMES {"dap","hum"}
         #define WINDOW_X 20
         #define WINDOW_Y 5
         #define PRINT_ALL_PATHS true
@@ -73,15 +113,27 @@
         #define PATH_LIST {}
         #define PATH_COLOR {}
         // Specify full path of the data file
-        #define COORDINATE_FILE_NAME "gxe_node_position_dap_hum_8.csv"
+        #define COORDINATE_FILE_NAME "../data/gxe_node_position_dap_hum_8.csv"
+
+    // Add your configuration here for custom filter choices for input.csv dataset, which contains both genotypes
+    #else
+        #define CLUSTER_RADIUS 0.8
+        #define OVERLAP 0.92
+        #define WINDOW_X 20
+        #define WINDOW_Y 5
+        #define PRINT_ALL_PATHS true
+        #define ASSIGN_PATH_COLOR_MANUAL false
+        #define PATH_LIST {}
+        #define PATH_COLOR {}
+        #define COORDINATE_FILE_NAME "../data/gxe_node_position_dap_hum_8.csv"
     #endif
 #else
     // Specify full path of the data file
-    #define DATA_FILE_NAME "gxe_pat_B.csv"
+    #define DATA_FILE_NAME "../data/input_B.csv"
+
     #if FILTER_2==1
         #define CLUSTER_RADIUS 0.6
         #define OVERLAP 0.92
-        #define ENV_NAMES {"dap","temp"}
         #define WINDOW_X 30
         #define WINDOW_Y 5
         #define PRINT_ALL_PATHS false
@@ -89,11 +141,10 @@
         #define PATH_LIST {2,2,4,1,2,3,4,4,4,1,2,3,4}
         #define PATH_COLOR {"","","","#da2577","#b7a511","#0eafc9","#0000ff","","","#ff0000","#8e44ad","#0ec92d","#fead54"}
         // Specify full path of the data file
-        #define COORDINATE_FILE_NAME "gxe_node_position_2D_dap_temp_B_6.csv"
+        #define COORDINATE_FILE_NAME "../data/gxe_node_position_2D_dap_temp_B_6.csv"
     #elif FILTER_2==2
         #define CLUSTER_RADIUS 0.6
         #define OVERLAP 0.78
-        #define ENV_NAMES {"dap","sr"}
         #define WINDOW_X 30
         #define WINDOW_Y 5
         #define PRINT_ALL_PATHS false
@@ -101,11 +152,10 @@
         #define PATH_LIST {1,1,9,1,2,3,4,5,6,7,8,11}
         #define PATH_COLOR {"","","","#ff0000","#da2577","#75a920","#0eafc9","#0000ff","#8e44ad","#8e44ad","#8e44ad","#8e44ad"}
         // Specify full path of the data file
-        #define COORDINATE_FILE_NAME "gxe_node_position_2D_dap_sr_B_6.csv"
+        #define COORDINATE_FILE_NAME "../data/gxe_node_position_2D_dap_sr_B_6.csv"
     #elif FILTER_2==3
         #define CLUSTER_RADIUS 0.7
         #define OVERLAP 0.92
-        #define ENV_NAMES {"dap","hum"}
         #define WINDOW_X 30
         #define WINDOW_Y 5
         #define PRINT_ALL_PATHS false
@@ -113,10 +163,23 @@
         #define PATH_LIST {1,2,10,1,2,3,4,5,6,7,9,10,12}
         #define PATH_COLOR {"","","","#ff0000","#da2577","#b7a511","#9EB927","#0ec92d","#0eafc9","#0000ff","#8e44ad","#cead45","#fead54"}
         // Specify full path of the data file
-        #define COORDINATE_FILE_NAME "gxe_node_position_2D_dap_hum_B_7.csv"
+        #define COORDINATE_FILE_NAME "../data/gxe_node_position_2D_dap_hum_B_7.csv"
+
+    // Add your configuration here for custom filter choices for input.csv dataset, which contains both genotypes
+    #else
+        #define CLUSTER_RADIUS 0.8
+        #define OVERLAP 0.92
+        #define WINDOW_X 20
+        #define WINDOW_Y 5
+        #define PRINT_ALL_PATHS true
+        #define ASSIGN_PATH_COLOR_MANUAL false
+        #define PATH_LIST {}
+        #define PATH_COLOR {}
+        #define COORDINATE_FILE_NAME "../data/gxe_node_position_dap_hum_8.csv"
     #endif
 #endif
 
+// Cluster density, the number of minimum points
 #define CLUSTER_DENSITY 2
 
 // Total environmental attributes
@@ -221,6 +284,9 @@
 // true: heatmap coloring scheme at each connected compoment (CC) separately
 // false: apply gloal heatmap coloring scheme for all connected component
 #define HEATMAP_EACH_CC false
+
+// Print the number of connected components and path information
+#define PRINT_CC_PATH false
 
 // Always false here
 #define HAMMING_DISTANCE false;

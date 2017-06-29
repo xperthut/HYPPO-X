@@ -146,7 +146,7 @@ string SimplicialComplex::PrintSimplex(){
 }
 
 
-#pragma DEPRICATED_METHODS
+//#pragma DEPRICATED_METHODS
 
 void SimplicialComplex::AddZeroSimplex(long node, float filtrationValue){
     
@@ -280,7 +280,7 @@ string SimplicialComplex::PrintSimplex_depricated(){
 }
 
 
-#pragma Private_Methods
+//#pragma Private_Methods
 void SimplicialComplex::AddToOneOrMoreSimplex(string nodeList, float filtrationValue){
     unordered_map<string, float>::iterator itr;
     

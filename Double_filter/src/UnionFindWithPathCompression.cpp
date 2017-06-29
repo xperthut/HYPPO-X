@@ -104,7 +104,7 @@ unordered_map<long, list<long>> UnionFindWithPathCompression::GetAllConnectedCom
     return scc;
 }
 
-#pragma Private_Methods
+//#pragma Private_Methods
 void UnionFindWithPathCompression::UnionSets(long rootA, long rootB){
     if(rootA != rootB){
         if(this->s[rootB]<this->s[rootA]){

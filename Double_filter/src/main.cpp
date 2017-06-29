@@ -38,7 +38,11 @@ int main(int argc, const char * argv[]) {
         unit = "(ms)";
     }
     
-    cout<<"Total time:"<<_time<<unit<<endl;
+    cout<<"\n\nTotal time:"<<_time<<unit<<endl;
+    
+    char ch;
+    cout<<"\n\nPress any key to exit";
+    ch=getchar();
     
     return 0;
 }

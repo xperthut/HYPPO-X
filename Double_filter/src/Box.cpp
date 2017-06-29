@@ -16,7 +16,7 @@
 
 #include "Box.h"
 
-#pragma Area_Methods
+//#pragma Area_Methods
 
 Area::Area(){}
 
@@ -24,7 +24,7 @@ string Area::toString(){
     return "(" + to_string(xMin) + "," + to_string(yMin)+ "," + to_string(xMax) + "," + to_string(yMax) + ")";
 }
 
-#pragma Box_Methods
+//#pragma Box_Methods
 
 Box::Box(int first, int second, int third, int fourth, float xMin, float xMax, float yMin, float yMax, bool horizontalOverlap, bool twoWayOverlap, long *clsID, short *clusterIndex){
     this->first = first;

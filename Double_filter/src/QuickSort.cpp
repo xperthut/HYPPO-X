@@ -63,7 +63,7 @@ void QuickSort::Sort(list<Phenotype*> *phList){
     
 }
 
-#pragma Private_Method
+//#pragma Private_Method
 void QuickSort::Swap(long index1, long index2){
     Phenotype* tmp = this->phenotypeList[index1];
     

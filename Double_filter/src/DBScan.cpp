@@ -126,7 +126,7 @@ void DBScan::MakeCluster(list<DataPoint *> *dpList){
     }
 }
 
-#pragma Private_Methods
+//#pragma Private_Methods
 void DBScan::DBSCAN(){
     long clusterID = 0;
     
@@ -290,7 +290,7 @@ void DBScan::GetSeeds(list<long> *phIndexList, long index){
     }
 }
 
-#pragma For_gen_loc
+//#pragma For_gen_loc
 int DBScan::ExpandCluster(long index, long clusterID, int gen_loc_weight){
     list<long> seeds;
     list<long>::iterator itr;
@@ -456,7 +456,7 @@ void DBScan::GetSeeds(list<long> *phIndexList, long index, int gen_loc_weight){
     }
 }
 
-#pragma For_hamming_distance
+//#pragma For_hamming_distance
 
 void DBScan::DBSCAN_HD(){
     long clusterID = 0;
