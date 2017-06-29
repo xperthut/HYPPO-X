@@ -1,5 +1,5 @@
-TOPOHYPPO
-=========
+HYPPO X / HYPPO-X
+=================
 
 This is a hypothesis extraction tool from high dimensional phenomix dataset. This tool is mainly built in `c++`. The object that we generated from our method is a graph and we used `igraph` package of `R` to visually represent the graph. We also use `HTML canvas` to represent the graph more meaningfully using pie chart and colors.
 
@@ -136,7 +136,7 @@ The file named `config.h`contains all settings. One can change the value of the 
 
 
 ## Build object
-1. `Configure [DATA_FILE_NAME]`
+##### 1. Configure [DATA_FILE_NAME]
 2. `Configure [FILTER_1]`
 3. `Configure [WINDOW_X]`
 4. `Configure [CLUSTER_RADIUS]`
@@ -196,4 +196,5 @@ var data = [{id:value, p:{}, d:[{}]}];
 // After merging
 var data = [{id:value, p:{}, d:[{}]}, {id:value, p:{}, d:[{}]}];
 ```
-`You can save the pie chart in a png formatted image.`
+`See [README.md](https://github.com/xperthut/HYPPOX/tree/master/Pie_chart) for details construction of a HTML file using this data. You can save the pie chart in a png formatted image.`
+
