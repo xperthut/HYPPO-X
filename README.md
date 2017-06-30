@@ -186,7 +186,7 @@ The file named `config.h`contains the settings. One can change the value of the 
 
 1. Configure `DATA_FILE_NAME`
 2. Configure `FILTER_1` and `FILTER_2`
-3. Configure `WINDOW_X`
+3. Configure `WINDOW_X` and `WINDOW_Y`
 4. Configure `CLUSTER_RADIUS`
 5. Set barcode flag `PRINT_BARCODE`
 6. Run the program to generate simplex timeline in Java. For instance, the output will be as follows: 
