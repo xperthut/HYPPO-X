@@ -15,7 +15,7 @@ This is a hypothesis extraction tool from high dimensional phenomix dataset. Thi
 ## Filter functions
 ###### ([Back to content list](#contents))
 
-We implemented the process of generating a `topological object` using both `single filter function` and `double filter function` in `C++`. The source codes are in the `src` folder and the test dataset `(gxe_pat.csv)` is in the `data` folder.
+We implemented the process of generating a `topological object` using both `single filter function` and `double filter function` in `C++`. The source codes are in the `src` folder and the test datasets are in the `data` folder.
 
 ### Single filter function
 Based on our dataset, we can use following attribute as a filter function.
