@@ -12,7 +12,7 @@ This is a hypothesis extraction tool from high dimensional phenomix dataset. Thi
 - [How to Build object](#how-to-build-object)
 
 
-## Filter functions
+## Filter functions ([Menu](#contents))
 We implemented the process of generating a `topological object` using both `single filter function` and `double filter function` in `C++`. The source codes are in the `src` folder and the test dataset `(gxe_pat.csv)` is in the `data` folder.
 
 ### Single filter function
@@ -27,7 +27,7 @@ We have option to choose any two attributes among the above four attributes. In 
 
 
 
-## Input data format
+## Input data format ([Menu](#contents))
 Our `C++` project reads data from a `csv` formatted data file contained following columns. One can change the column name and the value but can't expand the columns or change the type of the value. i.e. `Time` column accepts integer values like `1,2,...` and does not allow any `text` here.
 1. `Time, integer type. i.e. Days After Planting (DAP)`
 2. `Genotype, string/text type`
