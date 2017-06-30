@@ -185,7 +185,7 @@ The file named `config.h`contains the settings. One can change the value of the 
 ###### ([Back to content list](#contents))
 
 1. Configure `DATA_FILE_NAME`
-2. Configure `FILTER_1`
+2. Configure `FILTER_1` and `FILTER_2`
 3. Configure `WINDOW_X`
 4. Configure `CLUSTER_RADIUS`
 5. Set barcode flag `PRINT_BARCODE`
