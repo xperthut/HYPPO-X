@@ -228,7 +228,9 @@ coord = tkplot.getcoords(id)
 # File path is the absolute path of the above file
 graph_coordinate_to_html_coordinate(g,coord,[file name],[file path]) 
 ```
-The tab `view` at top of the `XQuartz` panel has a option to show or hide the labels in the graph. Hide all the labels and save the image. The image will save in `eps` format.` 
+You can save the `coord` variable and use it later to avoid the rearrangement of the graph nodes. Check this out for details [here](https://github.com/xperthut/HYPPOX/tree/master/Graph_plot). In our experiement, the graph and coordinate loading codes are [here](https://github.com/xperthut/HYPPOX/tree/master/Graph_plot/R), the csv files for graph node coordinates are [here](https://github.com/xperthut/HYPPOX/tree/master/Graph_plot/R/data). The suffix of each file name identify the filter function.
+
+The tab `view` at top of the `XQuartz` panel has a option to show or hide the labels in the graph. Hide all the labels and save the image. The image will save in `eps` format.
 
 11. Open the `csv` file generated at earlier step and remove the first blank row and save it. Copy this file to the `C++ project` folder and add its reference in the project editor (xcode or MS Visual studio).
 
