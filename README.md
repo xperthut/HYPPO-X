@@ -1,7 +1,7 @@
 HYPPO X / HYPPO-X
 =================
 
-This is a hypothesis extraction tool from high dimensional phenomix dataset. This tool is mainly built in `c++`. The object that we generated from our method is a graph and we used `igraph` package of `R` to visually represent the graph. We also use `HTML canvas` to represent the graph more meaningfully using pie chart and colors.
+This is a hypothesis extraction tool from high dimensional phenomix dataset. This tool is mainly built in `C++`. The object that we generated from our method is a graph and we used `igraph` package of `R` to visually represent the graph. We also use `HTML canvas` to represent the graph more meaningfully using pie chart and colors.
 
 ## Contents
 - [Filter functions](#filter-functions)
@@ -149,9 +149,10 @@ The file named `config.h`contains all settings. One can change the value of the 
 
 ### Setup for Mac users
 
-1. Create an empty project in `xcode` and run the project.
+1. Create an empty `C++` project in `xcode` and run it.
 2. Open the project folder. Copy all the files from `src` named folder to your project's source folder.
 3. Copy the data files to `[project folder]/Build/Products/Debug/` folder.
+4. Open `config.h` file and adjust all csv file path.
 
 ### Setup for Windows users
 
@@ -159,20 +160,22 @@ The file named `config.h`contains all settings. One can change the value of the 
 2. In `solution explorer`, right click on the `source` and select `add existing item`. Select all `.cpp` extended files of our `src` folder.
 3. In `solution explorer`, right click on the `header` and select `add existing item`. Select all `.h` extended files of our `src` folder.
 4. In `solution explorer`, right click on the `resource` and select `add existing item`. Select all `.csv` extended files in our `data` folder.
-5. Open `config.h` file and change all file path.
+5. Open `config.h` file and adjust all csv file path.
 
 ### Setup for Unix system user (Linux, ubontu, etc)
 
-1. Download any free editor, i.e. `eclipse, netbeans`, etc
-2. Setup the project and run.
+1. Download any free editor, i.e. `eclipse, netbeans`, etc.
+2. Setup the project.
+3. Open `config.h` file and adjust all csv file path.
+4. Run.
 
 ### Run from terminal
 
 1. Open the terminal.
-2. write `cd [The path of src folder]` and press `ENTER`
-3. Write `make all` command to compile all source files
-4. Write `./main` to run the project
-5. Write `make clean` to clean all object and output files
+2. write `cd [The path of src folder]` and press `ENTER`.
+3. Write `make all` command to compile all source files.
+4. Write `./main` to run the project.
+5. Write `make clean` to clean all object and output files.
 6. Each time you `change` to any file, repeat `step 5` and then `step 3`.
 
 ###### ([Back to content list](#contents))
@@ -227,7 +230,7 @@ graph_coordinate_to_html_coordinate(g,coord,[file name],[file path])
 ```
 The tab `view` at top of the `XQuartz` panel has a option to show or hide the labels in the graph. Hide all the labels and save the image. The image will save in `eps` format.` 
 
-11. Open the `csv` file generated at earlier step and remove the first blank row and save it. Copy this file to the `c++ project` folder and add its reference in the project editor (xcode or MS Visual studio).
+11. Open the `csv` file generated at earlier step and remove the first blank row and save it. Copy this file to the `C++ project` folder and add its reference in the project editor (xcode or MS Visual studio).
 
 12. Configure this file name with path here:
 ```cpp
@@ -245,7 +248,7 @@ var data = [{id:value, p:{}, d:[{}]}, {id:value, p:{}, d:[{}]}];
 ```
 See [README.md](https://github.com/xperthut/HYPPOX/tree/master/Pie_chart) for details construction of a HTML file using this data. You can save the pie chart in a `png` formatted image.
 
-14. When you enable the flag `PIE_CHART_CODE` for `double filter function` then you will get three more JSON variables. One of those variable is `var ph`. The other two variables' name depend on the choice of the filter functions and the name of the variables are same as the specified names in the constant `FILTER_NAMES`. As discussed in previous step, you have to merge the data of a variable if it appears in multiple times. These variables are used to color the nodes. See [README.md](https://github.com/xperthut/HYPPOX/tree/master/Pie_chart) for details construction of a HTML file using the data of these variables. You can save the an image in `png` format.
+14. When you enable the flag `PIE_CHART_CODE` for `double filter function` then you will get three more JSON variables. Declaration of one of those variables is `var ph`. The declaration of other two variables are `var f1` and `var f2`. Here, `f1` variables holds JSON data for first filter attribute and `f2` variable stores JSON data for sencond filter attribute. As discussed in previous step, you have to merge the data of a variable if it appears in multiple times. These variables are used to color the nodes. See [README.md](https://github.com/xperthut/HYPPOX/tree/master/Pie_chart) for details construction of a HTML file using the data of these variables. You can save the an image in `png` format.
 
 ###### ([Back to content list](#contents))
 
