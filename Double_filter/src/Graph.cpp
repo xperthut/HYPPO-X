@@ -904,7 +904,8 @@ string CompositeGraph::printGraph(bool isPhenotype, bool isEnv, int index, strin
         if(isPhenotype)
             cout<<"\n\nvar ph="<<nodeJS<<";\n\n";
         else{
-            cout<<"\n\nvar "<<envName[index]<<"="<<nodeJS<<";\n\n";
+            //cout<<"\n\nvar "<<envName[index]<<"="<<nodeJS<<";\n\n";
+            cout<<"\n\nvar f"<<index+1<<"="<<nodeJS<<";\n\n";
         }
     }
     
@@ -2810,7 +2811,7 @@ void MainGraph::setEnvName(string *env){
 void MainGraph::printCompositeGraph(string fileNameSuffix){
     string gmlData = "graph\n[\ndirected 1\nweighted 1\n";
     
-    string fileName_dag = "graph_RESIDUAL_";
+    string fileName_dag = "graph_COMPOSITE_";
     
     if(DELTA_CHANGE>0)
         fileName_dag += "ROBUST_" + fixPrecision(DELTA_CHANGE, 2) + "_";
@@ -2870,10 +2871,12 @@ void MainGraph::printOriginalGraph(string fileNameSuffix){
     
     gmlData += "]";
     
+    // Do not print this graph for this release
+    /*
     FileHandler* fileHandler = new FileHandler("");
     fileHandler->WriteDataToFile(fileName_dag, "gml", gmlData, false);
     delete fileHandler;
-    
+    */
     
     if(!PRINT_BARCODE){
         isPhenotype=false;
@@ -2908,9 +2911,12 @@ void MainGraph::printOriginalGraph(string fileNameSuffix){
             
             gmlData += "]";
             
+            // Do not print this graph for this release
+            /*
             fileHandler = new FileHandler("");
             fileHandler->WriteDataToFile(fileName_dag, "gml", gmlData, false);
             delete fileHandler;
+             */
         }
     }
     

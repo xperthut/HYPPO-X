@@ -2780,9 +2780,12 @@ void MainGraph::printOriginalGraph(string fileNameSuffix){
     
     gmlData += "]";
     
-    FileHandler* fileHandler = new FileHandler("");
-    fileHandler->WriteDataToFile(fileName_dag, "gml", gmlData, false);
-    delete fileHandler;
+    // Don't print this graph for this release
+    /*
+     FileHandler* fileHandler = new FileHandler("");
+     fileHandler->WriteDataToFile(fileName_dag, "gml", gmlData, false);
+     delete fileHandler;
+     */
     
     
     if(!PRINT_BARCODE && false){
@@ -2815,9 +2818,12 @@ void MainGraph::printOriginalGraph(string fileNameSuffix){
             
             gmlData += "]";
             
+            // Do not print this graph for this release
+            /*
             fileHandler = new FileHandler("");
             fileHandler->WriteDataToFile(fileName_dag, "gml", gmlData, false);
             delete fileHandler;
+             */
         }
     }
 

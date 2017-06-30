@@ -30,7 +30,7 @@
 #define PRINT_ALL_PATHS false
 
 // Specify full path of the data file
-#define DATA_FILE_NAME "input.csv"
+#define DATA_FILE_NAME "../data/input.csv"
 
 // DBSCAN parameters
 // 0.6 for DAP,SR
@@ -60,28 +60,28 @@
     #define SUFFIX "DAP"
     #define WINDOW_X 30
     // Specify full path of the data file
-    #define COORDINATE_FILE_NAME "gxe_node_position_1D_dap_6.csv"
+    #define COORDINATE_FILE_NAME "../data/gxe_node_position_1D_dap_6.csv"
 #elif FILTER_1==1
     #define CLUSTER_RADIUS 0.4
     #define OVERLAP 0.80
     #define SUFFIX "TEMP"
     #define WINDOW_X 15
     // Specify full path of the data file
-    #define COORDINATE_FILE_NAME "gxe_node_position_1D_temp_4.csv"
+    #define COORDINATE_FILE_NAME "../data/gxe_node_position_1D_temp_4.csv"
 #elif FILTER_1==2
     #define CLUSTER_RADIUS 0.6
     #define OVERLAP 0.72
     #define SUFFIX "SR"
     #define WINDOW_X 12
     // Specify full path of the data file
-    #define COORDINATE_FILE_NAME "gxe_node_position_single_SR_6.csv"
+    #define COORDINATE_FILE_NAME "../data/gxe_node_position_single_SR_6.csv"
 #elif FILTER_2==3
     #define CLUSTER_RADIUS 0.9
     #define OVERLAP 0.95
     #define SUFFIX "HUM"
     #define WINDOW_X 18
     // Specify full path of the data file
-    #define COORDINATE_FILE_NAME "gxe_node_position_single_HUM_9.csv"
+    #define COORDINATE_FILE_NAME "../data/gxe_node_position_single_HUM_9.csv"
 #endif
 
 #define CLUSTER_DENSITY 2
@@ -135,7 +135,7 @@
 #define DELTA_CHANGE 0.0
 
 // Print all graphs for barcode
-#define PRINT_BARCODE true
+#define PRINT_BARCODE false
 
 /* Any one will be true */
 #define NORMALIZE_UNIFORM_DIST false

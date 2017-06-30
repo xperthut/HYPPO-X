@@ -59,4 +59,6 @@ UnionFindWithPathCompression.o: UnionFindWithPathCompression.h UnionFindWithPath
 
 
 clean:
-	rm -f *.o main
+	rm -f *.o *.gml main
+	rm -rf main.dSYM
+

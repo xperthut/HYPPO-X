@@ -33,7 +33,7 @@
 // 1: filter by Temperature
 // 2: filter by solar radiation
 // 3: filter by humidity
-#define FILTER_2 3
+#define FILTER_2 1
 
 // 0.6 for sr,temp
 // 0.95 for sr, temp
@@ -149,8 +149,8 @@
         #define WINDOW_Y 5
         #define PRINT_ALL_PATHS false
         #define ASSIGN_PATH_COLOR_MANUAL true
-        #define PATH_LIST {1,1,9,1,2,3,4,5,6,7,8,11}
-        #define PATH_COLOR {"","","","#ff0000","#da2577","#75a920","#0eafc9","#0000ff","#8e44ad","#8e44ad","#8e44ad","#8e44ad"}
+        #define PATH_LIST {1,2,9,1,2,3,4,5,6,7,8,11}
+        #define PATH_COLOR {"","","","#ff0000","#da2577","#75a920","#0eafc9","#0000ff","#8e44ad","#8ead44","#3effad","#ad448e"}
         // Specify full path of the data file
         #define COORDINATE_FILE_NAME "../data/gxe_node_position_2D_dap_sr_B_6.csv"
     #elif FILTER_2==3

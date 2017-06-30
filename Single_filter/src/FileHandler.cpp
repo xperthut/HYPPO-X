@@ -64,10 +64,14 @@ void FileHandler::readNodePosition(string _fileName, unordered_map<long, float*>
             
             fileReader.close();
             
+        }else{
+            cout<<"\nError to read file. Please check the constant [COORDINATE_FILE_NAME] contained file name and path in config.h\n"<<endl;
+            exit(0);
         }
         
     } catch (exception &e) {
-        cout<<"Error to read file: "<<e.what()<<endl;
+        cout<<"\nError to read file: "<<e.what()<<endl;
+        exit(0);
     }
 
 }
@@ -195,14 +199,20 @@ void FileHandler::ReadFileData(list<DataPoint*> *dataPointList){
             
             fileReader.close();
             
+        }else{
+            cout<<"\nError to read file. Please check the constant [DATA_FILE_NAME] contained file name and path in config.h\n"<<endl;
+            exit(0);
         }
         
     }catch (runtime_error &e) {
-        cout<<"Error to read file: "<<e.what()<<endl;
+        cout<<"\nError to read file: "<<e.what()<<endl;
+        exit(0);
     }catch (exception &e) {
-        cout<<"Error to read file: "<<e.what()<<endl;
+        cout<<"\nError to read file: "<<e.what()<<endl;
+        exit(0);
     }catch(...){
-        cout<<"Error to read file: "<<endl;
+        cout<<"\nError to read file: "<<endl;
+        exit(0);
     }
 }
 
