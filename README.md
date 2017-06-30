@@ -17,10 +17,10 @@ We implemented the process of generating a `topological object` using both `sing
 
 ### Single filter function
 Based on our dataset, we can use following attribute as a filter function.
-1. `DAP`
-2. `Humidity`
-3. `Temperature`
-4. `Solar radiation`
+##### 1. DAP
+##### 2. Humidity
+##### 3. Temperature
+##### 4. Solar radiation
 
 ### Double filter function
 We have option to choose any two attributes among the above four attributes. In our experiment, we fixed `DAP` as the first filter and one of the environmental attributes (humidity, temperature and solar radiation) as the second filter.
