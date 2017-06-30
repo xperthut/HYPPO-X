@@ -13,6 +13,8 @@ This is a hypothesis extraction tool from high dimensional phenomix dataset. Thi
 
 
 ## Filter functions
+###### ([Back to content list](#contents))
+
 We implemented the process of generating a `topological object` using both `single filter function` and `double filter function` in `C++`. The source codes are in the `src` folder and the test dataset `(gxe_pat.csv)` is in the `data` folder.
 
 ### Single filter function
@@ -22,7 +24,7 @@ Based on our dataset, we can use following attribute as a filter function.
 2. Humidity
 3. Temperature
 4. Solar radiation
-`
+
 
 ### Double filter function
 We have option to choose any two attributes among the above four attributes. In our experiment, we fixed `DAP` as the first filter and one of the environmental attributes (humidity, temperature and solar radiation) as the second filter.
@@ -31,6 +33,8 @@ We have option to choose any two attributes among the above four attributes. In 
 
 
 ## Input data format
+###### ([Back to content list](#contents))
+
 Our `C++` project reads data from a `csv` formatted data file contained following columns. One can change the column name and the value but can't expand the columns or change the type of the value. i.e. `Time` column accepts integer values like `1,2,...` and does not allow any `text` here.
 `
 1. Time, integer type. i.e. Days After Planting (DAP)
@@ -42,7 +46,7 @@ Our `C++` project reads data from a `csv` formatted data file contained followin
 7. Environmental attribute 1, float/real type, i.e. temperature
 8. Environmental attribute 2, float/real type, i.e. solar radiation
 9. Environmental attribute 3, float/real type, i.e. humidity
-`
+
 
 ### Individual id
 The default value is an integer. If there have multiple individuals under same `genotype` and `location` combination then one can place it by ` # ` separator, i.e. `1 # 3 # 4`.
@@ -59,6 +63,8 @@ Output is a `gml` formatted file with prefix `graph_COMPOSITE`.
 
 
 ## Change configuration
+###### ([Back to content list](#contents))
+
 The file named `config.h`contains all settings. One can change the value of the configuration file to make change in the code and change the output. Necessary configurations are here: 
 
 ##### Set the value of first filter using following constant. Our program accepts four values `0-3`.
@@ -139,30 +145,42 @@ The file named `config.h`contains all settings. One can change the value of the 
 
 
 ## Project setup
+###### ([Back to content list](#contents))
+
 ### Setup for Mac users
-##### 1. Create an empty project in `xcode` and run the project.
-##### 2. Open the project folder. Copy all the files from `src` named folder to your project's source folder.
-##### 3. Copy the data files to `[project folder]/Build/Products/Debug/` folder.
+`
+1. Create an empty project in `xcode` and run the project.
+2. Open the project folder. Copy all the files from `src` named folder to your project's source folder.
+3. Copy the data files to `[project folder]/Build/Products/Debug/` folder.
 
 ### Setup for Windows users
-1. `Create an empty 'console' project in 'Visual studio' and run the project.`
-2. `In 'solution explorer', right click on the 'source' and select 'add existing item'. Specify all '.cpp' extended files in our 'src' folder.`
-3. `In 'solution explorer', right click on the 'header' and select 'add existing item'. Specify all '.h' extended files in our 'src' folder.`
-4. `In 'solution explorer', right click on the 'resource' and select 'add existing item'. Specify all '.csv' extended files in our 'data' folder.`
+`
+1. Create an empty `console` project in `Visual studio` and run the project.
+2. In `solution explorer`, right click on the `source` and select `add existing item`. Select all `.cpp` extended files of our `src` folder.
+3. In `solution explorer`, right click on the `header` and select `add existing item`. Select all `.h` extended files of our `src` folder.
+4. In `solution explorer`, right click on the `resource` and select `add existing item`. Select all `.csv` extended files in our `data` folder.
+5. Open `config.h` file and change all file path.
 
 ### Setup for Unix system user (Linux, ubontu, etc)
-1. `Download any free editor, i.e. eclipse, netbeans, etc`
-2. `Setup the project and run it.`
+`
+1. Download any free editor, i.e. `eclipse, netbeans`, etc
+2. Setup the project and run.
 
 ### Run from terminal
-1. `Open the terminal.`
-2. write `cd [The path of src folder]` and press ``
-3. 
+`
+1. Open the terminal.
+2. write `cd [The path of src folder]` and press `ENTER`
+3. Write `make all` command to compile all source files
+4. Write `./main` to run the project
+5. Write `make clean` to clean all object and output files
+6. Each time you `change` to any file, repeat `step 5` and then `step 3`.
 
 ###### ([Back to content list](#contents))
 
 
 ## How to Build object
+###### ([Back to content list](#contents))
+
 ##### 1. Configure `DATA_FILE_NAME`
 ##### 2. Configure `FILTER_1`
 ##### 3. Configure `WINDOW_X`
