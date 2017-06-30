@@ -126,17 +126,15 @@ void FileHandler::ReadFileData(list<DataPoint*> *dataPointList){
                 value = line.substr(0,pos);
                 line=line.substr(pos+1,line.length()-pos-1);
                 
-                pos = line.find(",");
-                env[0] = line.substr(0,pos);
-                line=line.substr(pos+1,line.length()-pos-1);
-                
-                pos = line.find(",");
-                env[1] = line.substr(0,pos);
-                line=line.substr(pos+1,line.length()-pos-1);
-                
+                for(int e=0; e<ENV_ATTR-1; e++){
+                    pos = line.find(",");
+                    env[e] = line.substr(0,pos);
+                    line=line.substr(pos+1,line.length()-pos-1);
+                }
+
                 pos=line.length();
                 pos = line.find("\r");
-                env[2] = line.substr(0,pos);
+                env[ENV_ATTR-1] = line.substr(0,pos);
                 
                 // Buld the comparison string
                 switch (FILTER_1) {

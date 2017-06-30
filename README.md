@@ -108,7 +108,7 @@ The file named `config.h`contains the settings. One can change the value of the 
 #define PRINT_BARCODE true
 ```
 
-##### Enable flag to print `Javascript` code which is used to create `pie chart` and coloring nodes based on different measuring attribute `i.e. time, phenotype, environment`.
+##### Enable flag to print `JSON` data which is used to create `pie chart` and coloring nodes based on different measuring attribute `i.e. time, phenotype, environment`.
 ```cpp
 #define PIE_CHART_CODE true
 ```

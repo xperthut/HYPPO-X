@@ -183,7 +183,7 @@
 #define CLUSTER_DENSITY 2
 
 // Total environmental attributes
-#define ENV_ATTR 4
+#define ENV_ATTR 3
 
 // If file is pat_all_gl the enable this contant.
 #define PLANT_ID_LIST true

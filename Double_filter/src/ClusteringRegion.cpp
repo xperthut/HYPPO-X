@@ -1051,7 +1051,7 @@ string ClusteringRegion::PrintGraph(list<Phenotype *> *overlappedPhList, list<An
     MainGraph* mainGraph = new MainGraph(total_CC);
     mainGraph->setEnvName(envName);
     int ccIndex = 0;
-    list<float> rainFallList;
+    //list<float> rainFallList;
     
     for(unordered_map<long, list<long>>::iterator itr = scc.begin(); itr!=scc.end(); itr++){
         
@@ -1074,7 +1074,7 @@ string ClusteringRegion::PrintGraph(list<Phenotype *> *overlappedPhList, list<An
             float size = 0.0;
             float sum[FILTER+1]={0.0};
             float meanValues[FILTER+1]={0.0};
-            rainFallList.clear();
+            //rainFallList.clear();
             
             unordered_map<long, unordered_map<string, Phenotype*>>::iterator nodeItr = nodeList.find(nodeID);
             
@@ -1084,7 +1084,7 @@ string ClusteringRegion::PrintGraph(list<Phenotype *> *overlappedPhList, list<An
                     Phenotype* ph = phItr->second;
                     
                     // Add rainfall record
-                    if(ph->getEnvValue(3)>0) rainFallList.push_back(ph->getEnvValue(3));
+                    //if(ph->getEnvValue(3)>0) rainFallList.push_back(ph->getEnvValue(3));
                     
                     if(PLANT_ID_LIST){
                         list<long> pidList = ph->getPlantIdList();
@@ -1148,7 +1148,7 @@ string ClusteringRegion::PrintGraph(list<Phenotype *> *overlappedPhList, list<An
             rGraph->addNode(rn);
             
             
-            if(rainFallList.size()>0&&false){
+            /*if(rainFallList.size()>0&&false){
                 string s="";
                 float t=0;
                 for(list<float>::iterator rItr=rainFallList.begin(); rItr!=rainFallList.end(); rItr++){
@@ -1159,7 +1159,7 @@ string ClusteringRegion::PrintGraph(list<Phenotype *> *overlappedPhList, list<An
                     t += rainFall;
                 }
                 cout<<"\n"<<nodeID<<":{"<<s<<"}["<<t/rainFallList.size()<<"]";
-            }
+            }*/
         }
         
         if(!PRINT_BARCODE&&false){
