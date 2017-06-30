@@ -18,7 +18,7 @@ This is a hypothesis extraction tool from high dimensional phenomix dataset. Thi
 We implemented the process of generating a `topological object` using both `single filter function` and `double filter function` in `C++`. The source codes are in the `src` folder and the test datasets are in the `data` folder.
 
 ### Single filter function
-The source code and datasets available for single fileter function are [here](https://github.com/xperthut/HYPPOX/tree/master/Single_filter). Based on our dataset, we can use following attribute as a filter function.
+The source codes and datasets available for single filter function are [here](https://github.com/xperthut/HYPPOX/tree/master/Single_filter). Based on our dataset, we can use following attributes as a filter function.
 
 1. DAP
 2. Humidity
@@ -27,7 +27,7 @@ The source code and datasets available for single fileter function are [here](ht
 
 
 ### Double filter function
-The source code and datasets available for double fileter function are [here](https://github.com/xperthut/HYPPOX/tree/master/Double_filter). We have option to choose any two attributes among the above four attributes. In our experiment, we fixed `DAP` as the first filter and one of the environmental attributes (humidity, temperature and solar radiation) as the second filter.
+The source codes and datasets available for double filter function are [here](https://github.com/xperthut/HYPPOX/tree/master/Double_filter). We have option to choose any two attributes among the above four attributes. In our experiment, we used `DAP` as the first filter and one of the environmental attributes `(humidity, temperature and solar radiation)` as the second filter.
 
 ###### ([Back to content list](#contents))
 
@@ -35,17 +35,17 @@ The source code and datasets available for double fileter function are [here](ht
 ## Input data format
 ###### ([Back to content list](#contents))
 
-Our `C++` project reads data from a `csv` formatted data file contained following columns. One can change the column name and the value but can't expand the columns or change the type of the value. i.e. `Time` column accepts integer values like `1,2,...` and does not allow any `text` here.
+Our `C++` project reads data from a `csv` formatted data file contained following columns. One can change the column name and the value but can't expand the columns or change the type of the value. For instance, `Time` column accepts integer values like `1,2,...` and does not allow any `text` here.
 
-1. Time, integer type. i.e. Days After Planting (DAP)
+1. Time, integer type. (i.e. Days After Planting (DAP))
 2. Genotype, string/text type
 3. Location, string/text type
 4. Individual id, see [Individual id](#individual-id)
 5. Date, string/text type
 6. Phenotypic value, float/real type
-7. Environmental attribute 1, float/real type, i.e. temperature
-8. Environmental attribute 2, float/real type, i.e. solar radiation
-9. Environmental attribute 3, float/real type, i.e. humidity
+7. Environmental attribute 1, float/real type. (i.e. Temperature)
+8. Environmental attribute 2, float/real type. (i.e. Solar radiation)
+9. Environmental attribute 3, float/real type. (i.e. Humidity)
 
 
 ### Individual id
@@ -65,14 +65,14 @@ Output is a `gml` formatted file with prefix `graph_COMPOSITE`.
 ## Change configuration
 ###### ([Back to content list](#contents))
 
-The file named `config.h`contains all settings. One can change the value of the configuration file to make change in the code and change the output. Necessary configurations are here: 
+The file named `config.h`contains the settings. One can change the value of the configuration file to make change in the code and change the output. Necessary configurations are here: 
 
 ##### Set the value of first filter using following constant. Our program accepts four values `0-3`.
 ```cpp
 #define FILTER_1 VALUE
 ```
 
-##### Set the value of second filter using following constant. For `Single filter` the value for this filter is `1`.  For `Double filter function` our program accepts four values `0-3`.
+##### Set the value of second filter using following constant. For `Single filter` the value for this constant is `1`.  For `Double filter function` our program accepts four values `0-3`.
 ```cpp
 #define FILTER_2 VALUE
 ```
