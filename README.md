@@ -12,7 +12,8 @@ This is a hypothesis extraction tool from high dimensional phenomix dataset. Thi
 - [How to Build object](#how-to-build-object)
 
 
-## Filter functions ([Menu](#contents))
+## Filter functions
+###### ([Back](#contents))
 We implemented the process of generating a `topological object` using both `single filter function` and `double filter function` in `C++`. The source codes are in the `src` folder and the test dataset `(gxe_pat.csv)` is in the `data` folder.
 
 ### Single filter function
@@ -27,7 +28,8 @@ We have option to choose any two attributes among the above four attributes. In 
 
 
 
-## Input data format ([Menu](#contents))
+## Input data format
+###### ([Back](#contents))
 Our `C++` project reads data from a `csv` formatted data file contained following columns. One can change the column name and the value but can't expand the columns or change the type of the value. i.e. `Time` column accepts integer values like `1,2,...` and does not allow any `text` here.
 1. `Time, integer type. i.e. Days After Planting (DAP)`
 2. `Genotype, string/text type`
@@ -45,11 +47,13 @@ The default value is an integer. If there have multiple individuals under same `
 
 
 ## Output
+###### ([Back](#contents))
 Output is a `gml` formatted file with prefix `graph_COMPOSITE`.
 
 
 
 ## Change configuration
+###### ([Back](#contents))
 The file named `config.h`contains all settings. One can change the value of the configuration file to make change in the code and change the output. Necessary configurations are here: 
 
 ##### Set the value of first filter using following constant. Our program accepts four values `0-3`.
