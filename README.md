@@ -4,28 +4,13 @@ HYPPO X / HYPPO-X
 This is a hypothesis extraction tool from high dimensional phenomix dataset. This tool is mainly built in `c++`. The object that we generated from our method is a graph and we used `igraph` package of `R` to visually represent the graph. We also use `HTML canvas` to represent the graph more meaningfully using pie chart and colors.
 
 ## Contents
-- [Project setup](#project-setup)
 - [Filter functions](#filter-functions)
-- [Input](#input)
+- [Input data format](#input-data-format)
 - [Output](#output)
 - [Change configuration](#change-configuration)
-- [Build object](#build-object)
+- [Project setup](#project-setup)
+- [How to Build object](#how-to-build-object)
 
-## Project setup
-### Setup for Mac users
-1. `Create an empty project in 'xcode' and run the project.`
-2. `Open the project folder. Copy all the files from 'src' named folder to your project's source folder.`
-3. `Copy the data files to [project folder]/Build/Products/Debug/ folder.`
-
-### Setup for Windows users
-1. `Create an empty 'console' project in 'Visual studio' and run the project.`
-2. `In 'solution explorer', right click on the 'source' and select 'add existing item'. Specify all '.cpp' extended files in our 'src' folder.`
-3. `In 'solution explorer', right click on the 'header' and select 'add existing item'. Specify all '.h' extended files in our 'src' folder.`
-4. `In 'solution explorer', right click on the 'resource' and select 'add existing item'. Specify all '.csv' extended files in our 'data' folder.`
-
-### Setup for Unix system user (Linux, ubontu, etc)
-1. `Download any free editor, i.e. eclipse, netbeans, etc`
-2. `Setup the project and run it.`
 
 ## Filter functions
 We implemented the process of generating a `topological object` using both `single filter function` and `double filter function` in `C++`. The source codes are in the `src` folder and the test dataset `(gxe_pat.csv)` is in the `data` folder.
@@ -40,8 +25,10 @@ Based on our dataset, we can use following attribute as a filter function.
 ### Double filter function
 We have option to choose any two attributes among the above four attributes. In our experiment, we fixed `DAP` as the first filter and one of the environmental attributes (humidity, temperature and solar radiation) as the second filter.
 
-## Input
-The input csv file contains following columns. One can change the column name and the value but can't expand the columns or change the type of the value. i.e. `Time` column contains integer values like `1,2,...` which does not allow any text here.
+
+
+## Input data format
+Our `C++` project reads data from a `csv` formatted data file contained following columns. One can change the column name and the value but can't expand the columns or change the type of the value. i.e. `Time` column accepts integer values like `1,2,...` and does not allow any `text` here.
 1. `Time, integer type. i.e. Days After Planting (DAP)`
 2. `Genotype, string/text type`
 3. `Location, string/text type`
@@ -55,8 +42,12 @@ The input csv file contains following columns. One can change the column name an
 ### Individual id
 The default value is an integer. If there have multiple individuals under same `genotype` and `location` combination then one can place it by ` # ` separator, i.e. `1 # 3 # 4`.
 
+
+
 ## Output
 Output is a `gml` formatted file with prefix `graph_COMPOSITE`.
+
+
 
 ## Change configuration
 The file named `config.h`contains all settings. One can change the value of the configuration file to make change in the code and change the output. Necessary configurations are here: 
@@ -131,11 +122,37 @@ The file named `config.h`contains all settings. One can change the value of the 
 ##### If you set the flag `ASSIGN_PATH_COLOR_MANUAL` then you must have to set the following two constants with proper values. The values placed in the array are in following format: `{Number of connected components on which the selected paths exist, Order of selected connected component, Number of selected paths, order of a path belongs in a CC}`. For instance, the topological object contructed by double filter function of `DAP and Temperature` (in supplementary document) has four sub graphs or connected compoments (CC). The array content to print specific paths are as: `{2,2,4,1,2,3,4,4,4,1,2,3,4}`. Here, (start from left most element) the first element `2` means that all the paths which we want to color manually belong in `two` out of `four` sub graphs or connected compoments. Next `2` is the order of a CC (see previous flag). Next `4` means the number of paths we want to maually color. Following `1,2,3,4` are the order of paths under `CC 2`. The eighth element `4` indicates the order of next CC. The very next `4` means that we want to color four paths. The last four elements are the order of the paths of `CC 4`. The array format of color is same as the array format of path_list. Here we assign each path order with a color and replace other digits by empty string.
 ```cpp
 #define PATH_LIST {2,2,4,1,2,3,4,4,4,1,2,3,4}
-#define PATH_COLOR {"","","","#da2577","#b7a511","#0eafc9","#0000ff","","","#ff0000","#8e44ad","#0ec92d","#fead54"}     
+#define PATH_COLOR {"","","","#da2577","#b7a511","#0eafc9","#0000ff","","","#ff0000","#8e44ad","#0ec92d","#fead54"}
 ```
 
 
-## Build object
+
+
+## Project setup
+### Setup for Mac users
+##### 1. Create an empty project in `xcode` and run the project.
+##### 2. Open the project folder. Copy all the files from `src` named folder to your project's source folder.
+##### 3. Copy the data files to `[project folder]/Build/Products/Debug/` folder.
+
+### Setup for Windows users
+1. `Create an empty 'console' project in 'Visual studio' and run the project.`
+2. `In 'solution explorer', right click on the 'source' and select 'add existing item'. Specify all '.cpp' extended files in our 'src' folder.`
+3. `In 'solution explorer', right click on the 'header' and select 'add existing item'. Specify all '.h' extended files in our 'src' folder.`
+4. `In 'solution explorer', right click on the 'resource' and select 'add existing item'. Specify all '.csv' extended files in our 'data' folder.`
+
+### Setup for Unix system user (Linux, ubontu, etc)
+1. `Download any free editor, i.e. eclipse, netbeans, etc`
+2. `Setup the project and run it.`
+
+### Run from terminal
+1. `Open the terminal.`
+2. write `cd [The path of src folder]` and press ``
+3. 
+
+
+
+
+## How to Build object
 ##### 1. Configure `DATA_FILE_NAME`
 ##### 2. Configure `FILTER_1`
 ##### 3. Configure `WINDOW_X`
