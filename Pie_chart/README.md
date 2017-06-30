@@ -104,7 +104,7 @@ The output of our graph plotting project in `R` is an `eps` formatted image file
 </html>
 ```
 
-##### HTML template to color nodes. Change the value of the variable `index` in function `background.onload` to change the node color. You have to reload the page after changing the value of this variable.
+##### HTML template to color nodes. Change the value of the variable `index` in function `background.onload` to change the node color based on respectively phenotypic value and filter function. The effect of the change of this variable can be seen after reloading (Pressing back button in the browser or pressing refresh button) the html file.
 ```html
 <html>
 	<head>
@@ -242,5 +242,5 @@ The output of our graph plotting project in `R` is an `eps` formatted image file
 ```
 
 ### Output
-Run the `HTML` file in any `HTML 5` supported browser `Opera, Firefox, and Safari`. One can save the image in a `png` formatted file.
+Load the `HTML` file in any `HTML 5` supported browser (`Specially in Firefox, for better output`). One can save the image in a `png` formatted file.
 
