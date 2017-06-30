@@ -13,7 +13,6 @@ This is a hypothesis extraction tool from high dimensional phenomix dataset. Thi
 
 
 ## Filter functions
-###### ([Back](#contents))
 We implemented the process of generating a `topological object` using both `single filter function` and `double filter function` in `C++`. The source codes are in the `src` folder and the test dataset `(gxe_pat.csv)` is in the `data` folder.
 
 ### Single filter function
@@ -26,10 +25,10 @@ Based on our dataset, we can use following attribute as a filter function.
 ### Double filter function
 We have option to choose any two attributes among the above four attributes. In our experiment, we fixed `DAP` as the first filter and one of the environmental attributes (humidity, temperature and solar radiation) as the second filter.
 
+###### ([Back to content list](#contents))
 
 
 ## Input data format
-###### ([Back](#contents))
 Our `C++` project reads data from a `csv` formatted data file contained following columns. One can change the column name and the value but can't expand the columns or change the type of the value. i.e. `Time` column accepts integer values like `1,2,...` and does not allow any `text` here.
 1. `Time, integer type. i.e. Days After Planting (DAP)`
 2. `Genotype, string/text type`
@@ -44,16 +43,18 @@ Our `C++` project reads data from a `csv` formatted data file contained followin
 ### Individual id
 The default value is an integer. If there have multiple individuals under same `genotype` and `location` combination then one can place it by ` # ` separator, i.e. `1 # 3 # 4`.
 
+###### ([Back to content list](#contents))
+
+
 
 
 ## Output
-###### ([Back](#contents))
 Output is a `gml` formatted file with prefix `graph_COMPOSITE`.
 
+###### ([Back to content list](#contents))
 
 
 ## Change configuration
-###### ([Back](#contents))
 The file named `config.h`contains all settings. One can change the value of the configuration file to make change in the code and change the output. Necessary configurations are here: 
 
 ##### Set the value of first filter using following constant. Our program accepts four values `0-3`.
@@ -129,6 +130,7 @@ The file named `config.h`contains all settings. One can change the value of the 
 #define PATH_COLOR {"","","","#da2577","#b7a511","#0eafc9","#0000ff","","","#ff0000","#8e44ad","#0ec92d","#fead54"}
 ```
 
+###### ([Back to content list](#contents))
 
 
 
@@ -153,7 +155,7 @@ The file named `config.h`contains all settings. One can change the value of the 
 2. write `cd [The path of src folder]` and press ``
 3. 
 
-
+###### ([Back to content list](#contents))
 
 
 ## How to Build object
@@ -222,4 +224,6 @@ var data = [{id:value, p:{}, d:[{}]}, {id:value, p:{}, d:[{}]}];
 ##### See [README.md](https://github.com/xperthut/HYPPOX/tree/master/Pie_chart) for details construction of a HTML file using this data. You can save the pie chart in a `png` formatted image.
 
 ##### 14. When you enable the flag `PIE_CHART_CODE` for `double filter function` then you will get three more JSON variables. One of those variable is `var ph`. The other two variables' name depend on the choice of the filter functions and the name of the variables are same as the specified names in the constant `FILTER_NAMES`. As discussed in previous step, you have to merge the data of a variable if it appears in multiple times. These variables are used to color the nodes. See [README.md](https://github.com/xperthut/HYPPOX/tree/master/Pie_chart) for details construction of a HTML file using the data of these variables. You can save the an image in `png` format.
+
+###### ([Back to content list](#contents))
 
