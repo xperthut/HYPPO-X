@@ -189,7 +189,7 @@ The file named `config.h`contains the settings. One can change the value of the 
 3. Configure `WINDOW_X` and `WINDOW_Y`
 4. Configure `CLUSTER_RADIUS`
 5. Set barcode flag `PRINT_BARCODE`
-6. Run the program to generate simplex timeline in Java. For instance, the output will be as follows: 
+6. Run the program to generate simplex timeline code Java syntex. For instance, the output will be as follows: 
 ```java
 /************ Start from here *************/
 stream.addVertex(1, 0.000);
