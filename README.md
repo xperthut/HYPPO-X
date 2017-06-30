@@ -228,9 +228,9 @@ coord = tkplot.getcoords(id)
 # File path is the absolute path of the above file
 graph_coordinate_to_html_coordinate(g,coord,[file name],[file path]) 
 ```
-####### You can save the `coord` variable and use it later to avoid the rearrangement of the graph nodes. Check this out for details [here](https://github.com/xperthut/HYPPOX/tree/master/Graph_plot). In our experiement, the graph and coordinate loading codes are [here](https://github.com/xperthut/HYPPOX/tree/master/Graph_plot/R), the csv files for graph node coordinates are [here](https://github.com/xperthut/HYPPOX/tree/master/Graph_plot/R/data). The suffix of each file name identify the filter function.
+You can save the `coord` variable and use it later to avoid the rearrangement of the graph nodes. Check this out for details [here](https://github.com/xperthut/HYPPOX/tree/master/Graph_plot). In our experiement, the graph and coordinate loading codes are [here](https://github.com/xperthut/HYPPOX/tree/master/Graph_plot/R), the csv files for graph node coordinates are [here](https://github.com/xperthut/HYPPOX/tree/master/Graph_plot/R/data). The suffix of each file name identify the filter function.
 
-11. Open the `csv` file generated at earlier step and remove the first blank row and save it. Copy this file to the `C++ project` folder and add its reference in the project editor (xcode or MS Visual studio).
+11. Open the `csv` file generated using method `graph_coordinate_to_html_coordinate` in earlier step and remove the first blank row and save it. Copy this file to the `C++ project` folder and add its reference in the project editor (xcode or MS Visual studio).
 
 12. Configure this file name with path here:
 ```cpp
