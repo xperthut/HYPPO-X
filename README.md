@@ -18,7 +18,7 @@ This is a hypothesis extraction tool from high dimensional phenomix dataset. Thi
 We implemented the process of generating a `topological object` using both `single filter function` and `double filter function` in `C++`. The source codes are in the `src` folder and the test datasets are in the `data` folder.
 
 ### Single filter function
-Based on our dataset, we can use following attribute as a filter function.
+The source code and datasets available for single fileter function are [here](https://github.com/xperthut/HYPPOX/tree/master/Single_filter). Based on our dataset, we can use following attribute as a filter function.
 
 1. DAP
 2. Humidity
@@ -27,7 +27,7 @@ Based on our dataset, we can use following attribute as a filter function.
 
 
 ### Double filter function
-We have option to choose any two attributes among the above four attributes. In our experiment, we fixed `DAP` as the first filter and one of the environmental attributes (humidity, temperature and solar radiation) as the second filter.
+The source code and datasets available for double fileter function are [here](https://github.com/xperthut/HYPPOX/tree/master/Double_filter). We have option to choose any two attributes among the above four attributes. In our experiment, we fixed `DAP` as the first filter and one of the environmental attributes (humidity, temperature and solar radiation) as the second filter.
 
 ###### ([Back to content list](#contents))
 
