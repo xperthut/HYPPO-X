@@ -32,15 +32,17 @@ We have option to choose any two attributes among the above four attributes. In 
 
 ## Input data format
 Our `C++` project reads data from a `csv` formatted data file contained following columns. One can change the column name and the value but can't expand the columns or change the type of the value. i.e. `Time` column accepts integer values like `1,2,...` and does not allow any `text` here.
-1. `Time, integer type. i.e. Days After Planting (DAP)`
-2. `Genotype, string/text type`
-3. `Location, string/text type`
-4. `Individual id, see in` [Individual id](#individual-id)
-5. `Date, string/text type`
-6. `Phenotypic value, float/real type`
-7. `Environmental attribute 1, float/real type, i.e. temperature`
-8. `Environmental attribute 2, float/real type, i.e. solar radiation`
-9. `Environmental attribute 3, float/real type, i.e. humidity`
+```c
+1. Time, integer type. i.e. Days After Planting (DAP)
+2. Genotype, string/text type
+3. Location, string/text type
+4. Individual id, see [Individual id](#individual-id)
+5. Date, string/text type
+6. Phenotypic value, float/real type
+7. Environmental attribute 1, float/real type, i.e. temperature
+8. Environmental attribute 2, float/real type, i.e. solar radiation
+9. Environmental attribute 3, float/real type, i.e. humidity
+```
 
 ### Individual id
 The default value is an integer. If there have multiple individuals under same `genotype` and `location` combination then one can place it by ` # ` separator, i.e. `1 # 3 # 4`.
