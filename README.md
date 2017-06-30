@@ -19,7 +19,7 @@ We implemented the process of generating a `topological object` using both `sing
 
 ### Single filter function
 Based on our dataset, we can use following attribute as a filter function.
-`
+
 1. DAP
 2. Humidity
 3. Temperature
@@ -36,7 +36,7 @@ We have option to choose any two attributes among the above four attributes. In 
 ###### ([Back to content list](#contents))
 
 Our `C++` project reads data from a `csv` formatted data file contained following columns. One can change the column name and the value but can't expand the columns or change the type of the value. i.e. `Time` column accepts integer values like `1,2,...` and does not allow any `text` here.
-`
+
 1. Time, integer type. i.e. Days After Planting (DAP)
 2. Genotype, string/text type
 3. Location, string/text type
