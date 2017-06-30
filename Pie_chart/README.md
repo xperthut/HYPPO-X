@@ -104,7 +104,7 @@ The output of our graph plotting project using `R` is saved in an `eps` formatte
 </html>
 ```
 
-##### HTML template to color nodes
+##### HTML template to color nodes. Change the value of the variable `index` in function `background.onload` to change the node color. You have to reload the page after changing the value of this variable.
 ```html
 <html>
 	<head>
@@ -181,7 +181,7 @@ The output of our graph plotting project using `R` is saved in an `eps` formatte
 			}
 		</script>
 
-		<canvas id="myCanvas" width="1455" height="777"></canvas>
+		<canvas id="myCanvas" width="[CANVAS width]" height="[CANVAS HEIGHT]"></canvas>
 		<script type="text/javascript">
 			var canvas = document.getElementById('myCanvas');
 
@@ -198,8 +198,10 @@ The output of our graph plotting project using `R` is saved in an `eps` formatte
  			// var f2=JSON data for variable named FILTER_NAMES[1]
 
 
+			// Load background image
+			// If image is under same directory of the html file then use ./filename.png
 			var background = new Image();
-			background.src = "./dap_hum_B_7_sig_c.png";
+			background.src = "[PNG file with path]";
 				
 			// Make sure the image is loaded first otherwise nothing will draw.
 			background.onload = function(){

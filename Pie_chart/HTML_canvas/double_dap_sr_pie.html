@@ -1,0 +1,110 @@
+
+<!--**************************************************************************************************
+ Copyright © 2016-2017 Md.Kamruzzaman. All rights reserved.
+ The generated code is released under following licenses:
+ GNU GENERAL PUBLIC LICENSE, Version 3, 29 June 2007
+ --------------------------------------------------------------------------------------------------
+ File name: double_dap_sr_gl.html
+ Objective: Plot pie chart to the topological object constructed by double filter function DAP and Solar radiation
+ Additional information: NA
+ --------------------------------------------------------------------------------------------------
+ Contributors                   Date            Task details
+ -------------------------    ----------      --------------------
+ Md. Kamruzzaman              03/13/2017      Initial version
+ 
+ **************************************************************************************************-->
+
+<html>
+	<head>
+		<script type="text/javascript">
+			function drawText(_canvas, text, position, style){
+				var context = _canvas.getContext('2d');
+
+				context.font = style.font;//'bold 10pt Calibri';
+				context.fillStyle = style.color;
+  				context.fillText(text, (position.x1+position.x2)/2, (position.y1+position.y2)/2);
+			}
+
+			function drawPie(_canvas, position, data, _id, _offset){
+				var total = 0;
+				  for (obj of data) {
+				    total += obj.value;
+				  }
+
+				  var ctx = _canvas.getContext('2d');
+				  var previousRadian;
+				  var middle = {
+				    x: position.x-_offset.x,
+				    y: _offset.y-position.y,
+				    radius: position.rad,
+				  };
+				  
+				   //background
+				  ctx.beginPath();
+				  ctx.arc(middle.x, middle.y, middle.radius, 0, 2 * Math.PI);
+				  ctx.closePath();
+				  ctx.stroke();
+				  ctx.fillStyle = "black";
+				  ctx.fill();
+				   //end of background
+
+				  for (obj of data) {
+				    previousRadian = previousRadian || 0;
+				    obj.percentage = parseInt((obj.value / total) * 100)
+				    
+				    ctx.beginPath();
+				    ctx.fillStyle = obj.color;
+				    obj.radian = (Math.PI * 2) * (obj.value / total);
+				    ctx.moveTo(middle.x, middle.y);
+				    ctx.arc(middle.x, middle.y, middle.radius - 2, previousRadian, previousRadian + obj.radian, false);
+				    ctx.closePath();
+				    ctx.fill();
+				    ctx.save();
+				    ctx.translate(middle.x, middle.y);
+				    ctx.fillStyle = "white";
+				    ctx.font = middle.radius / 10 + "px Arial";
+				    ctx.rotate(previousRadian + obj.radian);
+				  
+				    ctx.restore();
+
+				    previousRadian += obj.radian;
+				  }
+
+			}
+		</script>
+	</head>
+	<body>
+		<!-- Adjust the canvas width and height. It is a viewport. -->
+		<canvas id="myCanvas" width="1455" height="777"></canvas>
+		<script type="text/javascript">
+			var canvas = document.getElementById('myCanvas');
+
+			// Place the JSON data here which is generated in our main 'C++' project
+ 			// var data=JSON data
+ 			var data=[{id:97,p:{x:1213.000000,y:654.000000,rad:22.50}, d:[{label: "BN",value: 20,color: '#E67E22'}]},{id:70,p:{x:1316.000000,y:560.000000,rad:18.75}, d:[{label: "BK",value: 18,color: '#ff0000'}]},{id:87,p:{x:1130.000000,y:383.000000,rad:18.75}, d:[{label: "BN",value: 15,color: '#E67E22'}]},{id:65,p:{x:914.000000,y:151.000000,rad:18.75}, d:[{label: "BK",value: 18,color: '#ff0000'}]},{id:69,p:{x:1331.000000,y:386.000000,rad:22.50}, d:[{label: "BK",value: 24,color: '#ff0000'}]},{id:92,p:{x:1273.000000,y:614.000000,rad:26.25}, d:[{label: "BK",value: 6,color: '#ff0000'},{label: "BN",value: 20,color: '#E67E22'}]},{id:68,p:{x:1137.000000,y:175.000000,rad:18.75}, d:[{label: "BK",value: 18,color: '#ff0000'}]},{id:91,p:{x:1191.000000,y:565.000000,rad:30.00}, d:[{label: "BN",value: 30,color: '#E67E22'}]},{id:67,p:{x:1054.000000,y:131.000000,rad:22.50}, d:[{label: "BK",value: 24,color: '#ff0000'}]},{id:90,p:{x:1131.000000,y:487.000000,rad:30.00}, d:[{label: "BN",value: 30,color: '#E67E22'}]},{id:39,p:{x:1250.000000,y:520.000000,rad:15.00}, d:[{label: "BK",value: 12,color: '#ff0000'}]},{id:38,p:{x:1311.000000,y:474.000000,rad:30.00}, d:[{label: "BK",value: 36,color: '#ff0000'}]},{id:37,p:{x:1233.000000,y:427.000000,rad:30.00}, d:[{label: "BK",value: 36,color: '#ff0000'}]},{id:36,p:{x:1255.000000,y:343.000000,rad:30.00}, d:[{label: "BK",value: 36,color: '#ff0000'}]},{id:35,p:{x:1189.000000,y:271.000000,rad:30.00}, d:[{label: "BK",value: 36,color: '#ff0000'}]},{id:34,p:{x:1071.000000,y:271.000000,rad:30.00}, d:[{label: "BK",value: 36,color: '#ff0000'}]},{id:33,p:{x:991.000000,y:213.000000,rad:30.00}, d:[{label: "BK",value: 36,color: '#ff0000'}]},{id:32,p:{x:968.000000,y:86.000000,rad:26.25}, d:[{label: "BK",value: 30,color: '#ff0000'}]},{id:31,p:{x:873.000000,y:62.000000,rad:22.50}, d:[{label: "BK",value: 24,color: '#ff0000'}]},{id:94,p:{x:948.473145,y:435.943451,rad:22.17}, d:[{label: "BN",value: 30,color: '#E67E22'}]},{id:47,p:{x:545.000000,y:112.000000,rad:22.17}, d:[{label: "BN",value: 30,color: '#E67E22'}]},{id:71,p:{x:319.000000,y:206.000000,rad:20.86}, d:[{label: "BN",value: 25,color: '#E67E22'}]},{id:83,p:{x:782.000000,y:667.000000,rad:22.17}, d:[{label: "BN",value: 30,color: '#E67E22'}]},{id:60,p:{x:636.000000,y:709.000000,rad:19.56}, d:[{label: "BK",value: 24,color: '#ff0000'}]},{id:84,p:{x:778.000000,y:591.000000,rad:22.17}, d:[{label: "BN",value: 30,color: '#E67E22'}]},{id:93,p:{x:1018.000000,y:398.000000,rad:18.26}, d:[{label: "BN",value: 15,color: '#E67E22'}]},{id:46,p:{x:459.000000,y:148.000000,rad:22.17}, d:[{label: "BN",value: 30,color: '#E67E22'}]},{id:82,p:{x:860.000000,y:703.000000,rad:22.17}, d:[{label: "BN",value: 30,color: '#E67E22'}]},{id:85,p:{x:806.000000,y:523.000000,rad:22.17}, d:[{label: "BN",value: 30,color: '#E67E22'}]},{id:62,p:{x:941.000000,y:639.000000,rad:18.26}, d:[{label: "BN",value: 15,color: '#E67E22'}]},{id:96,p:{x:807.000000,y:452.000000,rad:16.95}, d:[{label: "BN",value: 10,color: '#E67E22'}]},{id:49,p:{x:678.000000,y:210.000000,rad:19.56}, d:[{label: "BN",value: 20,color: '#E67E22'}]},{id:73,p:{x:471.000000,y:59.000000,rad:22.17}, d:[{label: "BN",value: 30,color: '#E67E22'}]},{id:26,p:{x:447.000000,y:579.000000,rad:19.56}, d:[{label: "BK",value: 24,color: '#ff0000'}]},{id:81,p:{x:860.000000,y:634.000000,rad:20.86}, d:[{label: "BN",value: 25,color: '#E67E22'}]},{id:58,p:{x:979.000000,y:574.000000,rad:19.56}, d:[{label: "BN",value: 20,color: '#E67E22'}]},{id:80,p:{x:897.000000,y:572.000000,rad:20.86}, d:[{label: "BN",value: 25,color: '#E67E22'}]},{id:79,p:{x:958.000000,y:508.000000,rad:22.17}, d:[{label: "BN",value: 30,color: '#E67E22'}]},{id:78,p:{x:928.000000,y:376.000000,rad:20.86}, d:[{label: "BN",value: 25,color: '#E67E22'}]},{id:77,p:{x:870.000000,y:232.000000,rad:19.56}, d:[{label: "BN",value: 20,color: '#E67E22'}]},{id:30,p:{x:530.000000,y:736.000000,rad:20.86}, d:[{label: "BK",value: 30,color: '#ff0000'}]},{id:76,p:{x:804.000000,y:189.000000,rad:19.56}, d:[{label: "BN",value: 20,color: '#E67E22'}]},{id:29,p:{x:442.000000,y:747.000000,rad:22.17}, d:[{label: "BK",value: 36,color: '#ff0000'}]},{id:75,p:{x:732.000000,y:146.000000,rad:19.56}, d:[{label: "BN",value: 20,color: '#E67E22'}]},{id:28,p:{x:329.000000,y:717.000000,rad:22.17}, d:[{label: "BK",value: 36,color: '#ff0000'}]},{id:74,p:{x:594.000000,y:173.000000,rad:18.26}, d:[{label: "BN",value: 15,color: '#E67E22'}]},{id:27,p:{x:295.000000,y:575.000000,rad:19.56}, d:[{label: "BK",value: 24,color: '#ff0000'}]},{id:72,p:{x:360.000000,y:152.000000,rad:19.56}, d:[{label: "BN",value: 20,color: '#E67E22'}]},{id:25,p:{x:497.098328,y:530.899170,rad:20.86}, d:[{label: "BK",value: 30,color: '#ff0000'}]},{id:66,p:{x:710.000000,y:645.000000,rad:18.26}, d:[{label: "BN",value: 15,color: '#E67E22'}]},{id:64,p:{x:774.000000,y:736.000000,rad:15.00}, d:[{label: "BN",value: 5,color: '#E67E22'}]},{id:57,p:{x:570.000000,y:644.000000,rad:19.56}, d:[{label: "BK",value: 24,color: '#ff0000'}]},{id:56,p:{x:981.682190,y:329.872711,rad:18.26}, d:[{label: "BN",value: 15,color: '#E67E22'}]},{id:55,p:{x:277.000000,y:670.000000,rad:19.56}, d:[{label: "BK",value: 24,color: '#ff0000'}]},{id:54,p:{x:902.000000,y:300.000000,rad:20.86}, d:[{label: "BN",value: 25,color: '#E67E22'}]},{id:53,p:{x:365.000000,y:644.000000,rad:20.86}, d:[{label: "BK",value: 30,color: '#ff0000'}]},{id:52,p:{x:813.000000,y:306.000000,rad:22.17}, d:[{label: "BN",value: 30,color: '#E67E22'}]},{id:51,p:{x:360.000000,y:531.000000,rad:18.26}, d:[{label: "BK",value: 18,color: '#ff0000'}]},{id:50,p:{x:746.000000,y:251.000000,rad:22.17}, d:[{label: "BN",value: 30,color: '#E67E22'}]},{id:48,p:{x:650.000000,y:113.000000,rad:19.56}, d:[{label: "BN",value: 20,color: '#E67E22'}]},{id:45,p:{x:395.000000,y:91.000000,rad:22.17}, d:[{label: "BN",value: 30,color: '#E67E22'}]},{id:44,p:{x:272.000000,y:96.000000,rad:20.86}, d:[{label: "BN",value: 25,color: '#E67E22'}]},{id:43,p:{x:225.906982,y:156.263062,rad:22.17}, d:[{label: "BN",value: 30,color: '#E67E22'}]},{id:42,p:{x:250.000000,y:232.000000,rad:20.86}, d:[{label: "BN",value: 25,color: '#E67E22'}]},{id:41,p:{x:234.000000,y:526.000000,rad:20.86}, d:[{label: "BN",value: 25,color: '#E67E22'}]},{id:40,p:{x:157.000000,y:629.000000,rad:16.95}, d:[{label: "BK",value: 6,color: '#ff0000'},{label: "BN",value: 5,color: '#E67E22'}]},{id:24,p:{x:589.000000,y:498.000000,rad:20.86}, d:[{label: "BK",value: 30,color: '#ff0000'}]},{id:23,p:{x:631.000000,y:439.000000,rad:22.17}, d:[{label: "BK",value: 36,color: '#ff0000'}]},{id:22,p:{x:603.000000,y:58.000000,rad:18.26}, d:[{label: "BN",value: 15,color: '#E67E22'}]},{id:21,p:{x:548.000000,y:415.000000,rad:22.17}, d:[{label: "BK",value: 36,color: '#ff0000'}]},{id:20,p:{x:594.000000,y:319.000000,rad:22.17}, d:[{label: "BK",value: 36,color: '#ff0000'}]},{id:19,p:{x:507.000000,y:287.000000,rad:22.17}, d:[{label: "BK",value: 36,color: '#ff0000'}]},{id:18,p:{x:435.000000,y:321.000000,rad:19.56}, d:[{label: "BK",value: 24,color: '#ff0000'}]},{id:17,p:{x:345.000000,y:278.000000,rad:24.78}, d:[{label: "BK",value: 30,color: '#ff0000'},{label: "BN",value: 15,color: '#E67E22'}]},{id:16,p:{x:268.000000,y:309.000000,rad:30.00}, d:[{label: "BK",value: 36,color: '#ff0000'},{label: "BN",value: 30,color: '#E67E22'}]},{id:15,p:{x:247.000000,y:444.000000,rad:27.39}, d:[{label: "BK",value: 24,color: '#ff0000'},{label: "BN",value: 30,color: '#E67E22'}]},{id:14,p:{x:181.000000,y:474.000000,rad:26.08}, d:[{label: "BK",value: 24,color: '#ff0000'},{label: "BN",value: 25,color: '#E67E22'}]},{id:13,p:{x:124.000000,y:534.000000,rad:27.39}, d:[{label: "BK",value: 30,color: '#ff0000'},{label: "BN",value: 25,color: '#E67E22'}]},{id:12,p:{x:39.000000,y:539.000000,rad:23.47}, d:[{label: "BK",value: 24,color: '#ff0000'},{label: "BN",value: 15,color: '#E67E22'}]},{id:10,p:{x:506.000000,y:625.000000,rad:16.95}, d:[{label: "BK",value: 12,color: '#ff0000'}]},{id:9,p:{x:570.000000,y:575.000000,rad:20.86}, d:[{label: "BK",value: 30,color: '#ff0000'}]},{id:8,p:{x:648.000000,y:373.000000,rad:20.86}, d:[{label: "BK",value: 30,color: '#ff0000'}]},{id:7,p:{x:496.000000,y:360.000000,rad:18.26}, d:[{label: "BK",value: 18,color: '#ff0000'}]},{id:6,p:{x:362.000000,y:351.000000,rad:20.86}, d:[{label: "BK",value: 30,color: '#ff0000'}]},{id:5,p:{x:299.000000,y:388.000000,rad:22.17}, d:[{label: "BK",value: 30,color: '#ff0000'},{label: "BN",value: 5,color: '#E67E22'}]},{id:4,p:{x:200.000000,y:370.000000,rad:19.56}, d:[{label: "BK",value: 24,color: '#ff0000'}]},{id:3,p:{x:136.000000,y:402.000000,rad:20.86}, d:[{label: "BK",value: 30,color: '#ff0000'}]},{id:2,p:{x:80.000000,y:458.000000,rad:23.47}, d:[{label: "BK",value: 30,color: '#ff0000'},{label: "BN",value: 10,color: '#E67E22'}]},{id:1,p:{x:73.000000,y:612.000000,rad:20.86}, d:[{label: "BK",value: 18,color: '#ff0000'},{label: "BN",value: 10,color: '#E67E22'}]},{id:11,p:{x:428.000000,y:663.000000,rad:18.26}, d:[{label: "BK",value: 18,color: '#ff0000'}]}];
+
+			// Load background image
+			// If image is under same directory of the html file then use ./filename.png
+			var background = new Image();
+			background.src = "./dap_sr.png";
+			
+			// Make sure the image is loaded first otherwise nothing will draw.
+			background.onload = function(){
+				var ctx = canvas.getContext('2d');
+				// START X: Start position along x axis
+				// START Y: Start position along y axis
+				ctx.drawImage(background,0,0,1440,783);
+
+				var _offset = {x:0,y:777};
+				for(k=0;k<data.length;k++){
+				 	var position = data[k].p;
+				 	drawPie(canvas, position, data[k].d, data[k].id, _offset);
+				}
+
+				// Save as png
+				window.location = canvas.toDataURL("image/png");
+			}
+		</script>
+	</body>
+
+</html>
