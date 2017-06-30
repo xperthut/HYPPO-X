@@ -206,7 +206,7 @@ public void GetStreamForData(ExplicitSimplexStream stream) {
     */
 }
 ```
-8. Run `Homology/src/Barcode.java` file to generate barcode. Open all the barcode images. For each barcode image, identify the overlapping value (along X axis) after which the barcode line persists. Pick the maximum overlapping value among all the identified persistent overlapping value from all barcode images. For instance, for below two barcode images (dimension-0 and dimension-1), we chose `46%` overlapping. We doubled the value and use it for constaint `OVERLAP` in `config.h` file of our `C++` project.
+8. Run `Homology/src/Barcode.java` file to generate barcode. Open all the barcode images. For each barcode image, identify the overlapping value (along X axis) after which the barcode line persists. Pick the maximum overlapping value among all the identified persistent overlapping value from all barcode images. For instance, for below two barcode images (dimension-0 and dimension-1), we chose `46%` overlapping. We doubled the overlapping value `((2X46)/100=0.92)` and use it for constaint `OVERLAP` in `config.h` file of our `C++` project.
 ![Barcode Image](https://github.com/xperthut/HYPPOX/blob/master/images/barcode.jpg)
 
 9. Unset barcode flag `PRINT_BARCODE`
