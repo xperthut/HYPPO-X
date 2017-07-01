@@ -83,15 +83,15 @@ radiation as a double filter function. We implemented the code of double
 
 <h2 id="partial-clustering">Partial clustering</h2>
 <p>Clustering is used to group all similar phenotypic individuals. We 
-created buckets along each filter attribute and apply clustering 
-mechanism to the points in a bucket. We used density based clustering 
-and in our experiment, we implemented <a href="https://en.wikipedia.org/wiki/DBSCAN">DBSCAN</a> in <code class="highlighter-rouge">C++</code>. The overlapping buckets generate share points between two clusters.</p>
+created buckets (rectangler intervals) along each filter attribute and apply clustering 
+to the points of a bucket. We used density based clustering 
+and in our experiment, we used <a href="https://en.wikipedia.org/wiki/DBSCAN">DBSCAN</a>. The overlapping buckets generate share points between two clusters.</p>
 
 <h2 id="topological-object-construction">Topological object construction</h2>
 <p>We treated each cluster as a node and if two clusters have 
-overlapping points then we consider an edge between two nodes 
-corresponding these two clusters. In this fashion, we build our 
-topological object which is a graph and save it in a <code class="highlighter-rouge">gml</code> formatted file.</p>
+overlapping points then we consider an edge between these two nodes 
+corresponding to these two clusters. In this process, we build our 
+topological object which is a graph.</p>
 
 <h2 id="persistent-homology">Persistent homology</h2>
 <p>The shape of a topological object changes by changing the bucket 
