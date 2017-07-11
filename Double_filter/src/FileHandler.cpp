@@ -66,7 +66,7 @@ void FileHandler::readNodePosition(string _fileName, unordered_map<long, float*>
             
         }else{
             cout<<"\nError to read file. Please check the constant [COORDINATE_FILE_NAME] contained file name and path in config.h\n"<<endl;
-            exit(0);
+            //exit(0);
         }
         
     } catch (exception &e) {
