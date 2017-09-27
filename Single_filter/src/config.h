@@ -75,7 +75,7 @@
     #define WINDOW_X 12
     // Specify full path of the data file
     #define COORDINATE_FILE_NAME "../data/gxe_node_position_single_SR_6.csv"
-#elif FILTER_2==3
+#elif FILTER_1==3
     #define CLUSTER_RADIUS 0.9
     #define OVERLAP 0.95
     #define SUFFIX "HUM"
