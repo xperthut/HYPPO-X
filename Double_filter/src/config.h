@@ -33,7 +33,7 @@
 // 1: filter by Temperature
 // 2: filter by solar radiation
 // 3: filter by humidity
-#define FILTER_2 1
+#define FILTER_2 3
 
 // 0.6 for sr,temp
 // 0.95 for sr, temp
@@ -279,7 +279,7 @@
 #define MAX_CONNECTED_COMPONENT_ONLY false
 
 // true: Enable to print pie chart
-#define PIE_CHART_CODE false
+#define PIE_CHART_CODE true
 
 // true: heatmap coloring scheme at each connected compoment (CC) separately
 // false: apply gloal heatmap coloring scheme for all connected component
