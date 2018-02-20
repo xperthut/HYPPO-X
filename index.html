@@ -94,17 +94,13 @@ topological object, which is a graph.</p>
 <h2 id="persistent-homology">Persistent homology</h2>
 <p>The shape of a topological object changes by changing the bucket 
 overlapping value. We used persistent homology to stabilize the shape of
- a topological object by making the overlapping value constant. The persistent homology generates barcode, which is used to identify the overlapping value for a stable topological object. The barcode generation code for 
-persistent homology is writen in <code class="highlighter-rouge">JAVA</code> using an opensource library <a href="https://github.com/appliedtopology/javaplex/releases/tag/4.3.0">javaplex-4.3.0.jar</a>.</p>
+ a topological object by making the overlapping value constant. We used open source library named <code class="highlighter-rouge"><a href='http://gudhi.gforge.inria.fr/'>GUDHI</a></code> for persistent homology. We also have option to generate persistent homology barcode image using an opensource library <a href="https://github.com/appliedtopology/javaplex/releases/tag/4.3.0">javaplex-4.3.0.jar</a>.</p>
 
-<h2 id="graph-plotting">Graph plotting</h2>
-<p>We implemented the topological object construction process using both <code class="highlighter-rouge">single filter function</code> and <code class="highlighter-rouge">double filter function</code> in <code class="highlighter-rouge">C++</code> and saved the object (graph) in a <code class="highlighter-rouge">gml</code> formatted file. In order to visualize the graph, we used <code class="highlighter-rouge">igraph</code> package of <code class="highlighter-rouge">R</code> to read the saved <code class="highlighter-rouge">gml</code> formatted file and visualize in a <code class="highlighter-rouge">XQuartz</code>
- panel. In this panel, we can easily rearrange the graph orientation by 
-changing node position using mouse pointer. The rearranged graph is 
-saved in a <code class="highlighter-rouge">eps</code> formatted file, which we converted into a <code class="highlighter-rouge">png</code> formatted file to use in <code class="highlighter-rouge">HTML canvas</code>.</p>
+<h2 id="graph-plotting">Graph object</h2>
+<p>The output generated from our code is a graph and we used json format to save the save object in a file. Later, we use this file for visualization.</p>
 
 <h2 id="visual-representation">Visual representation</h2>
-<p>We used different color and pie chart to represent the graph more meaningfully. To do this, we used <code class="highlighter-rouge">HTML canvas</code> and the data source is a JSON formated data, which is generated from our main <code class="highlighter-rouge">topological object construction</code> code that implemented in <code class="highlighter-rouge">C++</code>.</p>
+<p>In order to visualize our object, we used interactive open source visualization tool <code class="highlighter-rouge"><a href='https://d3js.org/'>D3</a></code></p>
       </div>
     </div>
 </body></html>
