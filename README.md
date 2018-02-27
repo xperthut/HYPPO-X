@@ -24,7 +24,7 @@ make clean
 We used two datafiles named input.csv and input_B.csv. `input.csv` file contains datapoints for both locations (Kansas, Nebraska) and both genotypes (A and B), whereas `input_B.csv` file contains datapoints for both locations of genotype `B` only.
 
 ## Change settings
-We have a file namedd `param.config`, which contains all the configurable variables. One can change the value of a variable to change the output.
+We have a file named `param.config`, which contains all the configurable variables. We can configure our code using these variables.
 
 ### Old version
 Our old version code is [here](https://github.com/xperthut/HYPPO-X/tree/V1.17/V1.17).
