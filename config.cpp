@@ -339,7 +339,7 @@ void Config::resetSettings(){
             }
         }else if(flag.compare("OVERLAP")==0){
             try {
-                OVERLAP = stof(value);
+                OVERLAP = (stof(value)*2)/100;
             } catch (exception e) {
                 cout<<"The value of "<<flag<<" in param.config file is wrong."<<endl<<endl<<"Press any key to exit..."<<endl;;
                 cin.get();
