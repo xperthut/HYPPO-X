@@ -129,7 +129,7 @@ void Mapper::storeData(){
         t2 = clock();
         
         //cout<<"\nTotal data:"<<c<<":"<<QuadNode::totalChildren;
-        cout<<"\nQuad tree construction completed in: "<<(t2-t1)/CLK_TCK<<"(ms)"<<endl;
+        cout<<"\nQuad tree construction completed in: "<<(t2-t1)/CLOCKS_PER_SEC<<"(ms)"<<endl;
     }
 }
 
@@ -216,7 +216,7 @@ void Mapper::createCluster(list<Phenotype *> *pList, bool setUniqueId){
     cluster->MakeCluster(pList);
     t2 = clock();
     
-    //std::cout<<"\nClustering completed..."<<(t2-t1)/CLK_TCK<<endl;
+    //std::cout<<"\nClustering completed..."<<(t2-t1)/CLOCKS_PER_SEC<<endl;
     delete cluster;
 }
 
