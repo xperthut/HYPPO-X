@@ -1,7 +1,7 @@
 
 This software is written by Methun Kamruzzaman (methun@eecs.wsu.edu).
 It is under GPL 3.0 license.
-
+ 
 This software is used to generate topological object from high dimensional phenomics dataset. We also generate subpopulation in the form of interesting paths.
 
 Simulator Options:
