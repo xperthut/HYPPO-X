@@ -123,12 +123,6 @@ function getAllJsonFiles() {
                 <div id="attr-details"></div>
             </section>
 
-            <!-- subgraphs -->
-            <section id="int-cc">
-                <div class="cc-show show"><i class="fas fa-angle-double-up" id="fa-cc-title"></i>&nbsp;Manage subgraph</div>
-                <div class="row1 row" id="cc-details"></div>
-            </section>
-
             <!-- interesting paths -->
             <section id="int-path">
                 <div class="path-show show"><i class="fas fa-angle-double-up" id="fa-path-title"></i>&nbsp;Manage paths</div>
@@ -139,6 +133,12 @@ function getAllJsonFiles() {
             <section id="int-flare">
                 <div class="flare-show show"><i class="fas fa-angle-double-up" id="fa-flare-title"></i>&nbsp;Manage flares</div>
                 <div class="row1 row" id="flare-details"></div>
+            </section>
+            
+            <!-- subgraphs -->
+            <section id="int-cc">
+                <div class="cc-show show"><i class="fas fa-angle-double-up" id="fa-cc-title"></i>&nbsp;Manage subgraph</div>
+                <div class="row1 row" id="cc-details"></div>
             </section>
 
             <section id="instruction">

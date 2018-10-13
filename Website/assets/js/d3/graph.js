@@ -430,7 +430,11 @@ $(function () {
                     c = parseInt($(this).attr("r")),
                     _intFlare = $("#ifs").prop("checked");
             //_allFlares = $("#saf").prop("checked");
-
+            
+            if(_intFlare||_show){
+                gInstance.selectedFeature[0]=false;
+                gInstance.selectedFeature[1]=true;
+            }
 
             if (_intFlare === false) {
 
@@ -1136,6 +1140,13 @@ $(function () {
                 for (var i = 1; i <= gInstance.totalpaths; i++) {
                     $("#ip_" + i).prop("checked", false);
                 }
+                
+                for (var i = 0; i < gInstance._linkData.length; i++) {
+                        if (gInstance._linkData[i].R > 0) {
+                            gInstance._linkData[i].C = gInstance.defaultEdgeColor;
+                            gInstance._linkData[i].W = 2;
+                        }
+                    }
             }
 
             if (gInstance.dpie) {
@@ -1152,6 +1163,11 @@ $(function () {
                     _allPaths = $("#sa").prop("checked"),
                     _intPaths = $("#ips").prop("checked");
             //_allIntPaths = $("#sap").prop("checked");
+            
+            if(_intPaths||_show){
+                gInstance.selectedFeature[0]=true;
+                gInstance.selectedFeature[1]=false;
+            }
 
             // Filter links and nodes
             if (_allPaths === true) {
@@ -1219,7 +1235,7 @@ $(function () {
 
                 for (var i = 0; i < gInstance._graph.nodes.length; i++) {
                     if (_nid.indexOf(gInstance._graph.nodes[i].Id) !== -1) {
-                        gInstance._nodeData.push($.extend(true, {}, gInstancess._graph.nodes[i]));
+                        gInstance._nodeData.push($.extend(true, {}, gInstance._graph.nodes[i]));
                     }
                 }
             }
@@ -1698,7 +1714,7 @@ $(function () {
 
                 this.edgelabels.append('textPath')
                         .attr('xlink:href', function (d, i) {
-                            return '#edgepath' + i
+                            return '#edgepath' + i;
                         })
                         .style("text-anchor", "middle")
                         .style("pointer-events", "none")
