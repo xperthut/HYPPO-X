@@ -188,6 +188,7 @@ $(function () {
             this.createButtons();
             this.createAttributes();
             this.draw(0);
+            this.createSubGraphLegends();
         },
 
         showHideSubGraph: function () {
@@ -201,53 +202,53 @@ $(function () {
             if (_show === true) {
 
                 // add missing link
-                for (var i = 0; i < this._graph.links.length; i++) {
-                    if (this._graph.links[i].CC === c) {
-                        this._linkData.push($.extend(true, {}, this._graph.links[i]));
+                for (var i = 0; i < gInstance._graph.links.length; i++) {
+                    if (gInstance._graph.links[i].CC === c) {
+                        gInstance._linkData.push($.extend(true, {}, gInstance._graph.links[i]));
                     }
                 }
 
             } else {
                 // remove link
                 var dc = [];
-                for (var i = 0; i < this._linkData.length; i++) {
-                    if (this._linkData[i].CC === c) {
+                for (var i = 0; i < gInstance._linkData.length; i++) {
+                    if (gInstance._linkData[i].CC === c) {
                         dc.push(i);
                     }
                 }
 
                 for (var i = 0, j = 0; i < dc.length; i++, j++) {
-                    this._linkData.splice(dc[i] - j, 1);
+                    gInstance._linkData.splice(dc[i] - j, 1);
                 }
             }
 
             // Retrieve nodes for existing links only
-            for (var i = 0; i < this._linkData.length; i++) {
-                if (_nid.indexOf((this._linkData[i].source.Id) ? this._linkData[i].source.Id : this._linkData[i].source) === -1) {
-                    _nid.push((this._linkData[i].source.Id) ? this._linkData[i].source.Id : this._linkData[i].source);
+            for (var i = 0; i < gInstance._linkData.length; i++) {
+                if (_nid.indexOf((gInstance._linkData[i].source.Id) ? gInstance._linkData[i].source.Id : gInstance._linkData[i].source) === -1) {
+                    _nid.push((gInstance._linkData[i].source.Id) ? gInstance._linkData[i].source.Id : gInstance._linkData[i].source);
                 }
-                if (_nid.indexOf((this._linkData[i].target.Id) ? this._linkData[i].target.Id : this._linkData[i].target) === -1) {
-                    _nid.push((this._linkData[i].target.Id) ? this._linkData[i].target.Id : this._linkData[i].target);
-                }
-            }
-
-            for (var i = 0; i < this._graph.nodes.length; i++) {
-                if (_nid.indexOf(this._graph.nodes[i].Id) !== -1) {
-                    this._nodeData.push($.extend(true, {}, this._graph.nodes[i]));
+                if (_nid.indexOf((gInstance._linkData[i].target.Id) ? gInstance._linkData[i].target.Id : gInstance._linkData[i].target) === -1) {
+                    _nid.push((gInstance._linkData[i].target.Id) ? gInstance._linkData[i].target.Id : gInstance._linkData[i].target);
                 }
             }
 
-            if (this.dpie)
-                drawPie();
+            for (var i = 0; i < gInstance._graph.nodes.length; i++) {
+                if (_nid.indexOf(gInstance._graph.nodes[i].Id) !== -1) {
+                    gInstance._nodeData.push($.extend(true, {}, gInstance._graph.nodes[i]));
+                }
+            }
+
+            if (gInstance.dpie)
+                gInstance.drawPie();
             else
-                draw(this.labelIndex);
+                gInstance.draw(gInstance.labelIndex);
         },
 
         createSubGraphLegends: function () {
             $("#int-cc").css("display", "block");
 
             $("#cc-details").html("");
-            $("#cc-details").html("<ul class='cc_legend'></ul>");
+            $("#cc-details").html("<fieldset><legend>Disconnected subgraphs</legend><ul class='cc_legend'></ul></fieldset>");
 
             var sg = [];
             for (var li = 0; li < this._linkData.length; li++) {
@@ -263,7 +264,7 @@ $(function () {
             var s = "";
             for (var i = 0; i < sg.length; i++) {
                 s += "<li><input type='checkbox' r='" + sg[i] + "' name='cc' id='cc_" + sg[i] +
-                        "' checked /><label class='fa' for='ip_" + sg[i] + "'>Subgraph-" + sg[i] + "</label></li>";
+                        "' checked /><label class='fa' for='cc_" + sg[i] + "'>Subgraph-" + sg[i] + "</label></li>";
             }
 
             $(".cc_legend").html(s);
@@ -611,9 +612,9 @@ $(function () {
         createPieColorLegend: function () {
             gInstance.selectButton("attr-btn", $(this));
 
-            $("#int-path").css("display", "none");
+            //$("#int-path").css("display", "none");
             $("#pie-legend").css("display", "block");
-            $("#int-flare").css("display", "none");
+            //$("#int-flare").css("display", "none");
 
             $("#pie-legend .legendhead").html("");
             $("#pie-legend .legendhead").html("<fieldset><legend>Pie chart node color</legend><ul class='legend'></ul></fieldset>");
@@ -1319,7 +1320,7 @@ $(function () {
 
         disableFeatures: function () {
             $("#int-path").css("display", "none");
-            $("#pie-legend").css("display", "none");
+            //$("#pie-legend").css("display", "none");
             $("#int-flare").css("display", "none");
 
             gInstance.selectedFeature[0] = false;
@@ -1334,7 +1335,7 @@ $(function () {
 
         showInterestingPaths: function () {
             $("#int-path").css("display", "block");
-            $("#pie-legend").css("display", "none");
+            //$("#pie-legend").css("display", "none");
             $("#int-flare").css("display", "none");
 
             gInstance.selectedFeature[0] = true;
@@ -1345,7 +1346,7 @@ $(function () {
 
         showInterestingFlares: function () {
             $("#int-path").css("display", "none");
-            $("#pie-legend").css("display", "block");
+            //$("#pie-legend").css("display", "block");
             $("#int-flare").css("display", "block");
 
             gInstance.selectedFeature[0] = false;
