@@ -24,15 +24,6 @@ function drawParentCircle(nodeElement, options) {
     var parentNodeColor = getOptionOrDefault('parentNodeColor', options);
 
     nodeElement.insert("circle")
-<<<<<<< HEAD
-        .attr("id", "parent-pie")
-        .attr("r", function (d) {
-            return d.Size;
-        })
-        .attr("fill", parentNodeColor)
-        .attr("stroke", parentNodeColor)
-        .attr("stroke-width", outerStrokeWidth);
-=======
             .attr("id", "parent-pie")
             .attr("r", function (d) {
                 return d.Size;
@@ -40,30 +31,20 @@ function drawParentCircle(nodeElement, options) {
             .attr("fill", parentNodeColor)
             .attr("stroke", parentNodeColor)
             .attr("stroke-width", outerStrokeWidth);
->>>>>>> template
 }
 
 function drawPieChartBorder(nodeElement, options) {
-    //var radius = getOptionOrDefault('radius', options);
     var pieChartBorderColor = getOptionOrDefault('pieChartBorderColor', options);
     var pieChartBorderWidth = getOptionOrDefault('pieChartBorderWidth', options);
 
     nodeElement.insert("circle")
-<<<<<<< HEAD
-        .attr("r", function (d) {
-            return d.Size;
-        })
-        .attr("fill", 'transparent')
-        .attr("stroke", pieChartBorderColor)
-        .attr("stroke-width", pieChartBorderWidth);
-=======
             .attr("r", function (d) {
                 return d.Size;
             })
             .attr("fill", 'transparent')
             .attr("stroke", pieChartBorderColor)
             .attr("stroke-width", pieChartBorderWidth);
->>>>>>> template
+
 }
 
 function drawPieChart(nodeElement, percentages, options) {
@@ -72,22 +53,6 @@ function drawPieChart(nodeElement, percentages, options) {
         percentToDraw += percentages[p].percent;
 
         nodeElement.insert('circle', '#parent-pie + *')
-<<<<<<< HEAD
-            .attr("r", function (d) {
-                return d.Size/2;
-            })
-            .attr("fill", 'transparent')
-            .style('stroke', percentages[p].color)
-            .style('stroke-width', function (d) {
-                return d.Size;
-            })
-            .style('stroke-dasharray', function (d) {
-                var halfCircumference = 2 * Math.PI * (d.Size)/2;;
-                return halfCircumference * percentToDraw / 100
-                    + ' '
-                    + halfCircumference;
-            })      
-=======
                 .attr("r", function (d) {
                     return d.Size / 2;
                 })
@@ -103,7 +68,7 @@ function drawPieChart(nodeElement, percentages, options) {
                             + ' '
                             + halfCircumference;
                 })
->>>>>>> template
+
     }
 }
 
@@ -113,17 +78,10 @@ function drawTitleText(nodeElement, options) {
     var color = getOptionOrDefault('labelColor', options);
 
     nodeElement.append("text")
-<<<<<<< HEAD
-        .text(String(text))
-        .attr("fill", color)
-        .attr("dy", function (d) {
-                return d.Size*2;
-=======
             .text(String(text))
             .attr("fill", color)
             .attr("dy", function (d) {
                 return d.Size * 2;
->>>>>>> template
             });
 }
 
