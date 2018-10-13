@@ -1,4 +1,4 @@
-<img src="https://github.com/xperthut/TDA_Phenomics/blob/master/logo.png" width="30%" style="margin:0" />
+<img src="https://github.com/xperthut/HYPPO-X/blob/master/logo.png" width="30%" style="margin:0" />
 
 This is a hypothesis extraction tool from high dimensional phenomix dataset. This tool is mainly built in `C++`. The object that we generate from our method is a graph and we use [D3](https://d3js.org/) to visualize our object.
 
