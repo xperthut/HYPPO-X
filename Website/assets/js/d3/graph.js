@@ -1427,19 +1427,21 @@ $(function () {
                     .text("Remove node for analysis");
 
             var x = 0.0, y = 0.0, k = 1.0;
-            if (this.__transform) {
-                x = this.__transform.x;
-                y = this.__transform.y;
-                k = this.__transform.k;
+            if (gInstance.__transform) {
+                x = gInstance.__transform.x;
+                y = gInstance.__transform.y;
+                k = gInstance.__transform.k;
             }
+            
+            //k=1;
 
-            var __mp = d3.mouse(d3.event.currentTarget);
-            var _id = d.Id;
+            //var __mp = d3.mouse(d3.event.currentTarget);
+            var cx = d.x, cy=d.y;
 
             d3.select("#top-nav").style("display", "block")
                     .style("position", "absolute")
-                    .style("top", (__mp[1] + y) * k + "px")
-                    .style("left", (__mp[0] + x) * k + "px");
+                    .style("top", y + (cy* k) + "px")
+                    .style("left", x + (cx * k) + "px");
 
             d3.select("#add-node").attr("d", d.Id)
                     .on("click", function () {
