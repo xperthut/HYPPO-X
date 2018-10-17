@@ -48,8 +48,8 @@ typedef boost::intrusive::list_base_hook<boost::intrusive::tag<cam_v_tag>,
     boost::intrusive::link_mode<boost::intrusive::normal_link>  // faster hook, less safe
 > base_hook_cam_v;
 
-/** \internal
- * \brief
+/** internal
+ * brief
  *
  */
 template<typename SimplexKey, typename ArithmeticElement>

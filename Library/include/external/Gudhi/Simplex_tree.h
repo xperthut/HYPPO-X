@@ -1202,12 +1202,12 @@ class Simplex_tree {
 
  private:
   Vertex_handle null_vertex_;
-  /** \brief Total number of simplices in the complex, without the empty simplex.*/
-  /** \brief Set of simplex tree Nodes representing the vertices.*/
+  /** brief Total number of simplices in the complex, without the empty simplex.*/
+  /** brief Set of simplex tree Nodes representing the vertices.*/
   Siblings root_;
-  /** \brief Simplices ordered according to a filtration.*/
+  /** brief Simplices ordered according to a filtration.*/
   std::vector<Simplex_handle> filtration_vect_;
-  /** \brief Upper bound on the dimension of the simplicial complex.*/
+  /** brief Upper bound on the dimension of the simplicial complex.*/
   int dimension_;
 };
 

@@ -592,7 +592,7 @@ class Persistent_cohomology {
     float getPersistentFiltrationValue(short dim){
         std::map<int, float> maxD;
         std::map<int, float>::iterator itr;
-        std::ostream& ostream = std::cout;
+        //std::ostream& ostream = std::cout;
         
         cmp_intervals_by_length cmp(cpx_);
         std::sort(std::begin(persistent_pairs_), std::end(persistent_pairs_), cmp);
@@ -608,8 +608,7 @@ class Persistent_cohomology {
                     }
                 }
                 
-                //ostream << get<2>(pair) << "  " << cpx_->dimension(get<0>(pair)) << " "
-                //<< cpx_->filtration(get<0>(pair)) << " inf " << std::endl;
+            
             } else {
                 if((itr=maxD.find(cpx_->dimension(get<0>(pair))))==maxD.end()){
                     maxD.insert(std::pair<int, float>(cpx_->dimension(get<0>(pair)), cpx_->filtration(get<1>(pair))));
@@ -619,9 +618,7 @@ class Persistent_cohomology {
                     }
                 }
                 
-                //ostream << get<2>(pair) << "  " << cpx_->dimension(get<0>(pair)) << " "
-                //<< cpx_->filtration(get<0>(pair)) << " "
-                //<< cpx_->filtration(get<1>(pair)) << " " << std::endl;
+ 
             }
         }
         
