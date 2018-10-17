@@ -1,16 +1,17 @@
 # Install Boost in your machine
 # Replace Boost include folder path
-HEADER			= -I /usr/local/Cellar/boost/1.66.0/include
+HEADER			= -I /usr/local/Cellar/boost/1.66.0/include $(shell pwd)/include
 
 # Replace Boost lib folder path
 LIBB			= -L/usr/local/Cellar/boost/1.66.0/lib
 LIFF			= -lboost_filesystem -lboost_system
 
-CC			:= g++
+CC				:= g++
 #WARNING			:= -Wall
-CFLAGS			:= -O5 -std=c++14
+CFLAGS			:= -O5 -g -std=c++14
 LDFLAGS			:= -lm
 TARGET			:= hyppox
+#SFLAG			:= -m64
 
 UNAME			:= $(shell uname)
 ifeq ($(UNAME), Darwin)
@@ -20,19 +21,21 @@ else ifeq ($(UNAME), Linux)
   LDFLAGS		+= $(LIFF)
 endif
 
-SOURCES				=	$(wildcard *.h)
-OBJECTS				=	$(SOURCES:%.h=%.o)
+#CFLAGS		+= $(SFLAG)
+
+SOURCES				=	$(wildcard *.cpp)
+OBJECTS				=	$(SOURCES:.cpp=.o)
 
 all: $(TARGET)
 
-hyppox: $(OBJECTS) main.o
+hyppox: $(OBJECTS)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-%.o: %.h
-	$(CC) -o $@ -c $< $(CFLAGS)
+#%.o: %.h
+#	$(CC) -o $@ -c $< $(CFLAGS)
 
 %.o: %.cpp
-	$(CC) -o $@ -c $< $(CFLAGS)
+	$(CC) -c $< -o $@ $(CFLAGS)
 
 clean:
 	rm -rf $(TARGET) *.o *.dSYM

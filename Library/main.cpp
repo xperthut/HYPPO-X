@@ -15,7 +15,7 @@
 
 #include <iostream>
 #include <string>
-#include "hyppox.h"
+#include "include/hyppox.h"
 
 int main(int argc, const char * argv[]) {
     // Test
