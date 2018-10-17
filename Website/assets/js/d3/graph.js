@@ -828,12 +828,12 @@ $(function () {
         },
 
         createColorBar: function () {
-            this.selectButton("other-btn", $(this));
+            gInstance.selectButton("other-btn", $(this));
 
             var pos = [];
             var posC = [];
 
-            this.node.each(function (d) {
+            gInstance.node.each(function (d) {
                 pos.push([d.x, d.Id]);
             });
 
@@ -853,7 +853,7 @@ $(function () {
                 _int++;
             }
 
-            this.node.each(function (d) {
+            gInstance.node.each(function (d) {
                 for (var _i = 0; _i < posC.length; _i++) {
                     if (posC[_i][0] === d.Id && posC[_i][1].length === 0) {
                         posC[_i][1] = d.Color[1];
@@ -870,9 +870,9 @@ $(function () {
                 d3.selectAll("#legends").remove();
                 d3.selectAll("linearGradient").remove();
             }
-            var _g = this.svg.append("g").attr("id", "legends");
+            var _g = gInstance.svg.append("g").attr("id", "legends");
 
-            var legend = this.marker
+            var legend = gInstance.marker
                     .append("svg:linearGradient")
                     .attr("id", "gradient")
                     .attr("x1", "0%")
