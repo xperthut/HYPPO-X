@@ -88,6 +88,8 @@ $(function () {
         this.shEdgeRank = false;
         this.selectedFeature = [false, false];
         this.defaultEdgeColor = "#a4a4a4"; //a4a4a4
+        this.IPEdgeWidth = 6;
+        this.IFEdgeWidth = 6;
         this.zoom_handler = d3.zoom();
         this.marker = this.svg.append("defs");
         this.simulation = d3.forceSimulation()
@@ -141,6 +143,8 @@ $(function () {
             this.shEdgeRank = false;
             this.selectedFeature = [false, false];
             this.defaultEdgeColor = "#a4a4a4";
+            this.IPEdgeWeight = 1;
+            this.IFEdgeWeight = 1;
         },
 
         initPage: function (gData) {
@@ -578,7 +582,8 @@ $(function () {
                 sack = " checked";
             }
 
-            var s = "<li><input type='checkbox' id='ifs' /><label class='fa' for='ifs'>Show only interesting flares</label></li>" +
+            var s = "<li><label id='idl'>Flare width:</label>&nbsp<input type='range' min='1' max='100' value='50' id='fw' />&nbsp;<label id='fwl'>50%</label></li>" +
+                    "<li><input type='checkbox' id='ifs' /><label class='fa' for='ifs'>Show only interesting flares</label></li>" +
                     "<li><input type='checkbox' id='saf'" + sack + " /><label class='fa' for='saf'>Select all</label></li>";
 
             $(".flare_options").html(s);
@@ -599,7 +604,8 @@ $(function () {
                     }
                 });
             }
-
+            
+            d3.select("#fw").on("change", gInstance.changeIFWidth);
             d3.select("#ifs").on("change", gInstance.showIFs);
             d3.select("#saf").on("change", gInstance.showAllFlares);
             for (var i = 0; i < this.intFlareRank.length; i++) {
@@ -611,6 +617,19 @@ $(function () {
             else
                 this.draw(this.labelIndex);
 
+        },
+        
+        changeIFWidth: function(){
+            var val = $("#fw").val();
+            $("#fwl").html(val + "%");
+            
+            gInstance.IFEdgeWeight = val/100;
+            
+            if (gInstance.dpie) {
+                gInstance.drawPie();
+            } else {
+                gInstance.draw(gInstance.labelIndex);
+            }
         },
 
         createPieColorLegend: function () {
@@ -1259,6 +1278,19 @@ $(function () {
                 gInstance.draw(gInstance.labelIndex);
             }
         },
+        
+        changeIPWidth: function(){
+            var val = $("#pw").val();
+            $("#pwl").html(val + "%");
+            
+            gInstance.IPEdgeWeight = val/100;
+            
+            if (gInstance.dpie) {
+                gInstance.drawPie();
+            } else {
+                gInstance.draw(gInstance.labelIndex);
+            }
+        },
 
         createPathLegends: function () {
             $("#int-path").css("display", "block");
@@ -1297,7 +1329,8 @@ $(function () {
                 sack = " checked";
             }
 
-            var s = "<li><input type='radio' id='sa' name='esr' checked /><label class='fa' for='sa'>Show all edges</label></li>" +
+            var s = "<li><label id='idl'>Path width:</label>&nbsp<input type='range' min='1' max='100' value='50' id='pw' />&nbsp;<label id='pwl'>50%</label></li>" +
+                    "<li><input type='radio' id='sa' name='esr' checked /><label class='fa' for='sa'>Show all edges</label></li>" +
                     "<li><input type='radio' id='ips' name='esr' /><label class='fa' for='ips'>Show only interesting paths</label></li>" +
                     "<li><input type='checkbox' id='sap'" + sack + " /><label class='fa' for='sap'>Show all paths</label></li>";
 
@@ -1320,6 +1353,7 @@ $(function () {
                 });
             }
 
+            d3.select("#pw").on("change", gInstance.changeIPWidth);
             d3.select("#sa").on("change", gInstance.showAllEdges);
             d3.select("#ips").on("change", gInstance.showIPs);
             d3.select("#sap").on("change", gInstance.showAllIPs);
@@ -1433,15 +1467,10 @@ $(function () {
                 k = gInstance.__transform.k;
             }
             
-            //k=1;
-
-            //var __mp = d3.mouse(d3.event.currentTarget);
-            var cx = d.x, cy=d.y;
-
             d3.select("#top-nav").style("display", "block")
                     .style("position", "absolute")
-                    .style("top", y + (cy* k) + "px")
-                    .style("left", x + (cx * k) + "px");
+                    .style("top", y + (d.y* k) + "px")
+                    .style("left", x + (d.x * k) + "px");
 
             d3.select("#add-node").attr("d", d.Id)
                     .on("click", function () {
@@ -1563,16 +1592,16 @@ $(function () {
                 var c = (d.target.Id) ? d.target.Id : d.target;
                 var r = parseFloat(d3.select("#node_" + c).attr("r")) / 2;
                 var w = (gInstance.selectedFeature[0] || gInstance.selectedFeature[1]) ?
-                        ((gInstance.selectedFeature[0] && d.W > 2) ? d.W / 2 : ((gInstance.selectedFeature[1] && d.FW > 2) ? d.FW / 2 : d.W)) : 2;
+                        ((gInstance.selectedFeature[0] && d.W > 2) ? d.W * gInstance.IPEdgeWeight : ((gInstance.selectedFeature[1] && d.FW > 2) ? d.FW  * gInstance.IFEdgeWeight : d.W)) : 2;
                 var co = (gInstance.selectedFeature[0] || gInstance.selectedFeature[1]) ?
                         ((gInstance.selectedFeature[0] && d.W > 2) ? d.C : ((gInstance.selectedFeature[1] && d.FW > 2) ? d.FC : gInstance.defaultEdgeColor)) : gInstance.defaultEdgeColor;
                 gInstance.marker.append("marker")
                         .attr("id", "arrowhead_" + i)
                         .attr("viewBox", "-0 -5 10 10")
-                        .attr("refX", (w < 5) ? r + 20 : r + 8)
+                        .attr("refX", (w < 6) ? r + 20 : r)
                         .attr("refY", 0)
-                        .attr("markerWidth", (w < 5) ? 10 : 3)
-                        .attr("markerHeight", (w < 5) ? 5 : 3)
+                        .attr("markerWidth", (w < 2) ? 10 : 3)
+                        .attr("markerHeight", (w < 2) ? 5 : 3)
                         .attr("orient", "auto")
                         .attr("xoverflow", "visible")
                         .append("svg:path")
@@ -1616,7 +1645,7 @@ $(function () {
                     .enter().append("line")
                     .attr("stroke-width", function (d) {
                         return (gInstance.selectedFeature[0] || gInstance.selectedFeature[1]) ?
-                                ((gInstance.selectedFeature[0] && d.W > 2) ? d.W / 2 : ((gInstance.selectedFeature[1] && d.FW > 2) ? d.FW / 2 : d.W)) : 2;
+                                ((gInstance.selectedFeature[0] && d.W > 2) ? d.W * gInstance.IPEdgeWeight : ((gInstance.selectedFeature[1] && d.FW > 2) ? d.FW * gInstance.IFEdgeWeight : d.W)) : 2;
                     })
                     .style("stroke", function (d) {
                         return (gInstance.selectedFeature[0] || gInstance.selectedFeature[1]) ?
@@ -1788,7 +1817,7 @@ $(function () {
                     .enter().append("line")
                     .attr("stroke-width", function (d) {
                         return (gInstance.selectedFeature[0] || gInstance.selectedFeature[1]) ?
-                                ((gInstance.selectedFeature[0] && d.W > 2) ? d.W / 2 : ((gInstance.selectedFeature[1] && d.FW > 2) ? d.FW / 2 : d.W)) : 2;
+                                ((gInstance.selectedFeature[0] && d.W > 2) ? d.W * gInstance.IPEdgeWeight : ((gInstance.selectedFeature[1] && d.FW > 2) ? d.FW * gInstance.IFEdgeWeight : d.W)) : 2;
                     })
                     /*.attr("marker-end", function (d) {
                      return "url(#arrowhead_" + ((d.W < 5) ? 1 : 2) + ")";
