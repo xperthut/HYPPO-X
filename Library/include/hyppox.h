@@ -81,7 +81,7 @@ namespace hyppox {
         ~Hyppox()=default;
         
         std::string getD3GraphObject(int argc, const char * argv[]);
-        std::string getD3GraphObject(short genotypeCol, std::vector<std::string> filterGen, std::vector<short> locationCol, short dateTimeCol, std::vector<short> otherInfoCol, std::vector<short> indvCol, std::vector<short> filterCol, std::vector<short> clusterCol, short clusterIndexForEdgeDirection, std::string clusterName, std::vector<float> clusterParams, std::vector<short> windows, std::vector<float> overlap, std::string readDir, std::string writeDir, short minPathLen, float deltaChanges, bool increaseTime, bool signatureMatch, bool printBarcode, bool printBarcodeUsingJavaplex, bool refPerformance, short filterRefIndex, short intPathWidth, std::string edgeColor, std::vector<float> nodeSizeRange, bool heatmapEachConComp, std::string fileName, short sortFilterIndex, std::vector<short> filterSignatureMatching);
+        std::string getD3GraphObject(short genotypeCol, std::vector<std::string> filterGen, std::vector<short> locationCol, std::vector<short> dateTimeCol, std::vector<short> otherInfoCol, std::vector<short> indvCol, std::vector<short> filterCol, std::vector<short> clusterCol, short clusterIndexForEdgeDirection, std::string clusterName, std::vector<float> clusterParams, std::vector<short> windows, std::vector<float> overlap, std::string readDir, std::string writeDir, short minPathLen, float deltaChanges, bool increaseTime, bool signatureMatch, bool printBarcode, bool printBarcodeUsingJavaplex, bool refPerformance, short filterRefIndex, short intPathWidth, std::string edgeColor, std::vector<float> nodeSizeRange, bool heatmapEachConComp, std::string fileName, short sortFilterIndex, std::vector<short> filterSignatureMatching);
         
         private:
         GType graph;
@@ -93,7 +93,7 @@ namespace hyppox {
                       short &genotypeCol,
                       std::vector<std::string> &filterGen,
                       std::vector<short> &locationCol,
-                      short &dateTimeCol,
+                      std::vector<short> &dateTimeCol,
                       std::vector<short> &otherInfoCol,
                       std::vector<short> &indvCol,
                       std::vector<short> &filterCol,
@@ -130,7 +130,7 @@ namespace hyppox {
         short genotypeCol ;
         std::vector<std::string> filterGen;
         std::vector<short> locationCol;
-        short dateTimeCol;
+        std::vector<short> dateTimeCol;
         std::vector<short> otherInfoCol;
         std::vector<short> indvCol;
         std::vector<short> filterCol;
@@ -216,7 +216,7 @@ namespace hyppox {
     
     // Request handler method, it handles public request
     template<typename RowIDType, typename ClusterIDType, typename Gentype, typename DatetimeType, typename ClusterType, typename FilterType>
-    std::string Hyppox<RowIDType,ClusterIDType,Gentype,DatetimeType,ClusterType,FilterType>::getD3GraphObject(short genotypeCol, std::vector<std::string> filterGen, std::vector<short> locationCol, short dateTimeCol, std::vector<short> otherInfoCol, std::vector<short> indvCol, std::vector<short> filterCol, std::vector<short> clusterCol, short clusterIndexForEdgeDirection, std::string clusterName, std::vector<float> clusterParams, std::vector<short> windows, std::vector<float> overlap, std::string readDir, std::string writeDir, short minPathLen, float deltaChanges, bool increaseTime, bool signatureMatch, bool printBarcode, bool printBarcodeUsingJavaplex, bool refPerformance, short filterRefIndex, short intPathWidth, std::string edgeColor, std::vector<float> nodeSizeRange, bool heatmapEachConComp, std::string fileName, short sortFilterIndex, std::vector<short> filterSignatureMatching){
+    std::string Hyppox<RowIDType,ClusterIDType,Gentype,DatetimeType,ClusterType,FilterType>::getD3GraphObject(short genotypeCol, std::vector<std::string> filterGen, std::vector<short> locationCol, std::vector<short> dateTimeCol, std::vector<short> otherInfoCol, std::vector<short> indvCol, std::vector<short> filterCol, std::vector<short> clusterCol, short clusterIndexForEdgeDirection, std::string clusterName, std::vector<float> clusterParams, std::vector<short> windows, std::vector<float> overlap, std::string readDir, std::string writeDir, short minPathLen, float deltaChanges, bool increaseTime, bool signatureMatch, bool printBarcode, bool printBarcodeUsingJavaplex, bool refPerformance, short filterRefIndex, short intPathWidth, std::string edgeColor, std::vector<float> nodeSizeRange, bool heatmapEachConComp, std::string fileName, short sortFilterIndex, std::vector<short> filterSignatureMatching){
         
         if(readDir[readDir.length()-1]!='/') readDir += "/";
         if(writeDir.length()>0){
@@ -385,7 +385,7 @@ namespace hyppox {
                            short &genotypeCol,
                            std::vector<std::string> &filterGen,
                            std::vector<short> &locationCol,
-                           short &dateTimeCol,
+                           std::vector<short> &dateTimeCol,
                            std::vector<short> &otherInfoCol,
                            std::vector<short> &indvCol,
                            std::vector<short> &filterCol,
@@ -420,6 +420,7 @@ namespace hyppox {
         locationCol.clear();
         otherInfoCol.clear();
         indvCol.clear();
+        dateTimeCol.clear();
         filterCol.clear();
         clusterCol.clear();
         clusterParams.clear();
@@ -509,7 +510,8 @@ namespace hyppox {
                 }else if(s.compare("-DTC")==0){
                     index++;
                     s = argv[index];
-                    dateTimeCol = (short)stoi(s);
+                    //dateTimeCol = (short)stoi(s);
+                    parseIndex(s, dateTimeCol);
                     
                 }else if(s.compare("-EC")==0){
                     index++;

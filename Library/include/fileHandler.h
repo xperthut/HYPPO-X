@@ -131,7 +131,7 @@ namespace hyppox {
                 if(fileReader.is_open()){
                     
                     GenType genotype;
-                    DatetimeType datetime;
+                    std::vector<DatetimeType> datetime;
                     std::vector<FilterType> _filter;
                     std::vector<ClusterType> _clsValue;
                     std::vector<std::string> _location, _otherInfo;
@@ -239,8 +239,15 @@ namespace hyppox {
                                             genotype = convert_to<GenType>(s);
                                         }
                                         
-                                    }else if(col==hyppox::Config::COL_DATETIME){
+                                    }/*else if(col==hyppox::Config::COL_DATETIME){
                                         datetime = convert_to<DatetimeType>(s);
+                                    }*/
+                                    
+                                    for(int fc:hyppox::Config::COL_DATETIME){
+                                        if(fc==col){
+                                            datetime.push_back(convert_to<DatetimeType>(s));
+                                            break;
+                                        }
                                     }
                                     
                                     for(int fc:hyppox::Config::COL_INDIVIDUAL){
@@ -310,8 +317,15 @@ namespace hyppox {
                             }else{
                                 genotype = convert_to<GenType>(s);
                             }
-                        }else if(col==hyppox::Config::COL_DATETIME){
+                        }/*else if(col==hyppox::Config::COL_DATETIME){
                             datetime = convert_to<DatetimeType>(s);
+                        }*/
+                        
+                        for(int fc:hyppox::Config::COL_DATETIME){
+                            if(fc==col){
+                                datetime.push_back(convert_to<DatetimeType>(s));
+                                break;
+                            }
                         }
                         
                         for(int fc:hyppox::Config::COL_INDIVIDUAL){

@@ -90,7 +90,7 @@ namespace hyppox{
         static short COL_GENOTYPE;
         static std::vector<std::string> FILTER_GENOTYPE;
         static std::vector<short> COL_LOCATION;
-        static short COL_DATETIME;
+        static std::vector<short> COL_DATETIME;
         static std::vector<short> COL_OTHER;
         static std::vector<short> COL_INDIVIDUAL;
         static std::vector<short> COL_FILTER;
@@ -178,7 +178,7 @@ namespace hyppox{
         // Which filter is used for edge direction matching
         static short FILTER_SIGNATURE_MATCHING;
         
-        static void setParams(short genotypeCol, std::vector<std::string> filterGen, std::vector<short> locationCol, short dateTimeCol, std::vector<short> otherInfoCol, std::vector<short> _indvCol, std::vector<short> filterCol, std::vector<short> clusterCol, short clusterIndexForEdgeDirection, std::string clusterName, std::vector<float> clusterParams, std::vector<short> windows, std::vector<float> overlap, std::string readDir, std::string writeDir, short minPathLen, float deltaChanges, bool increaseTime, bool signatureMatch, bool printBarcode, bool printBarcodeUsingJavaplex, bool refPerformance, short filterRefIndex, short intPathWidth, std::string edgeColor, std::vector<float> nodeSizeRange, bool heatmapEachConComp, std::string fileName, short sortFilterIndex, std::vector<short> filterSignatureMatching);
+        static void setParams(short genotypeCol, std::vector<std::string> filterGen, std::vector<short> locationCol, std::vector<short> dateTimeCol, std::vector<short> otherInfoCol, std::vector<short> _indvCol, std::vector<short> filterCol, std::vector<short> clusterCol, short clusterIndexForEdgeDirection, std::string clusterName, std::vector<float> clusterParams, std::vector<short> windows, std::vector<float> overlap, std::string readDir, std::string writeDir, short minPathLen, float deltaChanges, bool increaseTime, bool signatureMatch, bool printBarcode, bool printBarcodeUsingJavaplex, bool refPerformance, short filterRefIndex, short intPathWidth, std::string edgeColor, std::vector<float> nodeSizeRange, bool heatmapEachConComp, std::string fileName, short sortFilterIndex, std::vector<short> filterSignatureMatching);
         
         static void printAllConfig();
         
@@ -187,7 +187,7 @@ namespace hyppox{
     short Config::COL_GENOTYPE;
     std::vector<std::string> Config::FILTER_GENOTYPE;
     std::vector<short> Config::COL_LOCATION;
-    short Config::COL_DATETIME;
+    std::vector<short> Config::COL_DATETIME;
     std::vector<short> Config::COL_OTHER;
     std::vector<short> Config::COL_INDIVIDUAL;
     std::vector<short> Config::COL_FILTER;
@@ -225,7 +225,7 @@ namespace hyppox{
     std::string Config::DATA_FILE_NAME = "";
     short Config::FILTER_SIGNATURE_MATCHING = 0;
     
-    void Config::setParams(short genotypeCol, std::vector<std::string> filterGen, std::vector<short> locationCol, short dateTimeCol, std::vector<short> otherInfoCol, std::vector<short> _indvCol, std::vector<short> filterCol, std::vector<short> clusterCol, short clusterIndexForEdgeDirection, std::string clusterName, std::vector<float> clusterParams, std::vector<short> windows, std::vector<float> overlap, std::string readDir, std::string writeDir, short minPathLen, float deltaChanges, bool increaseTime, bool signatureMatch, bool printBarcode, bool printBarcodeUsingJavaplex, bool refPerformance, short filterRefIndex, short intPathWidth, std::string edgeColor, std::vector<float> nodeSizeRange, bool heatmapEachConComp, std::string fileName, short sortFilterIndex, std::vector<short> filterSignatureMatching){
+    void Config::setParams(short genotypeCol, std::vector<std::string> filterGen, std::vector<short> locationCol, std::vector<short> dateTimeCol, std::vector<short> otherInfoCol, std::vector<short> _indvCol, std::vector<short> filterCol, std::vector<short> clusterCol, short clusterIndexForEdgeDirection, std::string clusterName, std::vector<float> clusterParams, std::vector<short> windows, std::vector<float> overlap, std::string readDir, std::string writeDir, short minPathLen, float deltaChanges, bool increaseTime, bool signatureMatch, bool printBarcode, bool printBarcodeUsingJavaplex, bool refPerformance, short filterRefIndex, short intPathWidth, std::string edgeColor, std::vector<float> nodeSizeRange, bool heatmapEachConComp, std::string fileName, short sortFilterIndex, std::vector<short> filterSignatureMatching){
         
         COL_GENOTYPE = genotypeCol;
         FILTER_GENOTYPE = filterGen;
@@ -302,7 +302,13 @@ namespace hyppox{
             }
             std::cout<<"]"<<std::endl;
         }
-        std::cout<<"COL_DATETIME:"<<Config::COL_DATETIME<<std::endl;
+        if(Config::COL_DATETIME.size()>0){
+            std::cout<<"COL_DATETIME:[";
+            for(short s:Config::COL_DATETIME){
+                std::cout<<s<<" ";
+            }
+            std::cout<<"]"<<std::endl;
+        }
         if(Config::COL_OTHER.size()>0){
             std::cout<<"COL_OTHER:[";
             for(auto s:Config::COL_OTHER){

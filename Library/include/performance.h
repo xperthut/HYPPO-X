@@ -30,14 +30,14 @@ namespace hyppox {
             public:
             //using PerfType = Performance<RowIDType,ClusterIDType,Gentype,DatetimeType,ClusterType,FilterType>;
             
-            Performance(RowIDType _pid, Gentype _genotype, std::vector<std::string> _location, DatetimeType _datetime, std::vector<ClusterType> _clsValue, std::vector<FilterType> _filterValue, std::vector<std::string> _other, std::string _indv);
+            Performance(RowIDType _pid, Gentype _genotype, std::vector<std::string> _location, std::vector<DatetimeType> _datetime, std::vector<ClusterType> _clsValue, std::vector<FilterType> _filterValue, std::vector<std::string> _other, std::string _indv);
             ~Performance() = default;
             
             RowIDType getID();
             Gentype getGenotype();
             std::string getLocation();
             void getLocation(std::vector<std::string>& _loc);
-            DatetimeType getDateTime();
+            std::string getDateTime();
             FilterType getFilter(short index);
             ClusterType getClusterValue(short index);
             std::string getOtherValues(short index);
@@ -55,7 +55,7 @@ namespace hyppox {
             RowIDType pID;
             Gentype genotype;
             std::vector<std::string> location;
-            DatetimeType datetime;
+            std::vector<DatetimeType> datetime;
             std::vector<ClusterType> cluster_value;
             std::vector<FilterType> filter_value;
             std::vector<std::string> other;
@@ -63,9 +63,12 @@ namespace hyppox {
         };
         
         template <typename RowIDType, typename ClusterIDType, typename Gentype, typename DatetimeType, typename ClusterType, typename FilterType>
-        Performance<RowIDType,ClusterIDType,Gentype,DatetimeType,ClusterType,FilterType>::Performance(RowIDType _pid, Gentype _genotype, std::vector<std::string> _location, DatetimeType _datetime, std::vector<ClusterType> _clsValue, std::vector<FilterType> _filterValue, std::vector<std::string> _other, std::string _indv):
-        pID(_pid),genotype(_genotype),datetime(_datetime),cluster_value(_clsValue),filter_value(_filterValue),other(_other),indv(_indv)
-        {this->location.assign(_location.begin(), _location.end());}
+        Performance<RowIDType,ClusterIDType,Gentype,DatetimeType,ClusterType,FilterType>::Performance(RowIDType _pid, Gentype _genotype, std::vector<std::string> _location, std::vector<DatetimeType> _datetime, std::vector<ClusterType> _clsValue, std::vector<FilterType> _filterValue, std::vector<std::string> _other, std::string _indv):
+        pID(_pid),genotype(_genotype),cluster_value(_clsValue),filter_value(_filterValue),other(_other),indv(_indv)
+        {
+            this->location.assign(_location.begin(), _location.end());
+            this->datetime.assign(_datetime.begin(), _datetime.end());
+        }
         
         template <typename RowIDType, typename ClusterIDType, typename Gentype, typename DatetimeType, typename ClusterType, typename FilterType>
         RowIDType Performance<RowIDType,ClusterIDType,Gentype,DatetimeType,ClusterType,FilterType>::getID(){return this->pID;}
@@ -91,7 +94,15 @@ namespace hyppox {
         }
         
         template <typename RowIDType, typename ClusterIDType, typename Gentype, typename DatetimeType, typename ClusterType, typename FilterType>
-        DatetimeType Performance<RowIDType,ClusterIDType,Gentype,DatetimeType,ClusterType,FilterType>::getDateTime(){return this->datetime;}
+        std::string Performance<RowIDType,ClusterIDType,Gentype,DatetimeType,ClusterType,FilterType>::getDateTime(){
+            std::string s=convert_to<std::string>(this->datetime[0]);
+            
+            for(size_t i=1; i<this->datetime.size(); i++){
+                s += ", " + convert_to<std::string>(this->datetime[i]);
+            }
+            
+            return s;
+        }
         
         template <typename RowIDType, typename ClusterIDType, typename Gentype, typename DatetimeType, typename ClusterType, typename FilterType>
         FilterType Performance<RowIDType,ClusterIDType,Gentype,DatetimeType,ClusterType,FilterType>::getFilter(short index){
@@ -163,7 +174,7 @@ namespace hyppox {
         std::string Performance<RowIDType,ClusterIDType,Gentype,DatetimeType,ClusterType,FilterType>::getIndividualId(){return this->indv;}
         
         template <typename RowIDType, typename ClusterIDType, typename Gentype, typename DatetimeType, typename ClusterType, typename FilterType>
-        std::string Performance<RowIDType,ClusterIDType,Gentype,DatetimeType,ClusterType,FilterType>::getPoint(){return (this->genotype+"#"+this->getLocation()+"#"+this->datetime);}
+        std::string Performance<RowIDType,ClusterIDType,Gentype,DatetimeType,ClusterType,FilterType>::getPoint(){return (this->genotype+"#"+this->getLocation()+"#"+this->getDateTime());}
     }
 }
 

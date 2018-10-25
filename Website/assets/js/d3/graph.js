@@ -724,8 +724,8 @@ $(function () {
         getNodeCoordinate: function () {
             d3.select("#type").attr("value", "get-coordinate");
             d3.select("#data").attr("value", "");
-            d3.select("#folderName").attr("value", this.fl[this.fileIndex].split(".")[0]);
-            d3.select("#fileName").attr("value", this.jfl[this.fileRIndex].files[this.fileCIndex]);
+            d3.select("#folderName").attr("value", gInstance.fl[gInstance.fileIndex].split(".")[0]);
+            d3.select("#fileName").attr("value", gInstance.jfl[gInstance.fileRIndex].files[gInstance.fileCIndex]);
             var form = $("#frm");
 
             $.ajax({
@@ -755,8 +755,8 @@ $(function () {
 
         getCoordinates: function () {
 
-            if (this.coordData) {
-                this.node.each(function (d) {
+            if (gInstance.coordData) {
+                gInstance.node.each(function (d) {
                     var __coord = gInstance.coordData[0]["nid_" + d.Id];
                     if (__coord) {
                         d.fx = __coord[0];
@@ -764,20 +764,20 @@ $(function () {
                     }
                 });
             } else {
-                this.getNodeCoordinate();
+                gInstance.getNodeCoordinate();
             }
         },
 
         clickGetCoordinates: function () {
-            this.selectButton("other-btn", $(this));
-            this.getCoordinates();
+            gInstance.selectButton("other-btn", $(this));
+            gInstance.getCoordinates();
         },
 
         setCoordinates: function () {
-            this.selectButton("other-btn", $(this));
+            gInstance.selectButton("other-btn", $(this));
 
             var nPos = "{";
-            this.node.each(function (d) {
+            gInstance.node.each(function (d) {
                 if (nPos.length > 1)
                     nPos += ",";
                 nPos += "\"nid_" + d.Id + "\":[" + d.x + "," + d.y + "]";
@@ -786,8 +786,8 @@ $(function () {
 
             d3.select("#type").attr("value", "set-coordinate");
             d3.select("#data").attr("value", nPos);
-            d3.select("#folderName").attr("value", this.fl[this.fileIndex].split(".")[0]);
-            d3.select("#fileName").attr("value", this.jfl[this.fileRIndex].files[this.fileCIndex]);
+            d3.select("#folderName").attr("value", gInstance.fl[gInstance.fileIndex].split(".")[0]);
+            d3.select("#fileName").attr("value", gInstance.jfl[gInstance.fileRIndex].files[gInstance.fileCIndex]);
             var form = $("#frm");
 
             $.ajax({
@@ -804,14 +804,14 @@ $(function () {
         },
 
         saveColors: function () {
-            this.selectButton("other-btn", $(this));
+            gInstance.selectButton("other-btn", $(this));
 
-            var s = JSON.stringify(this._graph);
+            var s = JSON.stringify(gInstance._graph);
 
             d3.select("#type").attr("value", "set-color");
             d3.select("#data").attr("value", s);
-            d3.select("#folderName").attr("value", this.fl[this.fileIndex].split(".")[0]);
-            d3.select("#fileName").attr("value", this.jfl[this.fileRIndex].files[this.fileCIndex]);
+            d3.select("#folderName").attr("value", gInstance.fl[gInstance.fileIndex].split(".")[0]);
+            d3.select("#fileName").attr("value", gInstance.jfl[gInstance.fileRIndex].files[gInstance.fileCIndex]);
             var form = $("#frm");
 
             $.ajax({
@@ -1751,7 +1751,7 @@ $(function () {
                         .style("pointer-events", "none")
                         .attr("startOffset", "50%")
                         .text(function (d) {
-                            return (d.W > 6) ? ((gInstance.shEdgeRank) ? d.R : d.L) : "";
+                            return (gInstance.shEdgeRank) ? d.R : d.L;
                         });
             }
 
