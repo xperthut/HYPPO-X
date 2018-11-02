@@ -2772,25 +2772,46 @@ namespace hyppox {
                 d3Data = "{" + indv_UIC + ",\n" + indv_NAME + ",\n" + buttons + ",\n" + d3Nodes + ",\n" + d3Edges + "}";
                 
                 std::string fName = "";
+                
+                // Filternames
                 for(int i=0; i<hyppox::Config::FILTER; i++){
                     if(fName.length()>0) fName += "_";
                     fName += hyppox::Config::FILTER_NAMES[i];
                 }
                 
-                for(int i=0;i<hyppox::Config::FILTER;i++)
-                fName += "_" + std::to_string(hyppox::Config::WINDOWS[i]);
+                // Filternames_Signature
+                for(int i=0; i<hyppox::Config::FILTER; i++){
+                    if(1<<i & hyppox::Config::FILTER_SIGNATURE_MATCHING){
+                        if(fName.length()>0) fName += "_";
+                        fName += hyppox::Config::FILTER_NAMES[hyppox::Config::FILTER-i-1];
+                    }
+                }
                 
-                for(int i=0;i<hyppox::Config::GAIN.size();i++)
-                fName += "_" + fixPrecision((hyppox::Config::GAIN[i]<0.98)?(hyppox::Config::GAIN[i]/2)*100:50, 2);
+                // Filternames_Signature_WindowSize
+                for(int i=0;i<hyppox::Config::FILTER;i++){
+                    fName += "_" + std::to_string(hyppox::Config::WINDOWS[i]);
+                }
                 
+                // Filternames_Signature_WindowSize_Overlap
+                for(int i=0;i<hyppox::Config::GAIN.size();i++){
+                    fName += "_" + fixPrecision((hyppox::Config::GAIN[i]<0.98)?(hyppox::Config::GAIN[i]/2)*100:50, 2);
+                }
+                
+                // Filternames_Signature_WindowSize_Overlap_ClusterParams
                 fName += "_" + fixPrecision(hyppox::Config::CLUSTER_PARAM[0], 2);
                 fName += "_" + fixPrecision(hyppox::Config::CLUSTER_PARAM[1], 0);
                 
-                
-                //if(hyppox::Config::CLUSTER>1){
+                // Filternames_Signature_WindowSize_Overlap_ClusterParams_Performance
                 fName += "_" + hyppox::Config::CLUSTER_NAMES[hyppox::Config::REFERENCE_PH_INDEX];
-                //}
                 
+                // Filternames_Signature_WindowSize_Overlap_ClusterParams_Performance_GenotypeFilter
+                if(hyppox::Config::FILTER_GENOTYPE.size()>0){
+                    for(std::string s:hyppox::Config::FILTER_GENOTYPE){
+                        fName += "_" + s;
+                    }
+                }
+                
+                // Save data into file
                 FHType* writeToFile = new FHType("");
                 _filePath = writeToFile->WriteDataToFile(hyppox::Config::WRITE_DIR+fName, ".json", d3Data, false);
                 delete writeToFile;
