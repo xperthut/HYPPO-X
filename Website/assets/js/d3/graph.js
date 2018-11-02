@@ -90,17 +90,11 @@ $(function () {
         this.defaultEdgeColor = "#a4a4a4"; //a4a4a4
         this.IPEdgeWidth = 6;
         this.IFEdgeWidth = 6;
+        this.csvData = null;
         this.zoom_handler = d3.zoom();
         this.marker = this.svg.append("defs");
-        this.simulation = d3.forceSimulation()
-                .force("link", d3.forceLink().id(function (d) {
-                    return d.Id;
-                }).strength(0.8))
-                .force("charge", d3.forceManyBody())
-                .force("center", d3.forceCenter(this.width / 2, this.height / 2))
-                //.force("x", d3.forceX(width / 2).strength(-1200))
-                //.force("y", d3.forceY(height / 2).strength(-1200))
-                ;
+        this.pallete = this.svg.append("defs");
+        this.simulation = null;
     }
 
     Graph.prototype = {
@@ -145,22 +139,25 @@ $(function () {
             this.defaultEdgeColor = "#a4a4a4";
             this.IPEdgeWeight = 1;
             this.IFEdgeWeight = 1;
+            this.csvData = null;
+            this.simulation = null;
         },
 
         initPage: function (gData) {
             this.zoom_handler(this.svg);
             this.zoom_handler.scaleExtent([1 / 10, 10])
                     .on("zoom", gInstance.zoom_actions);
-            
+
             $("#int-cc").css("display", "none");
             $("#int-path").css("display", "none");
             $("#int-flare").css("display", "none");
-            
+            $("#pie-legend").css("display", "none");
+
             this.setDefault();
-         
+
             this.graph = gData;
             this._graph = gData;
-            
+
             for (var i = 0; i < this._graph.links.length; i++) {
                 if (this._graph.links[i].W === 2) {
                     this.defaultEdgeColor = this._graph.links[i].C;
@@ -188,7 +185,7 @@ $(function () {
                     this.totalFlares++;
                 }
             }
-            
+
             this.createButtons();
             this.createAttributes();
             this.draw(0);
@@ -434,10 +431,10 @@ $(function () {
                     c = parseInt($(this).attr("r")),
                     _intFlare = $("#ifs").prop("checked");
             //_allFlares = $("#saf").prop("checked");
-            
-            if(_intFlare||_show){
-                gInstance.selectedFeature[0]=false;
-                gInstance.selectedFeature[1]=true;
+
+            if (_intFlare || _show) {
+                gInstance.selectedFeature[0] = false;
+                gInstance.selectedFeature[1] = true;
             }
 
             if (_intFlare === false) {
@@ -604,7 +601,7 @@ $(function () {
                     }
                 });
             }
-            
+
             d3.select("#fw").on("change", gInstance.changeIFWidth);
             d3.select("#ifs").on("change", gInstance.showIFs);
             d3.select("#saf").on("change", gInstance.showAllFlares);
@@ -618,13 +615,13 @@ $(function () {
                 this.draw(this.labelIndex);
 
         },
-        
-        changeIFWidth: function(){
+
+        changeIFWidth: function () {
             var val = $("#fw").val();
             $("#fwl").html(val + "%");
-            
-            gInstance.IFEdgeWeight = val/100;
-            
+
+            gInstance.IFEdgeWeight = val / 100;
+
             if (gInstance.dpie) {
                 gInstance.drawPie();
             } else {
@@ -1159,13 +1156,13 @@ $(function () {
                 for (var i = 1; i <= gInstance.totalpaths; i++) {
                     $("#ip_" + i).prop("checked", false);
                 }
-                
+
                 for (var i = 0; i < gInstance._linkData.length; i++) {
-                        if (gInstance._linkData[i].R > 0) {
-                            gInstance._linkData[i].C = gInstance.defaultEdgeColor;
-                            gInstance._linkData[i].W = 2;
-                        }
+                    if (gInstance._linkData[i].R > 0) {
+                        gInstance._linkData[i].C = gInstance.defaultEdgeColor;
+                        gInstance._linkData[i].W = 2;
                     }
+                }
             }
 
             if (gInstance.dpie) {
@@ -1182,10 +1179,10 @@ $(function () {
                     _allPaths = $("#sa").prop("checked"),
                     _intPaths = $("#ips").prop("checked");
             //_allIntPaths = $("#sap").prop("checked");
-            
-            if(_intPaths||_show){
-                gInstance.selectedFeature[0]=true;
-                gInstance.selectedFeature[1]=false;
+
+            if (_intPaths || _show) {
+                gInstance.selectedFeature[0] = true;
+                gInstance.selectedFeature[1] = false;
             }
 
             // Filter links and nodes
@@ -1278,13 +1275,13 @@ $(function () {
                 gInstance.draw(gInstance.labelIndex);
             }
         },
-        
-        changeIPWidth: function(){
+
+        changeIPWidth: function () {
             var val = $("#pw").val();
             $("#pwl").html(val + "%");
-            
-            gInstance.IPEdgeWeight = val/100;
-            
+
+            gInstance.IPEdgeWeight = val / 100;
+
             if (gInstance.dpie) {
                 gInstance.drawPie();
             } else {
@@ -1292,11 +1289,136 @@ $(function () {
             }
         },
 
+        getAllRowIdsOfANode: function (nodeID) {
+            var rIDs = [];
+            gInstance.node.each(function (d) {
+                if (d.Id === nodeID) {
+                    var _pt = d.Ph;
+                    for (var j = 0; j < _pt.length; j++) {
+                        for (var k = _pt[j][0]; k <= _pt[j][1]; k++) {
+                            rIDs.push(k);
+                        }
+                    }
+                }
+            });
+
+            return rIDs;
+        },
+
+        getAllRowIdsOfAPath: function (pathRank) {
+            var rIDs = [];
+            var nc = [];
+            gInstance.link.each(function (d) {
+                if (d.R === pathRank) {
+                    var s = (d.source.Id) ? d.source.Id : d.source;
+                    var t = (d.target.Id) ? d.target.Id : d.target;
+
+                    if (!nc.includes(s)) {
+                        nc.push(s);
+
+                        var tIDs = gInstance.getAllRowIdsOfANode(s);
+                        for (var i = 0; i < tIDs.length; i++) {
+                            if (!rIDs.includes(tIDs[i])) {
+                                rIDs.push(tIDs[i]);
+                            }
+                        }
+                    }
+
+                    if (!nc.includes(t)) {
+                        nc.push(t);
+
+                        var tIDs = gInstance.getAllRowIdsOfANode(t);
+                        for (var i = 0; i < tIDs.length; i++) {
+                            if (!rIDs.includes(tIDs[i])) {
+                                rIDs.push(tIDs[i]);
+                            }
+                        }
+                    }
+                }
+            });
+
+            return rIDs;
+        },
+
+        pickData: function (rawIDs) {
+            rawIDs.sort();
+            var _data = [];
+            var _file = "Data/csv/" + gInstance.fl[gInstance.fileIndex] + "?t=" + (new Date).getTime();
+            d3.csv(_file, function (error, data) {
+                if (error)
+                    throw error;
+
+                gInstance.csvData = data;
+                for (var i = 0; i < data.length; i++) {
+                    var _id = Number(eval("data[i]." + "pID"));
+                    var _cov = eval("data[i]." + "PlantID");
+                    if (rawIDs.includes(_id)) {
+                        if (!_data.includes(_cov)) {
+                            _data.push(_cov);
+                        }
+                    }
+                }
+
+            });
+
+            if (_data.length === 0 && gInstance.csvData !== null) {
+                for (var i = 0; i < gInstance.csvData.length; i++) {
+                    var _id = Number(eval("gInstance.csvData[i]." + "pID"));
+                    var _cov = eval("gInstance.csvData[i]." + "PlantID");
+                    if (rawIDs.includes(_id)) {
+                        if (!_data.includes(_cov)) {
+                            _data.push(_cov);
+                        }
+                    }
+                }
+            }
+
+            return _data;
+        },
+
+        pathAnalysis: function () {
+            var _l = $("#txtPA").val();
+            if (_l.toUpperCase() === 'ALL') {
+                _l = "";
+                for (var i = 1; i <= gInstance.totalpaths; i++) {
+                    if (_l.length > 0)
+                        _l += ",";
+                    _l += i;
+                }
+            }
+            var IP_ids = eval("[" + _l + "]");
+            if (IP_ids.length === 0)
+                return false;
+
+            var rIDs, cov, s = "";
+            for (var i = 0; i < IP_ids.length; i++) {
+                rIDs = gInstance.getAllRowIdsOfAPath(IP_ids[i]);
+
+                cov = gInstance.pickData(rIDs);
+
+                if (i > 0)
+                    s += "<br /><br />";
+
+                s += "<span>Interesting Path rank:" + IP_ids[i] + "</span><br /><span>Individuals: ";
+                var _tc = "";
+                for (var j = 0; j < cov.length; j++) {
+                    if (_tc.length > 0)
+                        _tc += ",";
+                    _tc += cov[j];
+                }
+                s += _tc + "</span>";
+            }
+            $("#pa-result").html(s);
+            $("#pa-result").css("color", "wheat");
+        },
+
         createPathLegends: function () {
             $("#int-path").css("display", "block");
 
             $("#path-details").html("");
-            $("#path-details").html("<ul class='path_options'></ul><fieldset><legend>Path color</legend><ul class='path_legend'></ul></fieldset>");
+            $("#path-details").html("<ul class='path_options'></ul><fieldset><legend>Path color</legend><ul class='path_legend'></ul></fieldset>" +
+                    "<fieldset><legend>Path analysis</legend><input type='text' id='txtPA' value='' style='color:wheat' />" +
+                    "<input type='button' id='pa-btn' value='Analysis' style='color:wheat' /><label id='pa-result'></label></fieldset>");
 
             var map = new HashMap(),
                     pc_map = new HashMap();
@@ -1360,6 +1482,9 @@ $(function () {
             for (var i = 0; i < this.intPathRank.length; i++) {
                 d3.select("#ip_" + this.intPathRank[i]).on("change", gInstance.showHideIntPath);
             }
+
+            //d3.select("#txtPA").on("click", gInstance.pathAnalysis);
+            d3.select("#pa-btn").on("click", gInstance.pathAnalysis);
 
             if (this.dpie) {
                 this.drawPie();
@@ -1466,10 +1591,10 @@ $(function () {
                 y = gInstance.__transform.y;
                 k = gInstance.__transform.k;
             }
-            
+
             d3.select("#top-nav").style("display", "block")
                     .style("position", "absolute")
-                    .style("top", y + (d.y* k) + "px")
+                    .style("top", y + (d.y * k) + "px")
                     .style("left", x + (d.x * k) + "px");
 
             d3.select("#add-node").attr("d", d.Id)
@@ -1585,6 +1710,39 @@ $(function () {
             //d.fy = null;
         },
 
+        createPallete: function () {
+            var _piCol = gInstance._graph.color;
+            var _patternPath = [
+                'M 0 0 L 10 10 M 9 -1 L 11 1 M -1 9 L 1 11',
+                'M 0 10 L 10 0 M -1 1 L 1 -1 M 9 11 L 11 9',
+                'M 3 0 L 3 10 M 8 0 L 8 10',
+                'M 0 3 L 10 3 M 0 8 L 10 8',
+                'M 0 3 L 5 3 L 5 0 M 5 10 L 5 7 L 10 7',
+                'M 3 3 L 8 3 L 8 8 L 3 8 Z',
+                'M 5 5 m -4 0 a 4 4 0 1 1 8 0 a 4 4 0 1 1 -8 0',
+                'M 10 3 L 5 3 L 5 0 M 5 10 L 5 7 L 0 7',
+                'M 2 5 L 5 2 L 8 5 L 5 8 Z',
+                'M 0 0 L 5 10 L 10 0'
+            ];
+
+            var _sw = [6, 6, 3, 3, 6, 6, 6, 6, 6, 6];
+
+            d3.selectAll("pattern").remove();
+
+            for (var i = 0; i < _piCol.length; i++) {
+                gInstance.pallete.append("pattern")
+                        .attr("id", "pattern_" + (i + 1))
+                        .attr("patternUnits", "userSpaceOnUse")
+                        .attr("width", 10)
+                        .attr("height", 10)
+                        .append("svg:path")
+                        .attr("d", _patternPath[i % _patternPath.length])
+                        .attr('fill', "transparent")
+                        .style('stroke', _piCol[i])
+                        .style('stroke-width', _sw[i]);
+            }
+        },
+
         createLinkArrow: function () {
             d3.selectAll("marker").remove();
             var i = 1;
@@ -1592,7 +1750,7 @@ $(function () {
                 var c = (d.target.Id) ? d.target.Id : d.target;
                 var r = parseFloat(d3.select("#node_" + c).attr("r")) / 2;
                 var w = (gInstance.selectedFeature[0] || gInstance.selectedFeature[1]) ?
-                        ((gInstance.selectedFeature[0] && d.W > 2) ? d.W * gInstance.IPEdgeWeight : ((gInstance.selectedFeature[1] && d.FW > 2) ? d.FW  * gInstance.IFEdgeWeight : d.W)) : 2;
+                        ((gInstance.selectedFeature[0] && d.W > 2) ? d.W * gInstance.IPEdgeWeight : ((gInstance.selectedFeature[1] && d.FW > 2) ? d.FW * gInstance.IFEdgeWeight : d.W)) : 2;
                 var co = (gInstance.selectedFeature[0] || gInstance.selectedFeature[1]) ?
                         ((gInstance.selectedFeature[0] && d.W > 2) ? d.C : ((gInstance.selectedFeature[1] && d.FW > 2) ? d.FC : gInstance.defaultEdgeColor)) : gInstance.defaultEdgeColor;
                 gInstance.marker.append("marker")
@@ -1759,14 +1917,30 @@ $(function () {
                 this.createLinkArrow();
             }
 
+            gInstance.simulation = d3.forceSimulation().nodes(gInstance._nodeData);
+
+            var link_force = d3.forceLink(gInstance._linkData)
+                    .id(function (d) {
+                        return d.Id;
+                    });
+
+            var charge_force = d3.forceManyBody()
+                    .strength(-100);
+
+            var center_force = d3.forceCenter(gInstance.width / 2, gInstance.height / 2);
+
             gInstance.simulation
-                    .nodes(gInstance._nodeData)
-                    .on("tick", gInstance.ticked);
+                    .force("charge_force", charge_force)
+                    .force("center_force", center_force)
+                    .force("links", link_force)
+                    ;
 
-            gInstance.simulation.force("link")
-                    .links(gInstance._linkData);
+            gInstance.simulation.on("tick", gInstance.ticked);
 
-            gInstance.simulation.velocityDecay(0.07);
+            /*gInstance.simulation.force("link")
+             .links(gInstance._linkData);
+             
+             gInstance.simulation.velocityDecay(0.07);*/
 
             if (this.__transform) {
                 this.g.attr("transform", this.__transform);
@@ -1789,7 +1963,7 @@ $(function () {
                 if (kl.length > 0)
                     kl += ",";
                 kl += this._graph.indv[index];
-                pc.push({"color": this._graph.color[index], "percent": percentage});
+                pc.push({"color": this._graph.color[index], "percent": percentage, "Pattern": "url(#pattern_" + (index + 1) + ")"});
             }
 
             return [kl, pc];
@@ -1895,22 +2069,37 @@ $(function () {
                 this.createLinkArrow();
             }
 
+            gInstance.simulation = d3.forceSimulation().nodes(gInstance._nodeData);
+
+            var link_force = d3.forceLink(gInstance._linkData)
+                    .id(function (d) {
+                        return d.Id;
+                    });
+
+            var charge_force = d3.forceManyBody()
+                    .strength(-100);
+
+            var center_force = d3.forceCenter(gInstance.width / 2, gInstance.height / 2);
+
             gInstance.simulation
-                    .nodes(gInstance._nodeData)
-                    .on("tick", gInstance.ticked);
-            gInstance.simulation.force("link")
-                    .links(gInstance._linkData);
-            gInstance.simulation.velocityDecay(0.07);
+                    .force("charge_force", charge_force)
+                    .force("center_force", center_force)
+                    .force("links", link_force)
+                    ;
+
+            gInstance.simulation.on("tick", gInstance.ticked);
 
             if (this.__transform) {
                 this.g.attr("transform", this.__transform);
             }
 
             /* Draw the respective pie chart for each node */
+            gInstance.createPallete();
             this.node.each(function (d) {
                 var pieData = gInstance.getPieData(d);
+
                 NodePieBuilder.drawNodePie(d3.select(this), pieData[1], {
-                    parentNodeColor: d.Color[0],
+                    parentNodeColor: "#fff", //d.Color[0],
                     outerStrokeWidth: 1,
                     showLabelText: false,
                     labelText: pieData[0],
@@ -1979,293 +2168,6 @@ $(function () {
         }
 
     };
-
-
-
-
-
-
-
-
-
-
-
-
-
-    function displayAnalysis() {
-        if (_analysis.length > 0) {
-            d3.select("#node_analysis").style("display", "block");
-        } else {
-            d3.select("#node_analysis").style("display", "none");
-        }
-    }
-
-    function intersection(a1, a2) {
-        var a = [];
-
-        if (a1.length === 0 || a2.length === 0)
-            return a;
-
-        for (var i = 0; i < a1.length; i++) {
-            if (a2.indexOf(a1[i]) >= 0 && a.indexOf(a1[i]) < 0) {
-                a.push(a1[i]);
-            }
-        }
-
-        return a;
-    }
-
-    function getPoints(_id) {
-        var a = [];
-        for (var i = 0; i < _graph.nodes.length; i++) {
-            if (_graph.nodes[i].Id === _id) {
-                var _pt = _graph.nodes[i].Ph;
-                for (var j = 0; j < _pt.length; j++) {
-                    for (var k = _pt[j][0]; k <= _pt[j][1]; k++) {
-                        a.push(k);
-                    }
-                }
-            }
-        }
-        return a;
-    }
-
-    function AnalyzeNodes() {
-        if (_analysis.length > 0) {
-            var _ptHash = new HashMap();
-            var _json = {'nodes': [], 'links': []};
-
-            for (var i = 0; i < _analysis.length; i++) {
-                var _lbl = null, _col = null;
-                for (var g = 0; g < _graph.nodes.length; g++) {
-                    if (_graph.nodes[g].Id === _analysis[i]) {
-                        _lbl = _graph.nodes[g].Label;
-                        _col = _graph.nodes[g].Color;
-                        break;
-                    }
-                }
-
-                var ptVal = getPoints(_analysis[i]);
-
-                if (_ptHash.get(_analysis[i]) === null) {
-                    _ptHash.put(_analysis[i], ptVal);
-                }
-
-                _json.nodes.push({'node': i, 'name': "node" + _analysis[i], 'NP': _ptHash.get(_analysis[i]).length, 'label': _lbl, 'Color': _col});
-
-            }
-
-            for (var i = 0; i < _analysis.length; i++) {
-                for (var j = i + 1; j < _analysis.length; j++) {
-                    var a = intersection(_ptHash.get(_analysis[i]), _ptHash.get(_analysis[j]));
-
-                    if (a.length > 0) {
-                        _json.links.push({'source': i, 'target': j, 'value': a.length});
-                    }
-                }
-            }
-
-            //alert(_json);
-
-            //return 0;
-
-            //d3.select("#data").attr("value", _json);
-            //var form = $("#frm");
-
-            if (d3.select("#modal-init")) {
-                d3.select("#modal-init").style("display", "none");
-            }
-
-            vm.model.$modal();
-            loadSankeyJS(_json);
-        }
-
-        return false;
-    }
-
-    function loadSankeyJS(graph) {
-        if (graph === null)
-            return;
-
-        $("#iframe-container").html("");
-
-        var units = "points";
-
-// set the dimensions and margins of the graph
-        var margin = {top: 10, right: 10, bottom: 10, left: 10},
-                _width = (width * .8) - margin.left - margin.right,
-                _height = (height * .7) - margin.top - margin.bottom;
-
-// format variables
-        var formatNumber = d3.format(",.0f"), // zero decimal places
-                format = function (d) {
-                    return formatNumber(d) + " " + units;
-                },
-                color = d3.scaleOrdinal(d3.schemeCategory20);
-
-// append the svg object to the body of the page
-        var sSvg = d3.select("#iframe-container").append("svg")
-                .attr("width", _width + margin.left + margin.right)
-                .attr("height", _height + margin.top + margin.bottom)
-                .attr("id", "tSVG")
-                .append("g")
-                .attr("transform",
-                        "translate(" + margin.left + "," + margin.top + ")");
-
-// Set the sankey diagram properties
-        sankey = d3.sankey()
-                .nodeWidth(36)
-                .nodePadding(40)
-                .size([_width, _height]);
-
-        path = sankey.link();
-
-// load the data
-//d3.json("sankey.json", function(error, graph) {
-
-        sankey
-                .nodes(graph.nodes)
-                .links(graph.links)
-                .layout(32);
-
-// add in the links
-        slink = sSvg.append("g").selectAll(".link")
-                .data(graph.links)
-                .enter().append("path")
-                .attr("class", "link")
-                .attr("d", path)
-                .style("stroke-width", function (d) {
-                    return Math.max(1, d.dy);
-                })
-                .style("fill", "none")
-                .style("stroke", "#000")
-                .style("stroke-opacity", "0.2")
-                .sort(function (a, b) {
-                    return b.dy - a.dy;
-                });
-
-// add the link titles
-        slink.append("title")
-                .text(function (d) {
-                    return d.source.name + " → " +
-                            d.target.name + "\n" + format(d.value);
-                });
-
-// add in the nodes
-        var node = sSvg.append("g").selectAll(".node")
-                .data(graph.nodes)
-                .enter().append("g")
-                .attr("class", "node")
-                .attr("transform", function (d) {
-                    return "translate(" + d.x + "," + d.y + ")";
-                })
-                .call(d3.drag()
-                        .subject(function (d) {
-                            return d;
-                        })
-                        .on("start", function () {
-                            this.parentNode.appendChild(this);
-                        })
-                        .on("drag", dragmoveSankey));
-
-// add the rectangles for the nodes
-        node.append("rect")
-                .attr("height", function (d) {
-                    return d.dy <= 0 ? 75 : d.dy;
-                })
-                .attr("width", sankey.nodeWidth())
-                .style("fill", function (d) {
-                    return d.Color[lIndex];
-                })
-                .style("stroke", function (d) {
-                    return d3.rgb(d.Color[lIndex]).darker(2);
-                })
-                .style("cursor", "move")
-                .style("fill-opacity", "0.9")
-                .style("shape-rendering", "crispEdges")
-                .append("title")
-                .text(function (d) {
-                    return d.name + "\n" + format(d.NP);
-                });
-
-// add in the title for the nodes
-        node.append("text")
-                .attr("x", -6)
-                .attr("y", function (d) {
-                    return d.dy / 2;
-                })
-                .attr("dy", ".35em")
-                .attr("text-anchor", "end")
-                .attr("transform", null)
-                .style("pointer-events", "none")
-                .style("text-shadow", "0 1px 0 #fff")
-                .text(function (d) {
-                    return d.name + "(" + d.label[lIndex] + ")";
-                })
-                .filter(function (d) {
-                    return d.x < _width / 2;
-                })
-                .attr("x", 6 + sankey.nodeWidth())
-                .attr("text-anchor", "start");
-
-
-        $("#tsvg .link").hover(function () {
-            $(this).css("stroke-opacity", "0.5");
-        });
-
-    }
-
-    // the function for moving the nodes
-    function dragmoveSankey(d) {
-        d3.select(this)
-                .attr("transform",
-                        "translate("
-                        + d.x + ","
-                        + (d.y = Math.max(
-                                0, Math.min(height - d.dy, d3.event.y))
-                                ) + ")");
-        sankey.relayout();
-        slink.attr("d", path);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Close the dropdown menu if the user clicks outside of it
     window.onclick = function (event) {
@@ -2342,3 +2244,293 @@ $(function () {
     gInstance.loadFiles();
 
 });
+
+
+/*
+ * 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ function displayAnalysis() {
+ if (_analysis.length > 0) {
+ d3.select("#node_analysis").style("display", "block");
+ } else {
+ d3.select("#node_analysis").style("display", "none");
+ }
+ }
+ 
+ function intersection(a1, a2) {
+ var a = [];
+ 
+ if (a1.length === 0 || a2.length === 0)
+ return a;
+ 
+ for (var i = 0; i < a1.length; i++) {
+ if (a2.indexOf(a1[i]) >= 0 && a.indexOf(a1[i]) < 0) {
+ a.push(a1[i]);
+ }
+ }
+ 
+ return a;
+ }
+ 
+ function getPoints(_id) {
+ var a = [];
+ for (var i = 0; i < _graph.nodes.length; i++) {
+ if (_graph.nodes[i].Id === _id) {
+ var _pt = _graph.nodes[i].Ph;
+ for (var j = 0; j < _pt.length; j++) {
+ for (var k = _pt[j][0]; k <= _pt[j][1]; k++) {
+ a.push(k);
+ }
+ }
+ }
+ }
+ return a;
+ }
+ 
+ function AnalyzeNodes() {
+ if (_analysis.length > 0) {
+ var _ptHash = new HashMap();
+ var _json = {'nodes': [], 'links': []};
+ 
+ for (var i = 0; i < _analysis.length; i++) {
+ var _lbl = null, _col = null;
+ for (var g = 0; g < _graph.nodes.length; g++) {
+ if (_graph.nodes[g].Id === _analysis[i]) {
+ _lbl = _graph.nodes[g].Label;
+ _col = _graph.nodes[g].Color;
+ break;
+ }
+ }
+ 
+ var ptVal = getPoints(_analysis[i]);
+ 
+ if (_ptHash.get(_analysis[i]) === null) {
+ _ptHash.put(_analysis[i], ptVal);
+ }
+ 
+ _json.nodes.push({'node': i, 'name': "node" + _analysis[i], 'NP': _ptHash.get(_analysis[i]).length, 'label': _lbl, 'Color': _col});
+ 
+ }
+ 
+ for (var i = 0; i < _analysis.length; i++) {
+ for (var j = i + 1; j < _analysis.length; j++) {
+ var a = intersection(_ptHash.get(_analysis[i]), _ptHash.get(_analysis[j]));
+ 
+ if (a.length > 0) {
+ _json.links.push({'source': i, 'target': j, 'value': a.length});
+ }
+ }
+ }
+ 
+ //alert(_json);
+ 
+ //return 0;
+ 
+ //d3.select("#data").attr("value", _json);
+ //var form = $("#frm");
+ 
+ if (d3.select("#modal-init")) {
+ d3.select("#modal-init").style("display", "none");
+ }
+ 
+ vm.model.$modal();
+ loadSankeyJS(_json);
+ }
+ 
+ return false;
+ }
+ 
+ function loadSankeyJS(graph) {
+ if (graph === null)
+ return;
+ 
+ $("#iframe-container").html("");
+ 
+ var units = "points";
+ 
+ // set the dimensions and margins of the graph
+ var margin = {top: 10, right: 10, bottom: 10, left: 10},
+ _width = (width * .8) - margin.left - margin.right,
+ _height = (height * .7) - margin.top - margin.bottom;
+ 
+ // format variables
+ var formatNumber = d3.format(",.0f"), // zero decimal places
+ format = function (d) {
+ return formatNumber(d) + " " + units;
+ },
+ color = d3.scaleOrdinal(d3.schemeCategory20);
+ 
+ // append the svg object to the body of the page
+ var sSvg = d3.select("#iframe-container").append("svg")
+ .attr("width", _width + margin.left + margin.right)
+ .attr("height", _height + margin.top + margin.bottom)
+ .attr("id", "tSVG")
+ .append("g")
+ .attr("transform",
+ "translate(" + margin.left + "," + margin.top + ")");
+ 
+ // Set the sankey diagram properties
+ sankey = d3.sankey()
+ .nodeWidth(36)
+ .nodePadding(40)
+ .size([_width, _height]);
+ 
+ path = sankey.link();
+ 
+ // load the data
+ //d3.json("sankey.json", function(error, graph) {
+ 
+ sankey
+ .nodes(graph.nodes)
+ .links(graph.links)
+ .layout(32);
+ 
+ // add in the links
+ slink = sSvg.append("g").selectAll(".link")
+ .data(graph.links)
+ .enter().append("path")
+ .attr("class", "link")
+ .attr("d", path)
+ .style("stroke-width", function (d) {
+ return Math.max(1, d.dy);
+ })
+ .style("fill", "none")
+ .style("stroke", "#000")
+ .style("stroke-opacity", "0.2")
+ .sort(function (a, b) {
+ return b.dy - a.dy;
+ });
+ 
+ // add the link titles
+ slink.append("title")
+ .text(function (d) {
+ return d.source.name + " → " +
+ d.target.name + "\n" + format(d.value);
+ });
+ 
+ // add in the nodes
+ var node = sSvg.append("g").selectAll(".node")
+ .data(graph.nodes)
+ .enter().append("g")
+ .attr("class", "node")
+ .attr("transform", function (d) {
+ return "translate(" + d.x + "," + d.y + ")";
+ })
+ .call(d3.drag()
+ .subject(function (d) {
+ return d;
+ })
+ .on("start", function () {
+ this.parentNode.appendChild(this);
+ })
+ .on("drag", dragmoveSankey));
+ 
+ // add the rectangles for the nodes
+ node.append("rect")
+ .attr("height", function (d) {
+ return d.dy <= 0 ? 75 : d.dy;
+ })
+ .attr("width", sankey.nodeWidth())
+ .style("fill", function (d) {
+ return d.Color[lIndex];
+ })
+ .style("stroke", function (d) {
+ return d3.rgb(d.Color[lIndex]).darker(2);
+ })
+ .style("cursor", "move")
+ .style("fill-opacity", "0.9")
+ .style("shape-rendering", "crispEdges")
+ .append("title")
+ .text(function (d) {
+ return d.name + "\n" + format(d.NP);
+ });
+ 
+ // add in the title for the nodes
+ node.append("text")
+ .attr("x", -6)
+ .attr("y", function (d) {
+ return d.dy / 2;
+ })
+ .attr("dy", ".35em")
+ .attr("text-anchor", "end")
+ .attr("transform", null)
+ .style("pointer-events", "none")
+ .style("text-shadow", "0 1px 0 #fff")
+ .text(function (d) {
+ return d.name + "(" + d.label[lIndex] + ")";
+ })
+ .filter(function (d) {
+ return d.x < _width / 2;
+ })
+ .attr("x", 6 + sankey.nodeWidth())
+ .attr("text-anchor", "start");
+ 
+ 
+ $("#tsvg .link").hover(function () {
+ $(this).css("stroke-opacity", "0.5");
+ });
+ 
+ }
+ 
+ // the function for moving the nodes
+ function dragmoveSankey(d) {
+ d3.select(this)
+ .attr("transform",
+ "translate("
+ + d.x + ","
+ + (d.y = Math.max(
+ 0, Math.min(height - d.dy, d3.event.y))
+ ) + ")");
+ sankey.relayout();
+ slink.attr("d", path);
+ }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ */

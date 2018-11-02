@@ -1125,9 +1125,9 @@ fieldset{
     opacity: 1;
 }
 
-#idl{display: inline; float: left; color: white;}
-#pw,#fw{display: inline; width: 7em; color: white;}
-#pwl,#fwl{display: inline; color: white; float: right;}
+#idl{display: inline; float: left; color: white; background-color: transparent;}
+#pw,#fw{display: inline; width: 7em; color: white; background-color: transparent;}
+#pwl,#fwl{display: inline; color: white; float: right; background-color: transparent;}
 
 /*Chrome*/
 @media screen and (-webkit-min-device-pixel-ratio:0) {

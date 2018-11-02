@@ -1,13 +1,14 @@
 var DEFAULT_OPTIONS = {
     radius: 20,
     outerStrokeWidth: 10,
-    parentNodeColor: 'blue',
+    parentNodeColor: 'transparent',
     showPieChartBorder: false,
     pieChartBorderColor: 'white',
     pieChartBorderWidth: '2',
     showLabelText: false,
     labelText: 'text',
-    labelColor: 'blue'
+    labelColor: 'blue',
+    pattern: ""
 };
 
 function getOptionOrDefault(key, options, defaultOptions) {
@@ -20,7 +21,6 @@ function getOptionOrDefault(key, options, defaultOptions) {
 
 function drawParentCircle(nodeElement, options) {
     var outerStrokeWidth = getOptionOrDefault('outerStrokeWidth', options);
-    //var radius = getOptionOrDefault('radius', options);
     var parentNodeColor = getOptionOrDefault('parentNodeColor', options);
 
     nodeElement.insert("circle")
@@ -47,27 +47,48 @@ function drawPieChartBorder(nodeElement, options) {
 
 }
 
-function drawPieChart(nodeElement, percentages, options) {
+function drawPieChart(nodeElement, percentages, option) {
     var percentToDraw = 0;
+    var prevPercentToDraw = 0;
     for (var p in percentages) {
         percentToDraw += percentages[p].percent;
+        
+        if(p>0) prevPercentToDraw += percentages[p-1].percent;
 
-        nodeElement.insert('circle', '#parent-pie + *')
+        if (p > 0) {
+            nodeElement.insert('circle', '#parent-pie + *')
                 .attr("r", function (d) {
                     return d.Size / 2;
                 })
                 .attr("fill", 'transparent')
-                .style('stroke', percentages[p].color)
+                .style('stroke', 'white')
                 .style('stroke-width', function (d) {
                     return d.Size;
                 })
                 .style('stroke-dasharray', function (d) {
                     var halfCircumference = 2 * Math.PI * (d.Size) / 2;
-                    ;
+
+                    return halfCircumference * prevPercentToDraw / 100
+                            + ' '
+                            + halfCircumference;
+                });
+        }
+        nodeElement.insert('circle', '#parent-pie + *')
+                .attr("r", function (d) {
+                    return d.Size / 2;
+                })
+                .attr("fill", 'transparent')
+                .style('stroke', percentages[p].Pattern)
+                .style('stroke-width', function (d) {
+                    return d.Size;
+                })
+                .style('stroke-dasharray', function (d) {
+                    var halfCircumference = 2 * Math.PI * (d.Size) / 2;
+
                     return halfCircumference * percentToDraw / 100
                             + ' '
                             + halfCircumference;
-                })
+                });
 
     }
 }
@@ -91,7 +112,7 @@ var NodePieBuilder = {
 
         if (!percentages)
             return;
-        drawPieChart(nodeElement, percentages, options);
+        drawPieChart(nodeElement, percentages);
 
         var showPieChartBorder = getOptionOrDefault('showPieChartBorder', options);
         if (showPieChartBorder) {

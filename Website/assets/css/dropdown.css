@@ -108,7 +108,10 @@ ul.dropdown-menu{
 .legend li { float: left; margin-right: 10px; }
 .legend span { border: 1px solid #ccc; float: left; width: 20px; height: 20px; margin: 2px;}
 
-.flare_options,.flare_legend,.path_legend, .path_options, .cc_legend,.attr_legend,.feature_legend { list-style: none; height: 20px;}
+.flare_options,.flare_legend,
+.path_legend, .path_options, 
+.cc_legend,.attr_legend,
+.feature_legend, path_analysis { list-style: none; height: 20px;}
 .flare_options li,.flare_legend li,.path_legend li, .path_options li, .cc_legend li,.attr_legend li,.feature_legend li { float: left; margin-right: 5px; }
 flare_options span,.flare_legend span,.path_legend span, .path_options span, .cc_legend span,.attr_legend span,.feature_legend span { border: 1px solid #ccc; float: left; width: 20px; height: 20px; margin: 2px;}
 
