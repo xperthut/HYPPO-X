@@ -1,23 +1,34 @@
 <img src="https://github.com/xperthut/HYPPO-X/blob/master/logo.png" width="30%" style="margin:0" />
 
-This is a hypothesis extraction tool from high dimensional phenomix dataset. This tool is mainly built in `C++`. The object that we generate from our method is a graph and we use [D3](https://d3js.org/) to visualize our object.
+This is a header only library built in C++ to extract the insight of high dimensional complex dataset using algebraic topology. It is an instance of Mapper framework.`
 
 ## Compiling
 The library uses `c++14` and requires [Boost](http://www.boost.org/) with version 1.48.0 or more recent. It is a multi-platform library and compiles on Linux, Mac OSX and Visual Studio 2015.
 
 ## Run from terminal
 ```R
-# Add boost include and lib folder path at Makefile
-cd \path\to\the\folder
-make all
-./hyppox
+# To install run the following command
+make install
 
-# to clean all object files
-make clean
+# To uninstall run the following command
+make uninstall
 ```
 
-## To see the list of parameters
+## Integration with your code base
 ```R
-./hyppox -help
+# Add the header
+#include <hyppox.h>
+
+# Create instance of Hyppox class like below
+hyppox::HInterface* _hyppox = new hyppox::Hyppox();
+
+# Call the following function and pass the argument list as parameters
+# This function will generate JSON file as output in the directory which you 
+# have set as -WD parameter. If you don't set it then it will create the file 
+# in the source directory
+_hyppox->getD3GraphObject(argc, argv);
+
+# Finally remove the object from memory
+delete _hyppox;
 ```
 
