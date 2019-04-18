@@ -1,4 +1,4 @@
-<img src="https://github.com/xperthut/HYPPO-X/blob/master/logo.png" width="30%" style="margin:0" />
+<img src="https://github.com/xperthut/HYPPO-X/blob/master/images/logo_hypen.png" width="30%" style="margin:0" />
 
 This is a header only library built in `C++` to extract the insights of high dimensional complex dataset. We used algebraic topology to extract the structure of data. The library generates graph in a JSON format. Using the library generated object, we are building an interactive visualization website using PHP and [D3](https://d3js.org/).
 
