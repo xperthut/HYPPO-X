@@ -1,3 +1,5 @@
+<img src="https://github.com/xperthut/HYPPO-X/blob/master/images/logo_hypen.png" width="30%" style="margin:0" />
+
 Persistent homology barcode
 ============================
 The topological object generated from our `C++` has a overlapping parameter and the shape of a topological object depends on this overlapping value. In order to avoid this parametric value by making it constant, we used persistent homology barcode technique. It is trivial to identify stable overlapping value from barcode. We generated barcode in `Java` using an opensource library [javaplex-4.3.0.jar](https://github.com/appliedtopology/javaplex/releases/tag/4.3.0).
