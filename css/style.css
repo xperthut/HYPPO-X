@@ -333,7 +333,7 @@ h5:before { padding-right: 0.3em; margin-left: -3.2em; content: "/////"; color: 
 
 h6:before { padding-right: 0.3em; margin-left: -3.7em; content: "//////"; color: #0b8009; }
 
-p { margin-bottom: 20px; }
+p { margin-bottom: 20px; font-family: fantasy; font-size: large;}
 
 a { text-decoration: none; }
 
