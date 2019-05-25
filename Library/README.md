@@ -33,6 +33,6 @@ delete _hyppox;
 ```
 ## See parameter list
 ```R
-If your executable file is xyz the simply run:
+If your executable file is `xyz` then simply run the following command:
 ./xyz -h
 ```
