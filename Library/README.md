@@ -5,13 +5,13 @@ This is a header only library built in C++ to extract the insight of high dimens
 ## Compiling
 The library uses `c++14` and requires [Boost](http://www.boost.org/) with version 1.48.0 or more recent. It is a multi-platform library and compiles on Linux, Mac OSX and Visual Studio 2015.
 
-## Run from terminal
+## Install from terminal
 ```R
 # To install run the following command
-make install
+sudo make install
 
 # To uninstall run the following command
-make uninstall
+sudo make uninstall
 ```
 
 ## Integration with your code base
@@ -31,4 +31,8 @@ _hyppox->getD3GraphObject(argc, argv);
 # Finally remove the object from memory
 delete _hyppox;
 ```
-
+## See parameter list
+```R
+If your executable file is xyz the simply run:
+./xyz -h
+```
