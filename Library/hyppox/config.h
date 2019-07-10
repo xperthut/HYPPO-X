@@ -28,7 +28,7 @@
 #define ABS(x) (x<0?x*-1:x)
 #define MAX_ALLOW_FILTER 2
 
-enum OUTPUT {__STD=0, __FILE, __PHP};
+//enum OUTPUT {__STD=0, __FILE, __PHP};
 
 // @brief Compute time and unit and return them separately
 // Input is a time difference
