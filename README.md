@@ -3,7 +3,7 @@
 This is a header only library built in `C++` to extract the insights of high dimensional complex dataset. We used algebraic topology to extract the structure of data. The library generates graph in a JSON format. Using the library generated object, we are building an interactive visualization website using PHP and [D3](https://d3js.org/).
 
 ## Library
-The library uses `c++14` and requires [Boost](http://www.boost.org/) with version 1.48.0 or more recent. It is a multi-platform library and compiles on Linux, Mac OSX and Visual Studio 2015.
+The library uses `gcc>=5.0`, `c++14` and requires [Boost](http://www.boost.org/) with version 1.48.0 or more recent. It is a multi-platform library and compiles on Linux, Mac OSX and Visual Studio 2015.
 
 ## Website
 ```R
@@ -16,9 +16,10 @@ Follow the steps to integrate our website with the library. We are trying to mak
 1. Create a folder named `Data` under the directory `Website`.
 2. Under `Data` directory, create three folders named `csv`, `json` and `tmp`.
 3. Allow `csv` folder read only permission, `tmp` folder write only permission and 'json' folder both read and write permission.
-4. Place your csv data file to `Website/Data/csv` folder.
+4. Place your csv data file to `Website/Data/csv` folder and remove space from file name.
+5. Create a folder under `Website/Data/json` and give the folder name same as the csv file name. Give both read and write permission here. For instance, if the csv file name `abcd.csv` then create a folder named `abcd`.
 5. During running the library, set `-RD` param to `Website/Data/csv` and set `-WD` param to `Website/Data/json`
-6. The library will read the csv file from the location specified in `-RD` parameter. Similarly, it will write the json file to the location specified in `-WD` parameter.
+6. The library will read the csv file from the location specified in `-RD` parameter. Similarly, it will write the json file to the folder (for instance, `abcd`) in location specified in `-WD` parameter.
 7. If `-RD` parameter is not specified then the code will search the csv file from the source file location.
 8. If `-WD` parameter is not specified then the code will create output json file to the source file location.
 7. Refresh the website to observe the topological object.
