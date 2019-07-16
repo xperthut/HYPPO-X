@@ -1,4 +1,4 @@
-<img src="https://github.com/xperthut/HYPPO-X/blob/master/logo.png" width="30%" style="margin:0" />
+<img src="https://github.com/xperthut/HYPPO-X/blob/master/images/logo_hypen.png" width="30%" style="margin:0" />
 
 This is a header only library built in C++ to extract the insight of high dimensional complex dataset using algebraic topology. It is an instance of Mapper framework.`
 
