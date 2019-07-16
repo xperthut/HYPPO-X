@@ -3,7 +3,7 @@
 This is a header only library built in C++ to extract the insight of high dimensional complex dataset using algebraic topology. It is an instance of Mapper framework.`
 
 ## Compiling
-The library uses `c++14` and requires [Boost](http://www.boost.org/) with version 1.48.0 or more recent. It is a multi-platform library and compiles on Linux, Mac OSX and Visual Studio 2015.
+The library uses `gcc>=5`, `c++14` and requires [Boost](http://www.boost.org/) with version 1.48.0 or more recent. It is a multi-platform library and compiles on Linux, Mac OSX and Visual Studio 2015.
 
 ## Install from terminal
 ```R
