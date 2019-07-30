@@ -259,6 +259,9 @@ namespace hyppox {
                         for(auto itr = pL.begin(); itr!=pL.end(); itr++){
                             PerfType ph = *itr;
                             if(pointSet->find(ph->getID()) == pointSet->end()){
+                                // Added this after investigating that during clustering step if any point clusterd earlier then is not being considered for reclustering
+                                (*itr)->SetStatus(false);
+                                /// end here
                                 pointSet->insert(ph->getID());
                                 phList->push_back(*itr);
                             }
