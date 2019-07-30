@@ -15,20 +15,22 @@ sudo make uninstall
 ```
 
 ## Integration with your code base
-```R
-# Add the header
-#include <hyppox.h>
+```Cpp
+// Add the header
+include <hyppox.h>
 
-# Create instance of Hyppox class like below
+// Create instance of Hyppox class like below
 hyppox::HInterface* _hyppox = new hyppox::Hyppox();
 
-# Call the following function and pass the argument list as parameters
-# This function will generate JSON file as output in the directory which you 
-# have set as -WD parameter. If you don't set it then it will create the file 
-# in the source directory
+/* 
+ Call the following function and pass the argument list as parameters
+ This function will generate JSON file as output in the directory which you 
+ have set as -WD parameter. If you don't set it then it will create the file 
+ in the source directory
+*/
 _hyppox->getD3GraphObject(argc, argv);
 
-# Finally remove the object from memory
+// Finally remove the object from memory
 delete _hyppox;
 ```
 ## See parameter list
