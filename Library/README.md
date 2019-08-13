@@ -38,3 +38,9 @@ delete _hyppox;
 If your executable file is `xyz` then simply run the following command:
 ./xyz -h
 ```
+## Adjust csv file
+```R
+1. Create a new column at the beginning of all the columns in your csv file
+2. In that column, place the numbers from 1 to n where n is the number of rows. 
+3. When mapping the column index in the library parameter, starts from 2 (leave the first column index that you just created)
+```
