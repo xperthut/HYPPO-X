@@ -66,6 +66,17 @@ CType convert_to (const std::string &str){
     }
 }
 
+template <typename CType>
+bool convert_to (const std::string &str, CType& val){
+    try{
+        std::istringstream cs(str);
+        cs >> val;
+        return true;
+    }catch (std::exception &e) {
+        return false;
+    }
+}
+
 /****
  Get current date/time, format is YYYY-MM-DD_HH:mm:ss
  Copied from: http://stackoverflow.com/questions/997946/how-to-get-current-time-and-date-in-c
@@ -88,7 +99,7 @@ const std::string fixPrecision(float value, int precision){
     
     if((pos = pValue.find(".")) != std::string::npos){
         
-        if(pValue.length()-pos-1 > precision){
+        if(pValue.length()-pos-1 > (size_t)precision){
             if(precision>0) return pValue.substr(0, pos+1+precision);
             return pValue.substr(0, pos);
         }
@@ -128,7 +139,8 @@ namespace hyppox{
         static std::vector<short> COL_LOCATION;
         static std::vector<short> COL_DATETIME;
         static std::vector<short> COL_OTHER;
-        static std::vector<short> COL_INDIVIDUAL;
+        static std::vector<short> COL_MEMBERSHIP;
+        static std::vector<short> COL_PIECHART;
         static std::vector<short> COL_FILTER;
         static std::vector<short> COL_CLUSTER;
         static std::string CLUSTER_METHOD;
@@ -215,7 +227,7 @@ namespace hyppox{
         // Which filter is used for edge direction matching
         static short FILTER_SIGNATURE_MATCHING;
         
-        static void setParams(short genotypeCol, std::vector<std::string> filterGen, std::vector<short> locationCol, std::vector<short> dateTimeCol, std::vector<short> otherInfoCol, std::vector<short> _indvCol, std::vector<short> filterCol, std::vector<short> clusterCol, short clusterIndexForEdgeDirection, std::string clusterName, std::vector<float> clusterParams, std::vector<short> windows, std::vector<float> overlap, std::string readDir, std::string writeDir, short minPathLen, float deltaChanges, bool increaseTime, bool signatureMatch, bool printBarcode, bool printBarcodeUsingJavaplex, bool refPerformance, short filterRefIndex, short intPathWidth, std::string edgeColor, std::vector<float> nodeSizeRange, bool heatmapEachConComp, std::string fileName, short sortFilterIndex, std::vector<short> filterSignatureMatching);
+        static void setParams(short genotypeCol, std::vector<std::string> filterGen, std::vector<short> locationCol, std::vector<short> dateTimeCol, std::vector<short> otherInfoCol, std::vector<short> memCol, std::vector<short> pieCol, std::vector<short> filterCol, std::vector<short> clusterCol, short clusterIndexForEdgeDirection, std::string clusterName, std::vector<float> clusterParams, std::vector<short> windows, std::vector<float> overlap, std::string readDir, std::string writeDir, short minPathLen, float deltaChanges, bool increaseTime, bool signatureMatch, bool printBarcode, bool printBarcodeUsingJavaplex, bool refPerformance, short filterRefIndex, short intPathWidth, std::string edgeColor, std::vector<float> nodeSizeRange, bool heatmapEachConComp, std::string fileName, short sortFilterIndex, std::vector<short> filterSignatureMatching);
         
         static void printAllConfig();
         
@@ -229,7 +241,8 @@ namespace hyppox{
     std::vector<short> Config::COL_LOCATION;
     std::vector<short> Config::COL_DATETIME;
     std::vector<short> Config::COL_OTHER;
-    std::vector<short> Config::COL_INDIVIDUAL;
+    std::vector<short> Config::COL_MEMBERSHIP;
+    std::vector<short> Config::COL_PIECHART;
     std::vector<short> Config::COL_FILTER;
     std::vector<short> Config::COL_CLUSTER;
     std::string Config::CLUSTER_METHOD;
@@ -266,14 +279,15 @@ namespace hyppox{
     std::string Config::DATA_FILE_NAME = "";
     short Config::FILTER_SIGNATURE_MATCHING = 0;
     
-    void Config::setParams(short genotypeCol, std::vector<std::string> filterGen, std::vector<short> locationCol, std::vector<short> dateTimeCol, std::vector<short> otherInfoCol, std::vector<short> _indvCol, std::vector<short> filterCol, std::vector<short> clusterCol, short clusterIndexForEdgeDirection, std::string clusterName, std::vector<float> clusterParams, std::vector<short> windows, std::vector<float> overlap, std::string readDir, std::string writeDir, short minPathLen, float deltaChanges, bool increaseTime, bool signatureMatch, bool printBarcode, bool printBarcodeUsingJavaplex, bool refPerformance, short filterRefIndex, short intPathWidth, std::string edgeColor, std::vector<float> nodeSizeRange, bool heatmapEachConComp, std::string fileName, short sortFilterIndex, std::vector<short> filterSignatureMatching){
+    void Config::setParams(short genotypeCol, std::vector<std::string> filterGen, std::vector<short> locationCol, std::vector<short> dateTimeCol, std::vector<short> otherInfoCol, std::vector<short> memCol, std::vector<short> pieCol, std::vector<short> filterCol, std::vector<short> clusterCol, short clusterIndexForEdgeDirection, std::string clusterName, std::vector<float> clusterParams, std::vector<short> windows, std::vector<float> overlap, std::string readDir, std::string writeDir, short minPathLen, float deltaChanges, bool increaseTime, bool signatureMatch, bool printBarcode, bool printBarcodeUsingJavaplex, bool refPerformance, short filterRefIndex, short intPathWidth, std::string edgeColor, std::vector<float> nodeSizeRange, bool heatmapEachConComp, std::string fileName, short sortFilterIndex, std::vector<short> filterSignatureMatching){
         
         COL_GENOTYPE = genotypeCol;
         FILTER_GENOTYPE = filterGen;
         COL_LOCATION = locationCol;
         COL_DATETIME = dateTimeCol;
         COL_OTHER = otherInfoCol;
-        COL_INDIVIDUAL = _indvCol;
+        COL_MEMBERSHIP = memCol;
+        COL_PIECHART = pieCol;
         COL_FILTER = filterCol;
         COL_CLUSTER = clusterCol;
         CLUSTER_METHOD = clusterName;
@@ -324,6 +338,15 @@ namespace hyppox{
             }
         }
         
+        // Any one of the column parameter is empty then fill with other
+        /*if(COL_MEMBERSHIP.size()==0 && COL_PIECHART.size()>0){
+            COL_MEMBERSHIP.clear();
+            COL_MEMBERSHIP.assign(COL_PIECHART.begin(), COL_PIECHART.end());
+        }else if(COL_MEMBERSHIP.size()>0 && COL_PIECHART.size()==0){
+            COL_PIECHART.clear();
+            COL_PIECHART.assign(COL_MEMBERSHIP.begin(), COL_MEMBERSHIP.end());
+        }*/
+        
         //std::cout<<"FILTER_SIGNATURE_MATCHING:"<<FILTER_SIGNATURE_MATCHING<<std::endl;
     }
     
@@ -357,9 +380,16 @@ namespace hyppox{
             }
             std::cout<<"]"<<std::endl;
         }
-        if(Config::COL_INDIVIDUAL.size()>0){
-            std::cout<<"COL_INDIVIDUAL:[";
-            for(auto s:Config::COL_INDIVIDUAL){
+        if(Config::COL_MEMBERSHIP.size()>0){
+            std::cout<<"COL_MEMBERSHIP:[";
+            for(auto s:Config::COL_MEMBERSHIP){
+                std::cout<<s<<" ";
+            }
+            std::cout<<"]"<<std::endl;
+        }
+        if(Config::COL_PIECHART.size()>0){
+            std::cout<<"COL_PIECHART:[";
+            for(auto s:Config::COL_PIECHART){
                 std::cout<<s<<" ";
             }
             std::cout<<"]"<<std::endl;
@@ -425,7 +455,6 @@ namespace hyppox{
         std::cout<<"CORE_BY_PREIF:"<<Config::CORE_BY_PREIF<<std::endl;
         std::cout<<"CORE_POINT_WEIGHT:"<<Config::CORE_POINT_WEIGHT<<std::endl;
         std::cout<<"FILTER:"<<Config::FILTER<<std::endl;
-        std::cout<<"CLUSTER:"<<Config::CLUSTER<<std::endl;
         std::cout<<"CLUSTER:"<<Config::CLUSTER<<std::endl;
         if(Config::CLUSTER_NAMES.size()>0){
             std::cout<<"CLUSTER_NAMES:[";

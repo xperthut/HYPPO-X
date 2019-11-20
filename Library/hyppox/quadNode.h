@@ -114,7 +114,7 @@ namespace hyppox {
         
         template<typename DPType, typename NodePosType>
         void QuadNode<DPType,NodePosType>::ResetChildren(){
-            for(unsigned int i=0; i<hyppox::Config::QUAD_TREE_CHILDREN; i++){
+            for(unsigned int i=0; i<(unsigned int)hyppox::Config::QUAD_TREE_CHILDREN; i++){
                 this->children[i] = nullptr;
             }
         }
@@ -126,7 +126,7 @@ namespace hyppox {
         
         template<typename DPType, typename NodePosType>
         QuadNode<DPType,NodePosType>* QuadNode<DPType,NodePosType>::GetChild(unsigned int index){
-            if(index<hyppox::Config::QUAD_TREE_CHILDREN){
+            if(index<(unsigned int)hyppox::Config::QUAD_TREE_CHILDREN){
                 return this->children[index];
             }
             return nullptr;
@@ -153,7 +153,7 @@ namespace hyppox {
             }
             
             // Set starting position of each child
-            for(unsigned int i=0; i<hyppox::Config::QUAD_TREE_CHILDREN; i++){
+            for(unsigned int i=0; i<(unsigned int)hyppox::Config::QUAD_TREE_CHILDREN; i++){
                 unsigned int k = i;
                 // For each position identify the bit 1 position, make that position
                 for(short j=0;j<hyppox::Config::FILTER; j++,k>>=1){
@@ -173,7 +173,7 @@ namespace hyppox {
             
             // Initially check all children of root to insert data
             // It no blank node found then propagate with existing node where it fits
-            for(unsigned int i=0; i<hyppox::Config::QUAD_TREE_CHILDREN; i++){
+            for(unsigned int i=0; i<(unsigned int)hyppox::Config::QUAD_TREE_CHILDREN; i++){
                 bool m = true;
                 
                 for(short j=0; j<hyppox::Config::FILTER; j++){
@@ -230,7 +230,7 @@ namespace hyppox {
                 // Search whether data will fit in this child area or not
                 if(child->SearchInArea(data)){
                     // For each of the child check whether data will fit or not
-                    for(unsigned int i=0; i<hyppox::Config::QUAD_TREE_CHILDREN; i++){
+                    for(unsigned int i=0; i<(unsigned int)hyppox::Config::QUAD_TREE_CHILDREN; i++){
                         for(short j=0; j<hyppox::Config::FILTER; j++){
                             _start[j] = child->childLocations[i][j];
                             _len[j] = child->length[j]/2;
@@ -266,7 +266,7 @@ namespace hyppox {
                     
                     bool first = false, second = false;
                     
-                    for(unsigned int i=0; i<hyppox::Config::QUAD_TREE_CHILDREN; i++){
+                    for(unsigned int i=0; i<(unsigned int)hyppox::Config::QUAD_TREE_CHILDREN; i++){
                         for(short j=0; j<hyppox::Config::FILTER; j++){
                             _start[j] = newNode->childLocations[i][j];
                             _len[j] = newNode->length[j]/2;
@@ -312,7 +312,7 @@ namespace hyppox {
                     bool first = false, second = false;
                     
                     // For each of the child check whether data will fit or not
-                    for(unsigned int i=0; i<hyppox::Config::QUAD_TREE_CHILDREN; i++){
+                    for(unsigned int i=0; i<(unsigned int)hyppox::Config::QUAD_TREE_CHILDREN; i++){
                         sameChild = true;
                         firstChild = !(first);
                         secondChild = !(second);
@@ -359,7 +359,7 @@ namespace hyppox {
                                 
                                 first = false; second = false;
                                 
-                                for(unsigned int i=0; i<hyppox::Config::QUAD_TREE_CHILDREN; i++){
+                                for(unsigned int i=0; i<(unsigned int)hyppox::Config::QUAD_TREE_CHILDREN; i++){
                                     for(short j=0; j<hyppox::Config::FILTER; j++){
                                         _start[j] = newNode->childLocations[i][j];
                                         _len[j] = newNode->length[j]/2;
@@ -411,7 +411,7 @@ namespace hyppox {
                     
                     bool first = false, second = false;
                     
-                    for(unsigned int i=0; i<hyppox::Config::QUAD_TREE_CHILDREN; i++){
+                    for(unsigned int i=0; i<(unsigned int)hyppox::Config::QUAD_TREE_CHILDREN; i++){
                         for(short j=0; j<hyppox::Config::FILTER; j++){
                             _start[j] = newNode->childLocations[i][j];
                             _len[j] = newNode->length[j]/2;
@@ -458,7 +458,7 @@ namespace hyppox {
             
             if(child == nullptr) return 0;
             
-            for(unsigned int i=0; i<hyppox::Config::QUAD_TREE_CHILDREN; i++){
+            for(unsigned int i=0; i<(unsigned int)hyppox::Config::QUAD_TREE_CHILDREN; i++){
                 QuadNode<DPType,NodePosType>* gChild = child->children[i];
                 
                 if (gChild != nullptr) {
@@ -528,7 +528,7 @@ namespace hyppox {
             }
             
             // Set starting position of each child
-            for(unsigned int i=0; i<hyppox::Config::QUAD_TREE_CHILDREN; i++){
+            for(unsigned int i=0; i<(unsigned int)hyppox::Config::QUAD_TREE_CHILDREN; i++){
                 unsigned int k = i;
                 // For each position identify the bit 1 position, make that position
                 for(short j=0;j<hyppox::Config::FILTER; j++,k>>=1){
@@ -551,7 +551,7 @@ namespace hyppox {
             bool sameChild,firstChild, secondChild;
             int fci=-1, sci=-1;
             
-            for(unsigned int i=0; i<hyppox::Config::QUAD_TREE_CHILDREN; i++){
+            for(unsigned int i=0; i<(unsigned int)hyppox::Config::QUAD_TREE_CHILDREN; i++){
                 sameChild = true;
                 firstChild = true;
                 secondChild = true;
@@ -594,7 +594,7 @@ namespace hyppox {
             }
             
             // Set starting position of each child
-            for(unsigned int i=0; i<hyppox::Config::QUAD_TREE_CHILDREN; i++){
+            for(unsigned int i=0; i<(unsigned int)hyppox::Config::QUAD_TREE_CHILDREN; i++){
                 unsigned int k = i;
                 // For each position identify the bit 1 position, make that position
                 for(short j=0;j<hyppox::Config::FILTER; j++,k>>=1){
@@ -617,7 +617,7 @@ namespace hyppox {
             bool sameChild,firstChild, secondChild;
             int fci=-1, sci=-1;
             
-            for(unsigned int i=0; i<hyppox::Config::QUAD_TREE_CHILDREN; i++){
+            for(unsigned int i=0; i<(unsigned int)hyppox::Config::QUAD_TREE_CHILDREN; i++){
                 sameChild = true;
                 firstChild = true;
                 secondChild = true;

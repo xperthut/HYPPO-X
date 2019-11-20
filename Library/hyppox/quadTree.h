@@ -124,7 +124,7 @@ namespace hyppox {
                     this->PrintNode(node->GetChild(i));
                 }
             }else {
-                std::cout<<"["<<d->getPosition(0)<<","<<d->getPosition(1)<<"]=>"<<d->getBoxId()<<"\n";
+                //std::cout<<"["<<d->getPosition(0)<<","<<d->getPosition(1)<<"]=>"<<d->getBoxId()<<"\n";
             }
             
             return 0;
@@ -167,7 +167,7 @@ namespace hyppox {
                 _end[j] = _start[j] + node->GetLength(j);
             }
             
-            for(unsigned int i=0; i<hyppox::Config::QUAD_TREE_CHILDREN; i++){
+            for(unsigned int i=0; i<(unsigned int)hyppox::Config::QUAD_TREE_CHILDREN; i++){
                 unsigned int k = i;
                 bool nodeCorner = true, searchCorner = true;
                 // For each position identify the bit 1 position, make that position
@@ -227,7 +227,7 @@ namespace hyppox {
             }
             // If any corner belongs in the search cube then search for each child
             else if(status[0]){
-                for(unsigned int i=0; i<hyppox::Config::QUAD_TREE_CHILDREN; i++){
+                for(unsigned int i=0; i<(unsigned int)hyppox::Config::QUAD_TREE_CHILDREN; i++){
                     this->SearchSurfaceInNode(node->GetChild(i), min, max, phList, dpList, boxID);
                 }
             }
@@ -273,7 +273,7 @@ namespace hyppox {
                 return 0;
             }
             
-            for(unsigned int i=0; i<hyppox::Config::QUAD_TREE_CHILDREN; i++){
+            for(unsigned int i=0; i<(unsigned int)hyppox::Config::QUAD_TREE_CHILDREN; i++){
                 this->SearchDataInSerface(node->GetChild(i), min, max, phList, dpList, boxID, pointSet);
             }
             
@@ -284,7 +284,7 @@ namespace hyppox {
         int QuadTree<PerfType,PosType,NodePosType>::SearchDataPoint(QuadNode<mapper::DataPoint<PerfType,PosType>,NodePosType> *node, std::vector<NodePosType> min, std::vector<NodePosType> max, std::unordered_set<size_t> *boxIdList){
             if(node == nullptr) return 0;
             
-            for(unsigned int i=0; i<hyppox::Config::QUAD_TREE_CHILDREN; i++){
+            for(unsigned int i=0; i<(unsigned int)hyppox::Config::QUAD_TREE_CHILDREN; i++){
                 this->SearchDataPoint(node->GetChild(i), min, max, boxIdList);
             }
             

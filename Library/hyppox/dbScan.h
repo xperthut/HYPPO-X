@@ -25,6 +25,7 @@
 #include <set>
 #include <map>
 #include <stdlib.h>
+#include <fstream>
 
 #define MIN2(A, B) (A>B?B:A)
 #define NOISE -1
@@ -34,14 +35,28 @@ bool comparePID(PerfType* p1, PerfType* P2){
     return p1->getID()<P2->getID();
 }
 
+template<typename PerfType>
+bool comparePerf(PerfType* p1, PerfType* P2){
+    return p1->getClusterValue(0)<P2->getClusterValue(0);
+}
+
 namespace hyppox {
     namespace cluster{
         template<typename PerfType, typename ClusterIDType, typename RowIDType, typename ClusterType>
         class DBScan:public Cluster<PerfType,ClusterIDType>{
             public:
-            //using DBType = DBScan<PerfType,ClusterIDType,RowIDType>;
+            DBScan(float Eps, float minPoints, bool setUniqueId){
+                this->Eps = Eps;
+                this->minPoints = minPoints;
+                this->setUniqueId = setUniqueId;
+                this->lastClusterId = 0;
+                this->phIndexMap.clear();
+                this->densityMatrix.clear();
+                this->phSeedMap.clear();
+                std::map<float, std::set<RowIDType>> _tmpMap;
+                this->pIDMap.assign(hyppox::Config::CLUSTER, _tmpMap);
+            }
             
-            DBScan(float Eps, float minPoints, bool setUniqueId);
             ~DBScan()=default;
             void doClustering(std::list<PerfType*>*& phList);
             
@@ -52,6 +67,7 @@ namespace hyppox {
             std::unordered_map<size_t, std::unordered_set<RowIDType>> densityMatrix;
             std::unordered_map<RowIDType, RowIDType> phIndexMap;
             std::vector<std::map<float, std::set<RowIDType> > > pIDMap;
+            std::unordered_map<RowIDType, std::pair<RowIDType, RowIDType> > phSeedMap;
             RowIDType size;
             bool setUniqueId;
             RowIDType lastClusterId;
@@ -63,20 +79,10 @@ namespace hyppox {
             void run();
             void FormatSeeds(std::unordered_set<RowIDType>& seeds);
             void ExpandCluster(RowIDType index, ClusterIDType clusterID);
-            void GetSeeds(std::unordered_set<RowIDType> *seed, RowIDType index);
+            void computeSeeds();
+            void computeSeedsForTesting(std::ofstream& fp);
+            void getSeeds(std::set<RowIDType> *seed, RowIDType index, RowIDType& left, RowIDType& right, float& cover);
         };
-        
-        template<typename PerfType, typename ClusterIDType, typename RowIDType, typename ClusterType>
-        DBScan<PerfType,ClusterIDType,RowIDType,ClusterType>::DBScan(float Eps, float minPoints, bool setUniqueId){
-            this->Eps = Eps;
-            this->minPoints = minPoints;
-            this->setUniqueId = setUniqueId;
-            this->lastClusterId = 0;
-            this->phIndexMap.clear();
-            this->densityMatrix.clear();
-            std::map<float, std::set<RowIDType>> _tmpMap;
-            this->pIDMap.assign(hyppox::Config::CLUSTER, _tmpMap);
-        }
         
         template<typename PerfType, typename ClusterIDType, typename RowIDType, typename ClusterType>
         std::set<RowIDType> DBScan<PerfType,ClusterIDType,RowIDType,ClusterType>::getAllPerformances(const std::vector<float>& value, short dim){
@@ -125,10 +131,6 @@ namespace hyppox {
         void DBScan<PerfType,ClusterIDType,RowIDType,ClusterType>::getAllPoints(std::vector<RowIDType> &vPoints, RowIDType index){
             std::vector<ClusterType> value;
             this->performanceList[index]->getClusterValue(value);
-            
-            if(value.size()==0){
-                std::cout<<"";
-            }
             
             std::vector<std::set<RowIDType> > s(hyppox::Config::CLUSTER);
             
@@ -266,31 +268,49 @@ namespace hyppox {
             if(this->size > 0){
                 this->performanceList.clear();
                 this->performanceList.insert(this->performanceList.begin(), phList->begin(), phList->end());
-                std::sort(this->performanceList.begin(), this->performanceList.end(), comparePID<PerfType>);
                 
-                /// This block for version 1
-                /// Starts here
-                for(short i=0;i<hyppox::Config::CLUSTER;i++){
-                    this->pIDMap[i].clear();
+                if(hyppox::Config::CLUSTER<=1){
+                    std::sort(this->performanceList.begin(), this->performanceList.end(), comparePerf<PerfType>);
                     
-                    for(size_t j=0; j<this->size; j++){
+                    /*for(RowIDType i=0; i<this->performanceList.size(); i++){
+                        if(this->performanceList[i]->getID()==207){
+                            std::cout<<"";
+                            break;
+                        }
+                    }*/
+                    //std::ofstream fp;
+                    //fp.open("/Users/methun/Sites/Data/tmp/clstst.csv", std::ios::out | std::ios::app);
+                    //this->computeSeedsForTesting(fp);
+                    //fp.close();
+                    
+                    this->computeSeeds();
+                }else{
+                    std::sort(this->performanceList.begin(), this->performanceList.end(), comparePID<PerfType>);
+                    
+                    /// This block for version 1
+                    /// Starts here
+                    for(short i=0;i<hyppox::Config::CLUSTER;i++){
+                        this->pIDMap[i].clear();
                         
-                        float value = this->performanceList[j]->getClusterValue(i);
-                        RowIDType _id = this->performanceList[j]->getID();
-                        
-                        auto itr=this->pIDMap[i].find(value);
-                        if(itr==pIDMap[i].end()){
-                            std::set<RowIDType> s;
-                            s.insert(_id);
+                        for(size_t j=0; j<this->size; j++){
                             
-                            pIDMap[i].insert(std::make_pair(value, s));
-                        }else{
-                            itr->second.insert(_id);
+                            float value = this->performanceList[j]->getClusterValue(i);
+                            RowIDType _id = this->performanceList[j]->getID();
+                            
+                            auto itr=this->pIDMap[i].find(value);
+                            if(itr==this->pIDMap[i].end()){
+                                std::set<RowIDType> s;
+                                s.insert(_id);
+                                
+                                this->pIDMap[i].insert(std::make_pair(value, s));
+                            }else{
+                                itr->second.insert(_id);
+                            }
                         }
                     }
+                    
+                    this->prepareDistanceBasedDensityMatrix();
                 }
-                
-                this->prepareDistanceBasedDensityMatrix();
                 /// Ends here
                 
                 // This block for version 2
@@ -309,6 +329,8 @@ namespace hyppox {
                 
                 // Reassign the clustering performances
                 phList->insert(phList->begin(), this->performanceList.begin(), this->performanceList.end());
+                
+                //std::cout<<"Cluster ID:"<<Cluster<PerfType,ClusterIDType>::GetClusterID()<<std::endl;
             }
         }
         
@@ -367,82 +389,488 @@ namespace hyppox {
         template<typename PerfType, typename ClusterIDType, typename RowIDType, typename ClusterType>
         void DBScan<PerfType,ClusterIDType,RowIDType,ClusterType>::ExpandCluster(RowIDType index, ClusterIDType clusterID){
             
-            auto itr = this->densityMatrix.find(this->performanceList[index]->getID());
-            
-            std::unordered_set<RowIDType> seeds(itr->second.begin(), itr->second.end());
-            
-            //std::unordered_set<size_t>::iterator sItr;
-            //unordered_map<size_t, size_t>::iterator pItr;
-            
-            this->FormatSeeds(seeds);
-            
-            if(seeds.size()<this->minPoints){
-                if(this->setUniqueId){
-                    this->performanceList[index]->SetUniqueId(clusterID);
-                    this->performanceList[index]->SetStatus(true);
-                }else{
-                    this->performanceList[index]->AddClusterID(clusterID);
-                    this->performanceList[index]->SetType("P");
-                }
-            }else{
-                if(this->setUniqueId){
-                    this->performanceList[index]->SetUniqueId(clusterID);
-                    this->performanceList[index]->SetStatus(true);
-                }else{
-                    this->performanceList[index]->AddClusterID(clusterID);
-                    this->performanceList[index]->SetType("C");
+            if(hyppox::Config::CLUSTER<=1){
+                float cover=0;
+                std::set<RowIDType> seeds;
+                
+                auto itr = this->phSeedMap.find(index);
+                
+                cover = itr->second.second-itr->second.first+1;
+                RowIDType low=itr->second.first, high=itr->second.second;
+                
+                for(RowIDType i=itr->second.first; i<=itr->second.second; i++){
+                    seeds.insert(i);
                 }
                 
-                seeds.erase(this->performanceList[index]->getID());
-                
-                while (seeds.size() > 0) {
-                    auto sItr = seeds.begin();
-                    auto pItr = this->phIndexMap.find(*sItr);
-                    RowIDType currIndex = pItr->second;
-                    
+                if(cover<this->minPoints){
                     if(this->setUniqueId){
-                        this->performanceList[currIndex]->SetUniqueId(clusterID);
-                        this->performanceList[currIndex]->SetStatus(true);
+                        this->performanceList[index]->SetUniqueId(clusterID);
+                        this->performanceList[index]->SetStatus(true);
                     }else{
-                        this->performanceList[currIndex]->AddClusterID(clusterID);
+                        this->performanceList[index]->AddClusterID(clusterID);
+                        this->performanceList[index]->SetType("P");
+                    }
+                }else{
+                    for(auto itr = seeds.begin(); itr != seeds.end(); itr++){
+                        long tmpIndex = *itr;
+                        
+                        if(this->setUniqueId){
+                            this->performanceList[tmpIndex]->SetUniqueId(clusterID);
+                            this->performanceList[tmpIndex]->SetStatus(true);
+                        }else{
+                            this->performanceList[tmpIndex]->AddClusterID(clusterID);
+                        }
                     }
                     
-                    itr = this->densityMatrix.find(this->performanceList[currIndex]->getID());
-                    std::unordered_set<RowIDType> results(itr->second.begin(), itr->second.end());
+                    if(!this->setUniqueId){
+                        this->performanceList[index]->SetType("C");
+                    }
                     
-                    this->FormatSeeds(results);
+                    /*if(this->setUniqueId){
+                        this->performanceList[index]->SetUniqueId(clusterID);
+                        this->performanceList[index]->SetStatus(true);
+                    }else{
+                        this->performanceList[index]->AddClusterID(clusterID);
+                        this->performanceList[index]->SetType("C");
+                    }*/
                     
-                    if(results.size() >= this->minPoints){
+                    seeds.erase(index);
+                    
+                    while (seeds.size() > 0) {
+                        auto sItr = seeds.begin();
+                        RowIDType currIndex = *sItr;
                         
-                        if(!this->setUniqueId){
-                            this->performanceList[currIndex]->SetType("C");
-                        }
+                        //std::set<RowIDType> results;
                         
-                        for(sItr = results.begin(); sItr != results.end(); sItr++){
-                            pItr = this->phIndexMap.find(*sItr);
-                            if(this->performanceList[pItr->second]->GetStatus() == false){
-                                seeds.insert(this->performanceList[pItr->second]->getID());
+                        auto itr1 = this->phSeedMap.find(currIndex);
+                        
+                        cover = itr1->second.second-itr1->second.first+1;
+                        RowIDType tLow=itr1->second.first, tHigh=itr1->second.second;
+                        
+                        /*for(RowIDType i=itr1->second.first; i<=itr1->second.second; i++){
+                            results.insert(i);
+                        }*/
+                        
+                        if(cover >= this->minPoints){
+                            //if(results.size() > 0){
+                                //RowIDType thisIndex;
+                                //for(sItr = results.begin(); sItr != results.end(); sItr++){
+                            
+                            // Need to add selected item which are outside of seed boundary
+                            if(tLow<low){
+                                for(RowIDType thisIndex=tLow; thisIndex<low; thisIndex++){
+                                    //thisIndex = *sItr;
+                                    if(this->performanceList[thisIndex]->GetStatus() == false){
+                                        seeds.insert(thisIndex);
+                                        
+                                        if(this->setUniqueId){
+                                            this->performanceList[thisIndex]->SetUniqueId(clusterID);
+                                            this->performanceList[thisIndex]->SetStatus(true);
+                                        }else{
+                                            this->performanceList[thisIndex]->AddClusterID(clusterID);
+                                        }
+                                    }
+                                }
+                                
+                                low=tLow;
+                            }
+                            
+                            if(tHigh>high){
+                                for(RowIDType thisIndex=high+1; thisIndex<=tHigh; thisIndex++){
+                                    //thisIndex = *sItr;
+                                    if(this->performanceList[thisIndex]->GetStatus() == false){
+                                        seeds.insert(thisIndex);
+                                        
+                                        if(this->setUniqueId){
+                                            this->performanceList[thisIndex]->SetUniqueId(clusterID);
+                                            this->performanceList[thisIndex]->SetStatus(true);
+                                        }else{
+                                            this->performanceList[thisIndex]->AddClusterID(clusterID);
+                                        }
+                                    }
+                                }
+                                
+                                high=tHigh;
+                            }
+                            
+                            
+                            
+                                /*for(RowIDType thisIndex=itr1->second.first; thisIndex<=itr1->second.second; thisIndex++){
+                                    //thisIndex = *sItr;
+                                    if(this->performanceList[thisIndex]->GetStatus() == false){
+                                        seeds.insert(thisIndex);
+                                        
+                                        if(this->setUniqueId){
+                                            this->performanceList[thisIndex]->SetUniqueId(clusterID);
+                                            this->performanceList[thisIndex]->SetStatus(true);
+                                        }else{
+                                            this->performanceList[thisIndex]->AddClusterID(clusterID);
+                                        }
+                                    }
+                                }*/
+                            //}
+                            
+                            if(!this->setUniqueId){
+                                this->performanceList[currIndex]->SetType("C");
+                            }
+                        }else{
+                            /*if(this->performanceList[currIndex]->getID()==176274){
+                             cout<<"";
+                             }*/
+                            if(!this->setUniqueId){
+                                this->performanceList[currIndex]->SetType("P");
                             }
                         }
+                        
+                        seeds.erase(currIndex);
+                        
+                        //results.clear();
+                    }
+                }
+            }else{
+                auto itr = this->densityMatrix.find(this->performanceList[index]->getID());
+                
+                std::unordered_set<RowIDType> seeds(itr->second.begin(), itr->second.end());
+                
+                //std::unordered_set<size_t>::iterator sItr;
+                //unordered_map<size_t, size_t>::iterator pItr;
+                
+                this->FormatSeeds(seeds);
+                
+                if(seeds.size()<this->minPoints){
+                    if(this->setUniqueId){
+                        this->performanceList[index]->SetUniqueId(clusterID);
+                        this->performanceList[index]->SetStatus(true);
                     }else{
-                        /*if(this->performanceList[currIndex]->getID()==176274){
-                         cout<<"";
-                         }*/
-                        if(!this->setUniqueId){
-                            this->performanceList[currIndex]->SetType("P");
-                        }
+                        this->performanceList[index]->AddClusterID(clusterID);
+                        this->performanceList[index]->SetType("P");
+                    }
+                }else{
+                    if(this->setUniqueId){
+                        this->performanceList[index]->SetUniqueId(clusterID);
+                        this->performanceList[index]->SetStatus(true);
+                    }else{
+                        this->performanceList[index]->AddClusterID(clusterID);
+                        this->performanceList[index]->SetType("C");
                     }
                     
-                    seeds.erase(this->performanceList[currIndex]->getID());
+                    seeds.erase(this->performanceList[index]->getID());
                     
-                    results.clear();
+                    while (seeds.size() > 0) {
+                        auto sItr = seeds.begin();
+                        auto pItr = this->phIndexMap.find(*sItr);
+                        RowIDType currIndex = pItr->second;
+                        
+                        if(this->setUniqueId){
+                            this->performanceList[currIndex]->SetUniqueId(clusterID);
+                            this->performanceList[currIndex]->SetStatus(true);
+                        }else{
+                            this->performanceList[currIndex]->AddClusterID(clusterID);
+                        }
+                        
+                        itr = this->densityMatrix.find(this->performanceList[currIndex]->getID());
+                        std::unordered_set<RowIDType> results(itr->second.begin(), itr->second.end());
+                        
+                        this->FormatSeeds(results);
+                        
+                        if(results.size() >= this->minPoints){
+                            
+                            if(!this->setUniqueId){
+                                this->performanceList[currIndex]->SetType("C");
+                            }
+                            
+                            for(sItr = results.begin(); sItr != results.end(); sItr++){
+                                pItr = this->phIndexMap.find(*sItr);
+                                if(this->performanceList[pItr->second]->GetStatus() == false){
+                                    seeds.insert(this->performanceList[pItr->second]->getID());
+                                }
+                            }
+                        }else{
+                            /*if(this->performanceList[currIndex]->getID()==176274){
+                             cout<<"";
+                             }*/
+                            if(!this->setUniqueId){
+                                this->performanceList[currIndex]->SetType("P");
+                            }
+                        }
+                        
+                        seeds.erase(this->performanceList[currIndex]->getID());
+                        
+                        results.clear();
+                    }
                 }
             }
             
             this->lastClusterId = clusterID;
+        }
+    
+        template<typename PerfType, typename ClusterIDType, typename RowIDType, typename ClusterType>
+        void DBScan<PerfType,ClusterIDType,RowIDType,ClusterType>::computeSeedsForTesting(std::ofstream& fp){
+            this->phSeedMap.clear();
+            
+            RowIDType tmpLeft = 0, tmpRight = 0, rl=0,rr=0;
+            float ptValue=0.0, dist=0.0, lastPt=0.0;
+            
+            //time_t t1=clock(),t2,t3,t4;
+            for(RowIDType i=0; i<this->size; i++){
+                ptValue = this->performanceList[i]->getClusterValue(0);
+                
+                // Starting point in the ordered sequence
+                // Compute right index for it only becasue left index = 0
+                if(i==0){ // Left corner case
+                    rl = i;
+                    
+                    // Checking right limit
+                    while(rr<this->size){
+                        dist = this->performanceList[rr]->getClusterValue(0)-ptValue;
+                        if(dist>this->Eps)break;
+                        rr++;
+                    }
+                    
+                    // Loop will exit either out of boundary or out of reach point
+                    // In both cases, exclude the current index and consider the previous index
+                    rr--;
+                    
+                }else if(i==this->size-1){ // Right corner case
+                    rr = i;
+                    
+                    if(lastPt != ptValue){
+                        dist = ptValue -this->performanceList[rl]->getClusterValue(0);
+                        while(dist>this->Eps && rl<rr){
+                            rl++;
+                            
+                            // Pointing to the ptValue
+                            if(rl==rr) break;
+                            
+                            dist = ptValue -this->performanceList[rl]->getClusterValue(0);
+                        }
+                    }
+                }else{ // Intermediate case
+                    if(lastPt != ptValue){
+                        // Checking left limit
+                        dist = ptValue -this->performanceList[rl]->getClusterValue(0);
+                        while(dist>this->Eps && rl<i){
+                            rl++;
+                            
+                            // Pointing to the ptValue
+                            if(rl==i) break;
+                            
+                            dist = ptValue -this->performanceList[rl]->getClusterValue(0);
+                        }
+                        
+                        // Checking right limit
+                        while(rr<this->size){
+                            dist = this->performanceList[rr]->getClusterValue(0)-ptValue;
+                            if(dist>this->Eps)break;
+                            rr++;
+                        }
+                        
+                        // Loop will exit either out of boundary or out of reach point
+                        // In both cases, exclude the current index and consider the previous index
+                        rr--;
+                    }
+                }
+                
+                // store this value as last value
+                lastPt = ptValue;
+                
+                //this->phSeedMap.insert(std::make_pair(i, std::make_pair(tmpLeft, tmpRight)));
+                
+                ptValue = this->performanceList[i]->getClusterValue(0);
+                
+                /////////////////////////////////
+                tmpLeft = i; tmpRight = i;
+                while(tmpLeft>0){
+                    dist = ptValue -this->performanceList[tmpLeft]->getClusterValue(0);
+                    if(dist>this->Eps){tmpLeft++; break;}
+                    tmpLeft--;
+                    
+                    // Special case to handle non-signed number
+                    if(tmpLeft==0){
+                        dist = ptValue -this->performanceList[tmpLeft]->getClusterValue(0);
+                        if(dist>this->Eps) tmpLeft++;
+                        
+                        break;
+                    }
+                }
+                
+                // Checking right limit
+                while(tmpRight<this->size){
+                    dist = this->performanceList[tmpRight]->getClusterValue(0)-ptValue;
+                    if(dist>this->Eps)break;
+                    tmpRight++;
+                }
+                tmpRight--;
+                ////////////////////////
+                
+                if(rl != tmpLeft || rr!=tmpRight)
+                    fp<<i<<","<<ptValue<<","<<rl<<","<<rr<<","<<tmpLeft<<","<<tmpRight<<std::endl;
+                
+                this->phSeedMap.insert(std::make_pair(i, std::make_pair(tmpLeft, tmpRight)));
+            }
+            
+        }
+        
+        // This method is used only for 1D cluster analysis
+        template<typename PerfType, typename ClusterIDType, typename RowIDType, typename ClusterType>
+        void DBScan<PerfType,ClusterIDType,RowIDType,ClusterType>::computeSeeds(){
+            this->phSeedMap.clear();
+            
+            RowIDType tmpLeft = 0, tmpRight = 0;
+            float ptValue=0.0, dist=0.0, lastPt=0.0;
+            
+            for(RowIDType i=0; i<this->size; i++){
+                ptValue = this->performanceList[i]->getClusterValue(0);
+                
+                // Starting point in the ordered sequence
+                // Compute right index for it only becasue left index = 0
+                if(i==0){ // Left corner case
+                    tmpLeft = i;
+                    
+                    // Checking right limit
+                    while(tmpRight<this->size){
+                        dist = this->performanceList[tmpRight]->getClusterValue(0)-ptValue;
+                        if(dist>this->Eps)break;
+                        tmpRight++;
+                    }
+                    
+                    // Loop will exit either out of boundary or out of reach point
+                    // In both cases, exclude the current index and consider the previous index
+                    tmpRight--;
+                    
+                }else if(i==this->size-1){ // Right corner case
+                    tmpRight = i;
+                    
+                    if(lastPt != ptValue){
+                        dist = ptValue -this->performanceList[tmpLeft]->getClusterValue(0);
+                        while(dist>this->Eps && tmpLeft<tmpRight){
+                            tmpLeft++;
+                            
+                            // Pointing to the ptValue
+                            if(tmpLeft==tmpRight) break;
+                            
+                            dist = ptValue -this->performanceList[tmpLeft]->getClusterValue(0);
+                        }
+                    }
+                }else{ // Intermediate case
+                    if(lastPt != ptValue){
+                        // Checking left limit
+                        dist = ptValue -this->performanceList[tmpLeft]->getClusterValue(0);
+                        while(dist>this->Eps && tmpLeft<i){
+                            tmpLeft++;
+                            
+                            // Pointing to the ptValue
+                            if(tmpLeft==i) break;
+                            
+                            dist = ptValue -this->performanceList[tmpLeft]->getClusterValue(0);
+                        }
+                        
+                        // Checking right limit
+                        while(tmpRight<this->size){
+                            dist = this->performanceList[tmpRight]->getClusterValue(0)-ptValue;
+                            if(dist>this->Eps)break;
+                            tmpRight++;
+                        }
+                        
+                        // Loop will exit either out of boundary or out of reach point
+                        // In both cases, exclude the current index and consider the previous index
+                        tmpRight--;
+                    }
+                }
+                
+                // store this value as last value
+                lastPt = ptValue;
+                
+                this->phSeedMap.insert(std::make_pair(i, std::make_pair(tmpLeft, tmpRight)));
+            }
+            
+            /*for(RowIDType i=0; i<this->size; i++){
+                ptValue = this->performanceList[i]->getClusterValue(0);
+                
+                /////////////////////////////////
+                tmpLeft = i; tmpRight = i;
+                while(tmpLeft>0){
+                    dist = ptValue -this->performanceList[tmpLeft]->getClusterValue(0);
+                    if(dist>this->Eps){tmpLeft++; break;}
+                    tmpLeft--;
+                    
+                    // Special case to handle non-signed number
+                    if(tmpLeft==0){
+                        dist = ptValue -this->performanceList[tmpLeft]->getClusterValue(0);
+                        if(dist>this->Eps) tmpLeft++;
+                        
+                        break;
+                    }
+                }
+                
+                // Checking right limit
+                while(tmpRight<this->size){
+                    dist = this->performanceList[tmpRight]->getClusterValue(0)-ptValue;
+                    if(dist>this->Eps)break;
+                    tmpRight++;
+                }
+                tmpRight--;
+                ////////////////////////
+                
+                this->phSeedMap.insert(std::make_pair(i, std::make_pair(tmpLeft, tmpRight)));
+            }*/
+        }
+        
+        template<typename PerfType, typename ClusterIDType, typename RowIDType, typename ClusterType>
+        void DBScan<PerfType,ClusterIDType,RowIDType,ClusterType>::getSeeds(std::set<RowIDType> *seed, RowIDType index, RowIDType& left, RowIDType& right, float& cover){
+            
+            RowIDType tmpLeft = left, tmpRight = right;
+            
+            // Clear the container
+            seed->clear();
+            float ptValue = this->performanceList[index]->getClusterValue(0), dist=0.0;
+            
+            // increment left index until perf[index]-perf[left]<=EPS
+            if(tmpLeft == index && tmpLeft > 0){
+                do{
+                    tmpLeft--;
+                    dist = ptValue -this->performanceList[tmpLeft]->getClusterValue(0);
+                    if(dist>this->Eps){tmpLeft++; break;}
+                }while(tmpLeft>0);
+                
+            }else while(tmpLeft<index){
+                dist = ptValue -this->performanceList[tmpLeft]->getClusterValue(0);
+                if(dist<=this->Eps) break;
+                tmpLeft++;
+            }
+            //tmpLeft--;
+            
+            // increment right index until perf[right]-perf[index]<=EPS
+            while(tmpRight<this->performanceList.size()){
+                dist = this->performanceList[tmpRight]->getClusterValue(0)-ptValue;
+                if(dist>this->Eps) break;
+                tmpRight++;
+            }
+            tmpRight--;
+            
+            cover = tmpRight-tmpLeft+1;
+            
+            // Copy index to container
+            // Copy new items on the right side
+            if(right<tmpRight){
+                for(RowIDType i=right; i<=tmpRight; i++){
+                     if(this->performanceList[i]->GetStatus() == false) seed->insert(i);
+                }
+            }
+            
+            // Copy new items from left side
+            if(tmpLeft<left){
+                for(RowIDType i=tmpLeft; i<=left; i++){
+                    if(this->performanceList[i]->GetStatus() == false) seed->insert(i);
+                }
+            }
+            
+            left = tmpLeft;
+            right = tmpRight;
         }
     }
 }
 
 
 #endif /* DBScan_h */
+

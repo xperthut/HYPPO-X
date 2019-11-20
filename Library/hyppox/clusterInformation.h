@@ -120,7 +120,7 @@ namespace hyppox {
         
         template <typename ClusterIDType>
         void ClusterInformation<ClusterIDType>::DecreaseClusterIndex(short index){
-            if(index>=0 && index<this->clusterID.size()){
+            if(index>=0 && (size_t)index<this->clusterID.size()){
                 this->clusterID.erase(this->clusterID.begin()+index);
                 this->type.erase(this->type.begin()+index);
             }
@@ -128,7 +128,7 @@ namespace hyppox {
         
         template <typename ClusterIDType>
         void ClusterInformation<ClusterIDType>::UpdateClusterID(short index, ClusterIDType _id){
-            if(index>=0 && index<this->clusterID.size()){
+            if(index>=0 && (size_t)index<this->clusterID.size()){
                 this->clusterID[index] = _id;
             }
         }

@@ -101,7 +101,7 @@ namespace hyppox {
             
             Mapper();
             ~Mapper();
-            std::string createMapper(GType* graph, std::unordered_map<std::string, size_t>* indvMap);
+            std::string createMapper(GType* graph);
             
             private:
             std::vector<std::vector<GRType>> mesh;
@@ -114,8 +114,8 @@ namespace hyppox {
             std::unordered_map<size_t,GRType*> gridMap;
             std::unordered_map<long, long> connectedComponents;
             
-            int storeData(std::unordered_map<std::string, size_t>*& indvMap);
-            int createFilter(std::unordered_map<std::string, size_t>*& indvMap);
+            int storeData(std::unordered_map<std::string, size_t>& memMap, std::unordered_map<std::string, size_t>& pieMap);
+            int createFilter(std::unordered_map<std::string, size_t>& memMap, std::unordered_map<std::string, size_t>& pieMap);
             void clearClusterInformation();
             void createCluster(std::list<PerfType*> *pList, bool setUniqueId);
             void assignUniqueClusterIds();
@@ -157,8 +157,8 @@ namespace hyppox {
         }
         
         template<typename PerfType, typename DPType, typename QTType, typename GType, typename FHType, typename ClusterIDType, typename RowIDType, typename ClusterType>
-        std::string Mapper<PerfType,DPType,QTType,GType,FHType,ClusterIDType,RowIDType,ClusterType>::createMapper(GType* graph, std::unordered_map<std::string, size_t>* indvMap){
-            int a = this->createFilter(indvMap);
+        std::string Mapper<PerfType,DPType,QTType,GType,FHType,ClusterIDType,RowIDType,ClusterType>::createMapper(GType* graph){
+            int a = this->createFilter(graph->memIndexMap, graph->pieIndexMap);
             
             if(a==-1){
                 return "File dataformat error. Please check data type in the column based on instruction.";
@@ -166,6 +166,9 @@ namespace hyppox {
                 return "Can not read data file. Please check file path and permission.";
             }
             
+            clock_t t1, t2;
+            
+            t1 = clock();
             this->createUniqueClusters();
             
             std::string r="";
@@ -173,6 +176,9 @@ namespace hyppox {
                 r = this->generateSimplicesForPersistentHomology();
             }else{
                 this->constructGraph(graph);
+                t2 = clock();
+                std::vector<std::string> _time = getTime((float)(t2-t1)/CLOCKS_PER_SEC);
+                std::cout<<"Time to complete mapper (filter, cluster, graph construction): "<<_time[0]<<_time[1]<<std::endl;
             }
             
             return r;
@@ -180,13 +186,13 @@ namespace hyppox {
         
         ////////////////// Private methods /////////////////////////
         template<typename PerfType, typename DPType, typename QTType, typename GType, typename FHType, typename ClusterIDType, typename RowIDType, typename ClusterType>
-        int Mapper<PerfType,DPType,QTType,GType,FHType,ClusterIDType,RowIDType,ClusterType>::storeData(std::unordered_map<std::string, size_t>*& indvMap){
+        int Mapper<PerfType,DPType,QTType,GType,FHType,ClusterIDType,RowIDType,ClusterType>::storeData(std::unordered_map<std::string, size_t>& memMap, std::unordered_map<std::string, size_t>& pieMap){
             clock_t t1, t2;
             
             t1 = clock();
             FHType fileHandler(hyppox::Config::DATA_FILE_NAME);
             int status;
-            if((status=fileHandler.ReadFileData(&this->treeRoot, this->minPos, this->maxPos, indvMap))!=0){
+            if((status=fileHandler.ReadFileData(&this->treeRoot, this->minPos, this->maxPos, memMap, pieMap))!=0){
                 return status;
             }
             
@@ -198,14 +204,14 @@ namespace hyppox {
             
             //this->treeRoot.PrintQuadTree();
             //cout<<"\nTotal data:"<<c<<":"<<QuadNode::totalChildren;
-            std::cout<<"\nData file read and Quad tree construction time: "<<_time[0]<<_time[1]<<std::endl;
+            std::cout<<"\nData file read and store in memory time: "<<_time[0]<<_time[1]<<std::endl;
             
             return 0;
         }
         
         template<typename PerfType, typename DPType, typename QTType, typename GType, typename FHType, typename ClusterIDType, typename RowIDType, typename ClusterType>
-        int Mapper<PerfType,DPType,QTType,GType,FHType,ClusterIDType,RowIDType,ClusterType>::createFilter(std::unordered_map<std::string, size_t>*& indvMap){
-            int a = this->storeData(indvMap);
+        int Mapper<PerfType,DPType,QTType,GType,FHType,ClusterIDType,RowIDType,ClusterType>::createFilter(std::unordered_map<std::string, size_t>& memMap, std::unordered_map<std::string, size_t>& pieMap){
+            int a = this->storeData(memMap, pieMap);
             if(a<0){
                 return a;
             }
@@ -286,7 +292,7 @@ namespace hyppox {
                         
                         this->treeRoot.SearchSurface(min, max, &clPhList, &dpList, boxID);
                         
-                        //std::cout<<"("<<i<<","<<j<<")={("<<min[0]<<","<<min[1]<<"),("<<max[0]<<","<<max[1]<<")}: "<<clPhList.size();
+                        //std::cout<<"("<<i<<","<<j<<")={("<<min[0]<<","<<min[1]<<"),("<<max[0]<<","<<max[1]<<")}: ";
                         
                         if(clPhList.size() > 0){
                             
@@ -326,22 +332,22 @@ namespace hyppox {
                             
                             lastID = ClsType::GetClusterID();
                             
-                            //cout<<"points:"<<dpList.size()<<", clusterPts:"<<clPhList.size();
-                            //time_t _t1 = clock();
+                            //std::cout<<"Data points:"<<dpList.size()<<", clusterPts:"<<clPhList.size();
+                            time_t _t1 = clock();
                             
                             this->createCluster(&clPhList, true);
                             
-                            /*time_t _t2 = clock();
+                            time_t _t2 = clock();
                              
                              float _time = (float)(_t2-_t1)/CLOCKS_PER_SEC;
-                             string unit = "(sec)";
+                             std::string unit = "(sec)";
                              
                              if(_time<1){
                              _time = ((float)(_t2-_t1)*1000)/CLOCKS_PER_SEC;
                              unit = "(ms)";
                              }
                              
-                             cout<<" Total timeto cluster:"<<_time<<unit;*/
+                             //std::cout<<" Total time to cluster:"<<_time<<unit;
                             
                             thisID = ClsType::GetClusterID();
                             
@@ -361,7 +367,7 @@ namespace hyppox {
                             this->gridMap.insert(std::make_pair(boxID, gr));
                             
                         }
-                        //cout<<":"<<ClsType::GetClusterID()<<endl;
+                        //std::cout<<":"<<ClsType::GetClusterID()<<std::endl;
                         boxID++;
                         
                     }
@@ -526,8 +532,12 @@ namespace hyppox {
                             this->treeRoot.SearchSurface(min, max, &clPhList, &dpList, boxID);
                         }
                         
+                        //std::cout<<"~~("<<i<<","<<j<<")={("<<min[0]<<","<<min[1]<<"),("<<max[0]<<","<<max[1]<<")}: ";
+                        
                         if(clPhList.size() > 0){
                             prevClsId = ClsType::GetClusterID();
+                            
+                            //std::cout<<"Data points:"<<dpList.size()<<", clusterPts:"<<clPhList.size();
                             
                             this->createCluster(&clPhList, false);
                             
@@ -615,7 +625,7 @@ namespace hyppox {
                             this->treeRoot.SearchSurface(min, max, &clPhList, &dpList, boxID);
                         }
                         
-                        //std::cout<<"("<<i<<","<<j<<")={("<<min[0]<<","<<min[1]<<"),("<<max[0]<<","<<max[1]<<")}: "<<clPhList.size();
+                        //std::cout<<"("<<i<<","<<j<<")={("<<min[0]<<","<<min[1]<<"),("<<max[0]<<","<<max[1]<<")}: ";
                         
                         if(clPhList.size() > 0){
                             /*if(i==6){
@@ -624,22 +634,22 @@ namespace hyppox {
                             
                             prevClsId = ClsType::GetClusterID();
                             
-                            //cout<<"points:"<<dpList.size()<<", clusterPts:"<<clPhList.size();
-                            //time_t _t1 = clock();*/
+                            //std::cout<<"Data points:"<<dpList.size()<<", clusterPts:"<<clPhList.size();
+                            time_t _t1 = clock();
                             
                             this->createCluster(&clPhList, false);
                             
-                            /*time_t _t2 = clock();
+                            time_t _t2 = clock();
                              
                              float _time = (float)(_t2-_t1)/CLOCKS_PER_SEC;
-                             string unit = "(sec)";
+                             std::string unit = "(sec)";
                              
                              if(_time<1){
                              _time = ((float)(_t2-_t1)*1000)/CLOCKS_PER_SEC;
                              unit = "(ms)";
                              }
                              
-                             cout<<" Total time for clustering:"<<_time<<unit;*/
+                             //std::cout<<" Total time for clustering:"<<_time<<unit;
                             
                             thisClsId = ClsType::GetClusterID();
                             
@@ -974,7 +984,7 @@ namespace hyppox {
                 weightRange[i][1] = 0.0;
             }
             
-            for(short i=0; i<size; i++){
+            for(size_t i=0; i<size; i++){
                 std::vector<float> _sizeRange(2,0.0);
                 std::vector<std::vector<float> > _weightRange(hyppox::Config::FILTER+hyppox::Config::CLUSTER, _v);
                 
@@ -1005,11 +1015,11 @@ namespace hyppox {
             
             graph->setGlobalNodeSizeAndWeightRange(sizeRange, weightRange);
             
-            for(short i=0; i<size; i++){
+            for(size_t i=0; i<size; i++){
                 auto subGraph = graph->getConnectedComponent(i);
                 
-                for(int i=0;i<2;i++) subGraph->setGlobalSizeRange(sizeRange[i], i);
-                for(short i=0;i<hyppox::Config::FILTER+hyppox::Config::CLUSTER;i++) subGraph->setGlobalWeightRange(weightRange[i], i);
+                for(int j=0;j<2;j++) subGraph->setGlobalSizeRange(sizeRange[j], j);
+                for(short j=0;j<hyppox::Config::FILTER+hyppox::Config::CLUSTER;j++) subGraph->setGlobalWeightRange(weightRange[j], j);
             }
         }
         
@@ -1027,13 +1037,8 @@ namespace hyppox {
             
             time_t t2 = clock();
             
-            float _time = (float)(t2-t1)/CLOCKS_PER_SEC;
-            std::string unit = "(sec)";
-            
-            if(_time<1){
-                _time = ((float)(t2-t1)*1000)/CLOCKS_PER_SEC;
-                unit = "(ms)";
-            }
+            std::vector<std::string> _time = getTime((float)(t2-t1)/CLOCKS_PER_SEC);
+            std::cout<<"Clusteing completed...\nTotal time for clustering:"<<_time[0]<<_time[1]<<std::endl;
             
             //cout<<"Total time:"<<_time<<unit<<endl;
             
@@ -1045,15 +1050,9 @@ namespace hyppox {
             this->constructGraphComponents(graph);
             t2 = clock();
             
-            _time = (float)(t2-t1)/CLOCKS_PER_SEC;
-            unit = "(sec)";
+            _time = getTime((float)(t2-t1)/CLOCKS_PER_SEC);
             
-            if(_time<1){
-                _time = ((float)(t2-t1)*1000)/CLOCKS_PER_SEC;
-                unit = "(ms)";
-            }
-            
-            std::cout<<"Graph construction completed...\nTotal time to construct graph:"<<_time<<unit<<std::endl;
+            std::cout<<"Graph construction completed...\nTotal time to construct graph:"<<_time[0]<<_time[1]<<std::endl;
         }
     }
 }

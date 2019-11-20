@@ -32,101 +32,73 @@ namespace hyppox {
             public:
             //using DPType = DataPoint<PerfType,PosType>;
             
-            DataPoint(std::vector<PosType> &pos);
+            DataPoint(std::vector<PosType> &pos):boxID(0){
+                this->position.assign(pos.begin(), pos.end());
+            }
+            
             ~DataPoint() = default;
             
-            void addPerformanceList(std::list<PerfType>* phList);
-            void addPerformanceList(PerfType& ph);
-            PosType getPosition(short index);
+            void addPerformanceList(std::list<PerfType>* phList){
+                this->performanceList.insert(this->performanceList.end(), phList->begin(), phList->end());
+            }
             
-            void setPosition(PosType value, short index);
-            std::list<PerfType>& getPhList();
-            void clearList();
-            void setBoxId(size_t _id);
-            size_t getBoxId();
+            void addPerformanceList(PerfType& ph){
+                this->performanceList.push_back(ph);
+            }
             
-            float GetAveragePerformanceData();
+            PosType getPosition(short index){return this->position[index];}
             
-            bool ComparePoint(DataPoint<PerfType, PosType>& dp);
-            float GetTotalPerfValue();
+            void setPosition(PosType value, short index){this->position[index]=value;}
+            
+            std::list<PerfType>& getPhList(){return this->performanceList;}
+            
+            void clearList(){this->performanceList.clear();}
+            
+            void setBoxId(size_t _id){this->boxID = _id;}
+            
+            size_t getBoxId(){return this->boxID;}
+            
+            float GetAveragePerformanceData(){
+                float avgValue = 0.0;
+                size_t size = performanceList.size();
+                
+                for(auto itr = performanceList.begin(); itr!=performanceList.end(); itr++){
+                    PerfType ph = *itr;
+                    
+                    avgValue += ph->getClusterValue(hyppox::Config::REFERENCE_PH_INDEX);
+                }
+                
+                avgValue /= size;
+                
+                return avgValue;
+            }
+            
+            bool ComparePoint(DataPoint<PerfType, PosType>& dp){
+                bool m=true;
+                
+                for(short i=0; i<hyppox::Config::FILTER; i++){
+                    m &= (this->position[i]==dp.getPosition(i));
+                }
+                
+                return m;
+            }
+            
+            float GetTotalPerfValue(){
+                float value = 0.0;
+                
+                for(auto itr = performanceList.begin(); itr != performanceList.end(); itr++){
+                    PerfType ph = *itr;
+                    value += ph.getClusterValue(hyppox::Config::REFERENCE_PH_INDEX);
+                }
+                
+                return value;
+            }
             
             private:
             std::vector<PosType> position;
             size_t boxID;
             std::list<PerfType> performanceList;
         };
-        
-        template<typename PerfType, typename PosType>
-        DataPoint<PerfType,PosType>::DataPoint(std::vector<PosType> &pos):boxID(0){
-            this->position.assign(pos.begin(), pos.end());
-        }
-        
-        template<typename PerfType, typename PosType>
-        void DataPoint<PerfType,PosType>::addPerformanceList(std::list<PerfType>* phList){
-            this->performanceList.insert(this->performanceList.end(), phList->begin(), phList->end());
-        }
-        
-        template<typename PerfType, typename PosType>
-        void DataPoint<PerfType,PosType>::addPerformanceList(PerfType& ph){
-            this->performanceList.push_back(ph);
-        }
-        
-        template<typename PerfType, typename PosType>
-        PosType DataPoint<PerfType,PosType>::getPosition(short index){return this->position[index];}
-        
-        template<typename PerfType, typename PosType>
-        void DataPoint<PerfType,PosType>::setPosition(PosType value, short index){this->position[index]=value;}
-        
-        template<typename PerfType, typename PosType>
-        std::list<PerfType>& DataPoint<PerfType,PosType>::getPhList(){return this->performanceList;}
-        
-        template<typename PerfType, typename PosType>
-        void DataPoint<PerfType,PosType>::setBoxId(size_t _id){this->boxID = _id;}
-        
-        template<typename PerfType, typename PosType>
-        size_t DataPoint<PerfType,PosType>::getBoxId(){return this->boxID;}
-        
-        template<typename PerfType, typename PosType>
-        void DataPoint<PerfType,PosType>::clearList(){this->performanceList.clear();}
-        
-        template<typename PerfType, typename PosType>
-        float DataPoint<PerfType,PosType>::GetAveragePerformanceData(){
-            float avgValue = 0.0;
-            size_t size = performanceList.size();
-            
-            for(auto itr = performanceList.begin(); itr!=performanceList.end(); itr++){
-                PerfType ph = *itr;
-                
-                avgValue += ph->getClusterValue(hyppox::Config::REFERENCE_PH_INDEX);
-            }
-            
-            avgValue /= size;
-            
-            return avgValue;
-        }
-        
-        template<typename PerfType, typename PosType>
-        bool DataPoint<PerfType,PosType>::ComparePoint(DataPoint<PerfType,PosType> &dp){
-            bool m=true;
-            
-            for(short i=0; i<hyppox::Config::FILTER; i++){
-                m &= (this->position[i]==dp.getPosition(i));
-            }
-            
-            return m;
-        }
-        
-        template<typename PerfType, typename PosType>
-        float DataPoint<PerfType,PosType>::GetTotalPerfValue(){
-            float value = 0.0;
-            
-            for(auto itr = performanceList.begin(); itr != performanceList.end(); itr++){
-                PerfType ph = *itr;
-                value += ph.getClusterValue(hyppox::Config::REFERENCE_PH_INDEX);
-            }
-            
-            return value;
-        }
     }
 }
 
