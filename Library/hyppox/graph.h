@@ -2673,6 +2673,29 @@ namespace hyppox {
                     std::string fName = "", tmpFN="";
 
                     //std::cout<<"Data generation completed, now starting file creation..."<<std::endl;
+                    
+                    paramJS += "\"gc\":\"" + std::to_string(hyppox::Config::COL_GENOTYPE) + "\",";
+                    
+                    paramJS += "\"fg\":[";
+                    for(size_t i=0; i<hyppox::Config::FILTER_GENOTYPE.size(); i++){
+                        if(i>0) paramJS += ",";
+                        paramJS += hyppox::Config::FILTER_GENOTYPE[i];
+                    }
+                    paramJS += "],";
+                    
+                    paramJS += "\"lc\":[";
+                    for(size_t i=0; i<(int)hyppox::Config::COL_LOCATION.size(); i++){
+                        if(i>0) paramJS += ",";
+                        paramJS += std::to_string(hyppox::Config::COL_LOCATION[i]);
+                    }
+                    paramJS += "],";
+                    
+                    paramJS += "\"dtc\":[";
+                    for(size_t i=0; i<(int)hyppox::Config::COL_DATETIME.size(); i++){
+                        if(i>0) paramJS += ",";
+                        paramJS += std::to_string(hyppox::Config::COL_DATETIME[i]);
+                    }
+                    paramJS += "],";
 
                     // Filternames
                     tmpFN="";
