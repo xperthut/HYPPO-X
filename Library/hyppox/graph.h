@@ -2753,8 +2753,23 @@ namespace hyppox {
 
                     // Separator __
                     fName += "_";
+                    
+                    // Filternames_windows_overlap_clusterParams_Genfilter__PieChart
+                    paramJS += "\"pie\":[";
+                    if(hyppox::Config::COL_PIECHART.size()>0){
+                        tmpFN = "";
+                        for(size_t i=0; i<hyppox::Config::COL_PIECHART.size(); i++){
+                            if(tmpFN.length()>0) tmpFN += "|";
+                            tmpFN += std::to_string(hyppox::Config::COL_PIECHART[i]);
+                            
+                            if(i>0) paramJS += ",";
+                            paramJS += std::to_string(hyppox::Config::COL_PIECHART[i]);
+                        }
+                        if(tmpFN.length()>0) fName += "_" + tmpFN;
+                    }
+                    paramJS += "],";
 
-                    // Filternames_windows_overlap_clusterParams_Performances_Genfilter__Signature
+                    // Filternames_windows_overlap_clusterParams_Performances_Genfilter__PieChart_Signature
                     tmpFN="";
                     paramJS += "\"sig\":[";
                     bool tmpParamJSFlag = true;
@@ -2772,11 +2787,11 @@ namespace hyppox {
                     if(tmpFN.length()>0) fName += "_" + tmpFN;
                     paramJS += "],";
                     
-                    // Filternames_windows_overlap_clusterParams_Performances_Genfilter__Signature_RefPerformance
+                    // Filternames_windows_overlap_clusterParams_Performances_Genfilter__PieChart_Signature_RefPerformance
                     fName += "_" + hyppox::Config::CLUSTER_NAMES[hyppox::Config::REFERENCE_PH_INDEX];
                     paramJS += "\"rp\":[\"" + hyppox::Config::CLUSTER_NAMES[hyppox::Config::REFERENCE_PH_INDEX] + "\"]";
 
-                    // Filternames_windows_overlap_clusterParams_Performances_Genfilter__Signature_RefPerformance_Membership
+                    // Filternames_windows_overlap_clusterParams_Performances_Genfilter__PieChart_Signature_RefPerformance_Membership
                     paramJS += ",\"mem\":[";
                     if(hyppox::Config::COL_MEMBERSHIP.size()>0){
                         tmpFN = "";
@@ -2786,21 +2801,6 @@ namespace hyppox {
                             
                             if(i>0) paramJS += ",";
                             paramJS += std::to_string(hyppox::Config::COL_MEMBERSHIP[i]);
-                        }
-                        if(tmpFN.length()>0) fName += "_" + tmpFN;
-                    }
-                    paramJS += "]";
-
-                    // Filternames_windows_overlap_clusterParams_Genfilter__Signature_Performance_Membership_PieChart
-                    paramJS += ",\"pie\":[";
-                    if(hyppox::Config::COL_PIECHART.size()>0){
-                        tmpFN = "";
-                        for(size_t i=0; i<hyppox::Config::COL_PIECHART.size(); i++){
-                            if(tmpFN.length()>0) tmpFN += "|";
-                            tmpFN += std::to_string(hyppox::Config::COL_PIECHART[i]);
-                            
-                            if(i>0) paramJS += ",";
-                            paramJS += std::to_string(hyppox::Config::COL_PIECHART[i]);
                         }
                         if(tmpFN.length()>0) fName += "_" + tmpFN;
                     }
