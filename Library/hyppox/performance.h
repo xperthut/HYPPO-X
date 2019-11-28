@@ -140,7 +140,13 @@ namespace hyppox {
             
             std::string getPieChart(){return this->pieChart;}
             
-            std::string getPoint(){return (this->genotype+"#"+this->getLocation()+"#"+this->getDateTime());}
+            std::string getPoint(){
+                std::string ts = this->genotype + "#" + this->getLocation() + "#" + this->getDateTime();
+                
+                if(ts.compare("##") == 0) return std::to_string(this->pID);
+                return ts;
+                
+            }
             
             private:
             RowIDType pID;
