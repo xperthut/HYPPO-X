@@ -2684,14 +2684,14 @@ namespace hyppox {
                     paramJS += "],";
                     
                     paramJS += "\"lc\":[";
-                    for(size_t i=0; i<(int)hyppox::Config::COL_LOCATION.size(); i++){
+                    for(size_t i=0; i<hyppox::Config::COL_LOCATION.size(); i++){
                         if(i>0) paramJS += ",";
                         paramJS += std::to_string(hyppox::Config::COL_LOCATION[i]);
                     }
                     paramJS += "],";
                     
                     paramJS += "\"dtc\":[";
-                    for(size_t i=0; i<(int)hyppox::Config::COL_DATETIME.size(); i++){
+                    for(size_t i=0; i<hyppox::Config::COL_DATETIME.size(); i++){
                         if(i>0) paramJS += ",";
                         paramJS += std::to_string(hyppox::Config::COL_DATETIME[i]);
                     }
