@@ -2676,13 +2676,6 @@ namespace hyppox {
                     
                     paramJS += "\"gc\":\"" + std::to_string(hyppox::Config::COL_GENOTYPE) + "\",";
                     
-                    paramJS += "\"fg\":[";
-                    for(size_t i=0; i<hyppox::Config::FILTER_GENOTYPE.size(); i++){
-                        if(i>0) paramJS += ",";
-                        paramJS += hyppox::Config::FILTER_GENOTYPE[i];
-                    }
-                    paramJS += "],";
-                    
                     paramJS += "\"lc\":[";
                     for(size_t i=0; i<hyppox::Config::COL_LOCATION.size(); i++){
                         if(i>0) paramJS += ",";
@@ -2768,7 +2761,7 @@ namespace hyppox {
                             tmpFN += hyppox::Config::FILTER_GENOTYPE[i];
                             
                             if(i>0) paramJS += ",";
-                            paramJS += hyppox::Config::FILTER_GENOTYPE[i];
+                            paramJS += "\"" + hyppox::Config::FILTER_GENOTYPE[i] + "\"";
                         }
                         if(tmpFN.length()>0) fName += "_" + tmpFN;
                     }
