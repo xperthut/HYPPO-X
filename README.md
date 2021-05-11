@@ -18,7 +18,7 @@ We have built a desktop based solution named [Hyppo-XD](https://mhmethun.com/Hyp
 ```
 
 ## Paper
-M. Kamruzzaman, A. Kalyanaraman, B. Krishnamoorthy, P.S. Schnable, S. Hey. Hyppo-X: A Scalable Exploratory Framework for Analyzing Complex Phenomics Data. IEEE/ACM Transactions on Computational Biology and Bioinformatics, TCBB'19 [link](https://ieeexplore.ieee.org/document/8880514).
+M. Kamruzzaman, A. Kalyanaraman, B. Krishnamoorthy, P.S. Schnable, S. Hey. [Hyppo-X: A Scalable Exploratory Framework for Analyzing Complex Phenomics Data.](https://ieeexplore.ieee.org/document/8880514) IEEE/ACM Transactions on Computational Biology and Bioinformatics, TCBB'19.
 
 ## Website
 ```R
