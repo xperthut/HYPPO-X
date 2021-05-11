@@ -6,7 +6,19 @@ This is a header only library built in `C++` to extract the insights of high dim
 The library uses `gcc>=5.0`, `c++14` and requires [Boost](http://www.boost.org/) with version 1.48.0 or more recent. It is a multi-platform library and compiles on Linux, Mac OSX and Visual Studio 2015.
 
 ## New version
-We have built a desktop based solution named [Hyppo-XD](https://github.com/xperthut/Hyppo-XD). 
+We have built a desktop based solution named [Hyppo-XD](https://mhmethun.com/Hyppo-XD/). 
+
+## Citation
+```C
+@misc{kamruzzaman2019hyppo,
+  title={HYPPO-X: A software library for visual analytics on complex high dimensional data},
+  author={Kamruzzaman, Methun},
+  year={2019}
+}
+```
+
+## Paper
+M. Kamruzzaman, A. Kalyanaraman, B. Krishnamoorthy, P.S. Schnable, S. Hey. Hyppo-X: A Scalable Exploratory Framework for Analyzing Complex Phenomics Data. IEEE/ACM Transactions on Computational Biology and Bioinformatics, TCBB'19 [link](https://ieeexplore.ieee.org/document/8880514).
 
 ## Website
 ```R
